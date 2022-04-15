@@ -1,0 +1,10 @@
+{
+  "item.pinecone.eat": {
+    "sounds": [
+      "snowed_over:item/pinecone/eat1",
+      "snowed_over:item/pinecone/eat2",
+      "snowed_over:item/pinecone/eat3"
+    ],
+    "subtitle": "subtitles.item.snowed_over.pinecone.eat"
+  }
+}

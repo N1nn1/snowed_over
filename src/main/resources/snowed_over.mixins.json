@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.ninni.snowed_over.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": ["LeavesBlockMixin"],
+  "client": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
