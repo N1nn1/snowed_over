@@ -1,4 +1,12 @@
 {
   "item.snowed_over.pinecone": "Pinecone",
+  "item.snowed_over.compacted_snow_brick": "Compacted Snow Brick",
+
+  "block.snowed_over.compacted_snow_bricks": "Compacted Snow Bricks",
+  "block.snowed_over.compacted_snow_brick_wall": "Compacted Snow Brick Wall",
+  "block.snowed_over.compacted_snow_brick_slab": "Compacted Snow Brick Slab",
+  "block.snowed_over.compacted_snow_brick_stairs": "Compacted Snow Brick Stairs",
+  "block.snowed_over.compacted_snow_foundation": "Compacted Snow Foundation",
+
   "subtitles.item.snowed_over.pinecone.eat": "Chewing"
 }

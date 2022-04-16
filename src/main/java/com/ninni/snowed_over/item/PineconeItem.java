@@ -1,4 +1,4 @@
-package com.ninni.snowed_over.items;
+package com.ninni.snowed_over.item;
 
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.minecraft.advancement.criterion.Criteria;

@@ -6,5 +6,49 @@
       "snowed_over:item/pinecone/eat3"
     ],
     "subtitle": "subtitles.item.snowed_over.pinecone.eat"
+  },
+  "block.snow_bricks.break": {
+    "sounds": [
+      "snowed_over:block/snow_bricks/heavy1",
+      "snowed_over:block/snow_bricks/heavy2",
+      "snowed_over:block/snow_bricks/heavy3",
+      "snowed_over:block/snow_bricks/heavy4"
+    ],
+    "subtitle": "subtitles.block.generic.break"
+  },
+  "block.snow_bricks.step": {
+    "sounds": [
+      "snowed_over:block/snow_bricks/light1",
+      "snowed_over:block/snow_bricks/light2",
+      "snowed_over:block/snow_bricks/light3",
+      "snowed_over:block/snow_bricks/light4"
+    ],
+    "subtitle": "subtitles.block.generic.footsteps"
+  },
+  "block.snow_bricks.hit": {
+    "sounds": [
+      "snowed_over:block/snow_bricks/light1",
+      "snowed_over:block/snow_bricks/light2",
+      "snowed_over:block/snow_bricks/light3",
+      "snowed_over:block/snow_bricks/light4"
+    ],
+    "subtitle": "subtitles.block.generic.hit"
+  },
+  "block.snow_bricks.place": {
+    "sounds": [
+      "snowed_over:block/snow_bricks/heavy1",
+      "snowed_over:block/snow_bricks/heavy2",
+      "snowed_over:block/snow_bricks/heavy3",
+      "snowed_over:block/snow_bricks/heavy4"
+    ],
+    "subtitle": "subtitles.block.generic.place"
+  },
+  "block.snow_bricks.fall": {
+    "sounds": [
+      "snowed_over:block/snow_bricks/light1",
+      "snowed_over:block/snow_bricks/light2",
+      "snowed_over:block/snow_bricks/light3",
+      "snowed_over:block/snow_bricks/light4"
+    ]
   }
 }
