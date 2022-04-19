@@ -1,6 +1,9 @@
 {
+  "entity.snowed_over.reindeer": "Reindeer",
+
   "item.snowed_over.pinecone": "Pinecone",
   "item.snowed_over.compacted_snow_brick": "Compacted Snow Brick",
+  "item.snowed_over.reindeer_spawn_egg": "Reindeer Spawn Egg",
 
   "block.snowed_over.compacted_snow_bricks": "Compacted Snow Bricks",
   "block.snowed_over.compacted_snow_brick_wall": "Compacted Snow Brick Wall",

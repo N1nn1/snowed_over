@@ -17,7 +17,7 @@
   "environment": "*",
   "entrypoints": {
     "main": ["com.ninni.snowed_over.SnowedOver"],
-    "client": []
+    "client": ["com.ninni.snowed_over.SnowedOverClient"]
   },
   "mixins": ["snowed_over.mixins.json"],
 
