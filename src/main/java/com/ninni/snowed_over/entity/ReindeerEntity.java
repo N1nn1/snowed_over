@@ -1,5 +1,6 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import com.ninni.snowed_over.tag.SnowedOverItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -23,8 +24,8 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -197,29 +198,41 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     @Override
+    protected void playWalkSound(BlockSoundGroup group) {
+        this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_GALLOP, group.getVolume() * 0.15F, group.getPitch());
+        if (this.random.nextInt(10) == 0) {
+            this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_BREATHE, group.getVolume() * 0.6F, group.getPitch());
+        }
+
+    }
+    @Override
     protected SoundEvent getAmbientSound() {
         super.getAmbientSound();
-        return SoundEvents.ENTITY_HORSE_AMBIENT;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_AMBIENT;
     }
     @Override
     protected SoundEvent getDeathSound() {
         super.getDeathSound();
-        return SoundEvents.ENTITY_HORSE_DEATH;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_DEATH;
     }
     @Nullable
     @Override
     protected SoundEvent getEatSound() {
-        return SoundEvents.ENTITY_HORSE_EAT;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_EAT;
     }
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         super.getHurtSound(source);
-        return SoundEvents.ENTITY_HORSE_HURT;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_HURT;
     }
     @Override
     protected SoundEvent getAngrySound() {
         super.getAngrySound();
-        return SoundEvents.ENTITY_HORSE_ANGRY;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY;
+    }
+    @Override
+    protected void playJumpSound() {
+        this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
     }
 
     @SuppressWarnings("unused")

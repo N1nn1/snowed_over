@@ -21,6 +21,18 @@ public interface SnowedOverSoundEvents {
         return createBlockSound("compacted_snow", type);
     }
 
+    SoundEvent ENTITY_REINDEER_GALLOP = reindeer("gallop");
+    SoundEvent ENTITY_REINDEER_BREATHE = reindeer("breathe");
+    SoundEvent ENTITY_REINDEER_AMBIENT = reindeer("idle");
+    SoundEvent ENTITY_REINDEER_HURT = reindeer("hurt");
+    SoundEvent ENTITY_REINDEER_DEATH = reindeer("death");
+    SoundEvent ENTITY_REINDEER_ANGRY = reindeer("angry");
+    SoundEvent ENTITY_REINDEER_EAT = reindeer("eat");
+    SoundEvent ENTITY_REINDEER_JUMP = reindeer("jump");
+    private static SoundEvent reindeer(String type) {
+        return createEntitySound("reindeer", type);
+    }
+
     private static SoundEvent register(String id) {
         Identifier identifier = new Identifier(SnowedOver.MOD_ID, id);
         return Registry.register(Registry.SOUND_EVENT, identifier, new SoundEvent(identifier));
@@ -31,5 +43,8 @@ public interface SnowedOverSoundEvents {
     }
     private static SoundEvent createItemSound(String item, String type) {
         return register("item." + item + "." + type);
+    }
+    private static SoundEvent createEntitySound(String entity, String id) {
+        return register("entity." + entity + "." + id);
     }
 }

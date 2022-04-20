@@ -50,5 +50,69 @@
       "snowed_over:block/compacted_snow/light3",
       "snowed_over:block/compacted_snow/light4"
     ]
+  },
+  "entity.reindeer.gallop": {
+    "sounds": [
+      "snowed_over:entity/reindeer/gallop1",
+      "snowed_over:entity/reindeer/gallop2",
+      "snowed_over:entity/reindeer/gallop3",
+      "snowed_over:entity/reindeer/gallop4",
+      "snowed_over:entity/reindeer/gallop5"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.gallop"
+  },
+  "entity.reindeer.breathe": {
+    "sounds": [
+      "snowed_over:entity/reindeer/breathe1",
+      "snowed_over:entity/reindeer/breathe2",
+      "snowed_over:entity/reindeer/breathe3"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.breathe"
+  },
+  "entity.reindeer.idle": {
+    "sounds": [
+      "snowed_over:entity/reindeer/ambient1",
+      "snowed_over:entity/reindeer/ambient2",
+      "snowed_over:entity/reindeer/ambient3",
+      "snowed_over:entity/reindeer/ambient4",
+      "snowed_over:entity/reindeer/ambient5"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.idle"
+  },
+  "entity.reindeer.hurt": {
+    "sounds": [
+      "snowed_over:entity/reindeer/hurt1",
+      "snowed_over:entity/reindeer/hurt2",
+      "snowed_over:entity/reindeer/hurt3"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.hurt"
+  },
+  "entity.reindeer.death": {
+    "sounds": [
+      "snowed_over:entity/reindeer/death"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.death"
+  },
+  "entity.reindeer.angry": {
+    "sounds": [
+      "snowed_over:entity/reindeer/angry1",
+      "snowed_over:entity/reindeer/angry2"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.angry"
+  },
+  "entity.reindeer.eat": {
+    "sounds": [
+      "snowed_over:entity/reindeer/eating1",
+      "snowed_over:entity/reindeer/eating2",
+      "snowed_over:entity/reindeer/eating3",
+      "snowed_over:entity/reindeer/eating4"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.eat"
+  },
+  "entity.reindeer.jump": {
+    "sounds": [
+      "mob/horse/jump"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.jump"
   }
 }

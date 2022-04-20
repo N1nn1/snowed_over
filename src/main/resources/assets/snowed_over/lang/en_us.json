@@ -11,5 +11,13 @@
   "block.snowed_over.compacted_snow_brick_stairs": "Compacted Snow Brick Stairs",
   "block.snowed_over.compacted_snow_foundation": "Compacted Snow Foundation",
 
+  "subtitles.entity.snowed_over.reindeer.gallop": "Reindeer tendons click",
+  "subtitles.entity.snowed_over.reindeer.breathe": "Reindeer exhales",
+  "subtitles.entity.snowed_over.reindeer.idle": "Reindeer grunts",
+  "subtitles.entity.snowed_over.reindeer.hurt": "Reindeer hurts",
+  "subtitles.entity.snowed_over.reindeer.death": "Reindeer dies",
+  "subtitles.entity.snowed_over.reindeer.angry": "Reindeer upsets",
+  "subtitles.entity.snowed_over.reindeer.eat": "Reindeer munches",
+  "subtitles.entity.snowed_over.reindeer.jump": "Reindeer rears up",
   "subtitles.item.snowed_over.pinecone.eat": "Chewing"
 }
