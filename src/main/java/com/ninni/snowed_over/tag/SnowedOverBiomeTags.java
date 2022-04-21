@@ -14,4 +14,5 @@ public class SnowedOverBiomeTags {
     private static TagKey<Biome> create(String id) {
         return TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, id));
     }
+
 }
