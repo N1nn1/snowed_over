@@ -1,4 +1,6 @@
 {
+  "snowed_over.commands.locate.revamped_igloo": "Use /locate snowed_over:revamped_igloo",
+
   "entity.snowed_over.reindeer": "Reindeer",
 
   "item.snowed_over.pinecone": "Pinecone",
