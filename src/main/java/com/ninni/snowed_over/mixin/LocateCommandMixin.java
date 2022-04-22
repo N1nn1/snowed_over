@@ -1,7 +1,6 @@
 package com.ninni.snowed_over.mixin;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.minecraft.command.argument.RegistryPredicateArgumentType;
 import net.minecraft.server.command.LocateCommand;
