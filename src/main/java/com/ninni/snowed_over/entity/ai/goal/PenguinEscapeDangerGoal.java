@@ -11,6 +11,11 @@ public class PenguinEscapeDangerGoal extends EscapeDangerGoal {
     }
 
     @Override
+    public boolean canStart() {
+        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg()) return false;
+        return super.canStart();
+    }
+    @Override
     public void start() {
         super.start();
         if (this.mob instanceof PenguinEntity penguin) penguin.setMood(PenguinMood.AGITATED);

@@ -7,8 +7,7 @@ public enum PenguinMood {
     HAPPY(0, "happy"),
     CONFUSED(1, "confused"),
     FOCUSED(2, "focused"),
-    ANGRY(3, "angry"),
-    AGITATED(4, "agitated");
+    AGITATED(3, "agitated");
 
     public static final PenguinMood[] MOODS = Arrays.stream(values()).sorted(Comparator.comparingInt(PenguinMood::getId)).toArray(PenguinMood[]::new);
     private final int id;
