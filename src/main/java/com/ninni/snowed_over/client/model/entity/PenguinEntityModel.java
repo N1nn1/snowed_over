@@ -26,7 +26,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
 
 
     public PenguinEntityModel(ModelPart root) {
-        super(false, 0F, 0.0F);
+        super(false, 5.0F, 0.0F);
         this.root = root;
 
         this.body         = root.getChild("body");
@@ -113,6 +113,16 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         return TexturedModelData.of(data, 48, 48);
     }
 
+    @Override
+    public void animateModel(PenguinEntity entity, float limbAngle, float limbDistance, float tickDelta) {
+        super.animateModel(entity, limbAngle, limbDistance, tickDelta);
+
+        if (entity.WingsFlapTicks != 0) {
+            this.leftWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * 0.2F - 0.2F;
+            this.rightWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * -0.2F + 0.2F;
+        }
+        else { this.leftWing.roll = 0.0F; this.rightWing.roll = 0.0F; }
+    }
 
     @Override
     public void setAngles(PenguinEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
