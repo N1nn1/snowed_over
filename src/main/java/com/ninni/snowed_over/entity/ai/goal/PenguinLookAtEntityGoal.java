@@ -10,6 +10,13 @@ public class PenguinLookAtEntityGoal  extends LookAtEntityGoal {
     public PenguinLookAtEntityGoal(MobEntity mob, Class<? extends LivingEntity> targetType, float range) {
         super(mob, targetType, range);
     }
+
+    @Override
+    public boolean canStart() {
+        if (this.mob instanceof PenguinEntity penguin && penguin.isSliding()) return false;
+        return super.canStart();
+    }
+
     @Override
     public void start() {
         super.start();
