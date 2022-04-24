@@ -20,7 +20,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
 
     @Override
     public boolean canStart() {
-        if (mob.isNavigating()) return false;
+        if (mob.isNavigating() || this.mob instanceof PenguinEntity penguin && penguin.hasEgg()) return false;
         else {
             if (!this.ignoringChance) {
                 if (this.mob.getRandom().nextInt(toGoalTicks(this.chance)) != 0) {
