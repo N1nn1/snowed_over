@@ -4,6 +4,7 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinEscapeDangerGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinFleeEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinLookAtEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinSlideGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import net.minecraft.block.BlockState;
@@ -40,12 +41,11 @@ public class PenguinEntity extends AnimalEntity {
     private static final TrackedData<Integer> MOOD = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HAS_EGG = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> EGG_TICKS = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> SLIDING = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(ItemTags.FISHES);
     public int WingsFlapTicks;
 
-    public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) {
-        super(entityType, world);
-    }
+    public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) { super(entityType, world); }
 
     @Override
     protected void initGoals() {
@@ -54,9 +54,10 @@ public class PenguinEntity extends AnimalEntity {
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.2));
         this.goalSelector.add(3, new FollowParentGoal(this, 1.2));
         this.goalSelector.add(4, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
-        this.goalSelector.add(5, new PenguinWanderAroundFarGoal(this, 1));
-        this.goalSelector.add(6, new LookAroundGoal(this));
-        this.goalSelector.add(7, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(6, new PenguinWanderAroundFarGoal(this, 1));
+        this.goalSelector.add(7, new PenguinSlideGoal(this, 1.2));
+        this.goalSelector.add(8, new LookAroundGoal(this));
+        this.goalSelector.add(9, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
     }
 
     public static DefaultAttributeContainer.Builder createPenguinAttributes() {
@@ -121,13 +122,16 @@ public class PenguinEntity extends AnimalEntity {
         this.dataTracker.startTracking(MOOD, 0);
         this.dataTracker.startTracking(HAS_EGG, false);
         this.dataTracker.startTracking(EGG_TICKS, 1);
+        this.dataTracker.startTracking(SLIDING, false);
     }
     public boolean hasEgg() { return this.dataTracker.get(HAS_EGG); }
     public void setHasEgg(boolean hasEgg) { this.dataTracker.set(HAS_EGG, hasEgg); }
-    public PenguinMood getMood() { return PenguinMood.MOODS[this.dataTracker.get(MOOD)]; }
-    public void setMood(PenguinMood mood) { this.dataTracker.set(MOOD, mood.getId()); }
     public int getEggTicks() { return this.dataTracker.get(EGG_TICKS); }
     public void setEggTicks(int eggTicks) { this.dataTracker.set(EGG_TICKS, eggTicks); }
+    public PenguinMood getMood() { return PenguinMood.MOODS[this.dataTracker.get(MOOD)]; }
+    public void setMood(PenguinMood mood) { this.dataTracker.set(MOOD, mood.getId()); }
+    public boolean isSliding() { return this.dataTracker.get(SLIDING); }
+    public void setSliding(boolean sliding) { this.dataTracker.set(SLIDING, sliding); }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
