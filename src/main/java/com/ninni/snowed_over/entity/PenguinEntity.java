@@ -10,6 +10,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -51,11 +52,11 @@ public class PenguinEntity extends AnimalEntity {
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.4));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.2));
-        this.goalSelector.add(3, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
-        this.goalSelector.add(4, new PenguinWanderAroundFarGoal(this, 1));
-        this.goalSelector.add(5, new LookAroundGoal(this));
-        this.goalSelector.add(6, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(7, new PenguinLookAtEntityGoal(this, PolarBearEntity.class, 6.0F));
+        this.goalSelector.add(3, new FollowParentGoal(this, 1.2));
+        this.goalSelector.add(4, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
+        this.goalSelector.add(5, new PenguinWanderAroundFarGoal(this, 1));
+        this.goalSelector.add(6, new LookAroundGoal(this));
+        this.goalSelector.add(7, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
     }
 
     public static DefaultAttributeContainer.Builder createPenguinAttributes() {
@@ -132,11 +133,13 @@ public class PenguinEntity extends AnimalEntity {
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("HasEgg", this.hasEgg());
+        nbt.putInt("EggTicks", this.getEggTicks());
     }
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
         this.setHasEgg(nbt.getBoolean("HasEgg"));
+        this.setEggTicks(nbt.getInt("EggTicks"));
     }
 
 
