@@ -35,7 +35,7 @@ public class SnowedOverEntities {
                                .defaultAttributes(PenguinEntity::createPenguinAttributes)
                                .spawnGroup(SpawnGroup.CREATURE)
                                .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.WORLD_SURFACE_WG, PenguinEntity::canSpawn)
-                               .dimensions(EntityDimensions.changing(0.65F, 0.9F))
+                               .dimensions(EntityDimensions.changing(0.55F, 0.9F))
                                .trackRangeBlocks(8),
         new int[]{ 0x292929, 0xfff089 }
     );
