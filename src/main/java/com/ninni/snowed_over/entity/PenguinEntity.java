@@ -24,6 +24,7 @@ import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.BlockStateParticleEffect;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
@@ -104,6 +105,15 @@ public class PenguinEntity extends AnimalEntity {
             });
             setEggTicks(1);
         }
+
+        if (this.isSliding()){
+            for(int i = 0; i < 1; ++i) {
+                double velocityX = this.random.nextGaussian() * 0.15;
+                double velocityY = this.random.nextGaussian() * 0.15;
+                double velocityZ = this.random.nextGaussian() * 0.15;
+                this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getLandingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
+            }
+        }
     }
 
     protected void produceParticles(ParticleEffect parameters) {
@@ -113,7 +123,6 @@ public class PenguinEntity extends AnimalEntity {
             double velocityZ = this.random.nextGaussian() * -5;
             this.world.addParticle(parameters, this.getParticleX(0.5), this.getRandomBodyY() + 0.5, this.getParticleZ(0.5), velocityX, velocityY, velocityZ);
         }
-
     }
 
     @Override
