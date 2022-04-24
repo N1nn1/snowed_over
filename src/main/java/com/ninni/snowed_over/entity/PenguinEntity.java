@@ -3,12 +3,14 @@ package com.ninni.snowed_over.entity;
 import com.ninni.snowed_over.entity.ai.goal.PenguinEscapeDangerGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinFleeEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinLookAtEntityGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
@@ -18,17 +20,26 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 
+import java.util.Optional;
 import java.util.Random;
 
 public class PenguinEntity extends AnimalEntity {
     private static final TrackedData<Integer> MOOD = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    private static final TrackedData<Boolean> HAS_EGG = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private static final TrackedData<Integer> EGG_TICKS = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
+    public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(ItemTags.FISHES);
     public int WingsFlapTicks;
 
     public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) {
@@ -37,9 +48,11 @@ public class PenguinEntity extends AnimalEntity {
 
     @Override
     protected void initGoals() {
+        this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.4));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.2));
-        this.goalSelector.add(4, new WanderAroundFarGoal(this, 1));
+        this.goalSelector.add(3, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
+        this.goalSelector.add(4, new PenguinWanderAroundFarGoal(this, 1));
         this.goalSelector.add(5, new LookAroundGoal(this));
         this.goalSelector.add(6, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(7, new PenguinLookAtEntityGoal(this, PolarBearEntity.class, 6.0F));
@@ -52,9 +65,15 @@ public class PenguinEntity extends AnimalEntity {
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 10.0D);
     }
 
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.isIn(ItemTags.FISHES);
+    }
+
     private void flapWing() {
         this.WingsFlapTicks = 1;
     }
+
     @Override
     public void tickMovement() {
         super.tickMovement();
@@ -72,6 +91,17 @@ public class PenguinEntity extends AnimalEntity {
         if (this.getMood() == PenguinMood.AGITATED) {
             this.produceParticles(ParticleTypes.SPLASH);
         }
+        if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
+        if (this.getEggTicks() == 0) {
+            setHasEgg(false);
+            this.playSound(SoundEvents.ENTITY_TURTLE_EGG_HATCH, 1, 1);
+            Optional.ofNullable(SnowedOverEntities.PENGUIN.create(world)).ifPresent(entity -> {
+                entity.setBreedingAge(-24000);
+                entity.refreshPositionAndAngles(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), 0.0F, 0.0F);
+                world.spawnEntity(entity);
+            });
+            setEggTicks(1);
+        }
     }
 
     protected void produceParticles(ParticleEffect parameters) {
@@ -88,9 +118,27 @@ public class PenguinEntity extends AnimalEntity {
     protected void initDataTracker() {
         super.initDataTracker();
         this.dataTracker.startTracking(MOOD, 0);
+        this.dataTracker.startTracking(HAS_EGG, false);
+        this.dataTracker.startTracking(EGG_TICKS, 1);
     }
+    public boolean hasEgg() { return this.dataTracker.get(HAS_EGG); }
+    public void setHasEgg(boolean hasEgg) { this.dataTracker.set(HAS_EGG, hasEgg); }
     public PenguinMood getMood() { return PenguinMood.MOODS[this.dataTracker.get(MOOD)]; }
     public void setMood(PenguinMood mood) { this.dataTracker.set(MOOD, mood.getId()); }
+    public int getEggTicks() { return this.dataTracker.get(EGG_TICKS); }
+    public void setEggTicks(int eggTicks) { this.dataTracker.set(EGG_TICKS, eggTicks); }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean("HasEgg", this.hasEgg());
+    }
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        this.setHasEgg(nbt.getBoolean("HasEgg"));
+    }
+
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {

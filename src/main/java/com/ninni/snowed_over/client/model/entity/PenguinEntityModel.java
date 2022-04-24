@@ -23,6 +23,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
     private final ModelPart head;
     private final ModelPart leftLeg;
     private final ModelPart rightLeg;
+    private final ModelPart egg;
 
 
     public PenguinEntityModel(ModelPart root) {
@@ -37,6 +38,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         this.leftWing     = body.getChild("leftWing");
         this.rightWing    = body.getChild("rightWing");
         this.tail         = body.getChild("tail");
+        this.egg         = body.getChild("egg");
     }
 
     public static TexturedModelData getTexturedModelData() {
@@ -51,6 +53,15 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
                             .mirrored(false)
                             .cuboid(-4.0F, -4.0F, -4.0F, 8.0F, 8.0F, 8.0F, new Dilation(0.0F)),
             ModelTransform.of(0.0F, 19.0F, 0.0F, 0.0F, 0.0F, 0.0F)
+        );
+
+        ModelPartData egg = body.addChild(
+            "egg",
+            ModelPartBuilder.create()
+                            .uv(28, 26)
+                            .mirrored(false)
+                            .cuboid(-2.0F, -1.5F, -2.0F, 4.0F, 3.0F, 4.0F, new Dilation(0.0F)),
+            ModelTransform.of(0.0F, 3.0F, -3.0F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData leftWing = body.addChild(
@@ -127,10 +138,13 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
     @Override
     public void setAngles(PenguinEntity entity, float limbAngle, float limbDistance, float animationProgress, float headYaw, float headPitch) {
         limbDistance = MathHelper.clamp(limbDistance, -0.45F, 0.45F);
+        egg.visible = entity.hasEgg();
+
         float speed = 1.0f;
         float degree = 1.0f;
         head.pitch = headPitch * ((float) Math.PI / 180f);
         head.yaw = headYaw * ((float) Math.PI / 180f);
+        if (entity.hasEgg()) head.pitch += 0.5F;
     }
 
 
