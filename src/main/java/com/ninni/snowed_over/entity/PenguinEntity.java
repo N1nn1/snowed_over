@@ -13,6 +13,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.data.DataTracker;
@@ -50,6 +51,7 @@ public class PenguinEntity extends AnimalEntity {
 
     @Override
     protected void initGoals() {
+        this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.4));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.2));
@@ -63,7 +65,7 @@ public class PenguinEntity extends AnimalEntity {
 
     public static DefaultAttributeContainer.Builder createPenguinAttributes() {
         return createLivingAttributes()
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.225)
+            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2)
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 8.0D)
             .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 10.0D);
     }
@@ -72,6 +74,12 @@ public class PenguinEntity extends AnimalEntity {
     public boolean isBreedingItem(ItemStack stack) {
         return stack.isIn(ItemTags.FISHES);
     }
+
+    @Override
+    public boolean canBreatheInWater() { return true; }
+    @Override
+    public boolean isPushedByFluids() { return false; }
+
 
     private void flapWing() {
         this.WingsFlapTicks = 1;
