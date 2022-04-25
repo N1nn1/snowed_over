@@ -163,6 +163,10 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
             rightLeg.pivotY -= 2.5F;
             leftLeg.pivotX -= 1F;
             rightLeg.pivotX += 1F;
+            if (entity.isTouchingWater()) {
+                leftWing.roll += MathHelper.cos(limbAngle * 1.5f * 0.6F) * 1.0f * 0.4F * limbDistance;
+                rightWing.roll += MathHelper.cos(limbAngle * 1.5f * 0.6F) * 1.0f * -0.4F * limbDistance;
+            }
         }
         if (entity.getMood() == PenguinMood.AGITATED) {
             leftWing.roll = 0.5F;
@@ -170,8 +174,8 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         }
 
         if (entity.WingsFlapTicks != 0 && entity.getMood() != PenguinMood.AGITATED) {
-            leftWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * 0.2F - 0.2F;
-            rightWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * -0.2F + 0.2F;
+            leftWing.roll += MathHelper.cos((float)entity.age + tickDelta * 1.5F) * 0.2F - 0.2F;
+            rightWing.roll += MathHelper.cos((float)entity.age + tickDelta * 1.5F) * -0.2F + 0.2F;
         }
     }
 

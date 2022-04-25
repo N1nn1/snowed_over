@@ -20,6 +20,7 @@ import net.minecraft.entity.ai.control.AquaticMoveControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.pathing.AmphibiousPathNodeMaker;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
@@ -70,12 +71,11 @@ public class PenguinEntity extends AnimalEntity {
         this.stepHeight = 1F;
     }
 
-    //TODO: custom attack goal, add damage, swim animtions
-
     @Override
     protected void initGoals() {
         this.targetSelector.add(0, new ActiveTargetGoal<>(this, CodEntity.class, false));
 
+        this.goalSelector.add(0, new MeleeAttackGoal(this, 1.0, true));
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.5));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.4));
@@ -90,10 +90,10 @@ public class PenguinEntity extends AnimalEntity {
     }
 
     public static DefaultAttributeContainer.Builder createPenguinAttributes() {
-        return createLivingAttributes()
+        return createMobAttributes()
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2)
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 8.0D)
-            .add(EntityAttributes.GENERIC_FOLLOW_RANGE, 10.0D);
+            .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 1.0D);
     }
 
     @Override
@@ -115,9 +115,7 @@ public class PenguinEntity extends AnimalEntity {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
             this.setVelocity(this.getVelocity().multiply(0.9D));
-        } else {
-            super.travel(movementInput);
-        }
+        } else { super.travel(movementInput); }
     }
 
     @Override
@@ -126,9 +124,7 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public void tickMovement() {
         super.tickMovement();
-        if (this.random.nextInt(200) == 0) {
-            this.flapWing();
-        }
+        if (this.random.nextInt(200) == 0) { this.flapWing(); }
     }
 
     @Override
@@ -142,7 +138,8 @@ public class PenguinEntity extends AnimalEntity {
                 double velocityY = this.random.nextGaussian() * -5;
                 double velocityZ = this.random.nextGaussian() * -5;
                 this.world.addParticle(ParticleTypes.SPLASH, this.getParticleX(0.5), this.getRandomBodyY() + 0.5, this.getParticleZ(0.5), velocityX, velocityY, velocityZ);
-            }        }
+            }
+        }
 
         if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
 
@@ -221,15 +218,10 @@ public class PenguinEntity extends AnimalEntity {
     protected float getSoundVolume() { return 0.6F; }
 
     @Override
-    protected EntityNavigation createNavigation(World world) {
-        return new PenguinSwimNavigation(this, world);
-    }
+    protected EntityNavigation createNavigation(World world) { return new PenguinSwimNavigation(this, world); }
 
     static class PenguinSwimNavigation extends SwimNavigation {
-
-        PenguinSwimNavigation(PenguinEntity penguin, World world) {
-            super(penguin, world);
-        }
+        PenguinSwimNavigation(PenguinEntity penguin, World world) { super(penguin, world); }
 
         @Override
         protected PathNodeNavigator createPathNodeNavigator(int range) {
@@ -238,22 +230,15 @@ public class PenguinEntity extends AnimalEntity {
         }
 
         @Override
-        protected boolean isAtValidPosition() {
-            return true;
-        }
-
+        protected boolean isAtValidPosition() { return true; }
         @Override
-        public boolean isValidPosition(BlockPos pos) {
-            return !this.world.getBlockState(pos.down()).isAir();
-        }
+        public boolean isValidPosition(BlockPos pos) { return !this.world.getBlockState(pos.down()).isAir(); }
     }
 
     static class PenguinSwimPathNodeMaker extends AmphibiousPathNodeMaker {
         private final BlockPos.Mutable pos = new BlockPos.Mutable();
 
-        public PenguinSwimPathNodeMaker(boolean bl) {
-            super(bl);
-        }
+        public PenguinSwimPathNodeMaker(boolean bl) { super(bl); }
 
         @Override
         public PathNodeType getDefaultNodeType(BlockView world, int x, int y, int z) {
@@ -264,9 +249,7 @@ public class PenguinEntity extends AnimalEntity {
     }
 
     @Override
-    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return SnowedOverEntities.PENGUIN.create(world);
-    }
+    public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) { return SnowedOverEntities.PENGUIN.create(world); }
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){

@@ -11,7 +11,7 @@ public class PenguinSwimAroundGoal extends SwimAroundGoal {
 
     @Override
     public boolean canStart() {
-        if (this.mob instanceof PenguinEntity penguin) { if (penguin.hasEgg() || penguin.isSliding()) return false; }
+        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg()) return false;
         return super.canStart();
     }
 }
