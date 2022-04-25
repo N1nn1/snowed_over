@@ -145,6 +145,8 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         rightLeg.pivotY = 23.0F;
         leftLeg.pivotX = 2.5F;
         rightLeg.pivotX = -2.5F;
+        leftWing.roll = 0.0F;
+        rightWing.roll = 0.0F;
         if (entity.isSliding()) {
             body.pitch = ((float)Math.PI / 2);
             body.pivotY += 1F;
@@ -162,12 +164,15 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
             leftLeg.pivotX -= 1F;
             rightLeg.pivotX += 1F;
         }
+        if (entity.getMood() == PenguinMood.AGITATED) {
+            leftWing.roll = 0.5F;
+            rightWing.roll = -0.5F;
+        }
 
         if (entity.WingsFlapTicks != 0 && entity.getMood() != PenguinMood.AGITATED) {
             leftWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * 0.2F - 0.2F;
             rightWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * -0.2F + 0.2F;
         }
-        else { leftWing.roll = 0.0F; this.rightWing.roll = 0.0F; }
     }
 
     @Override
