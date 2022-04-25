@@ -104,7 +104,7 @@ public class PenguinEntity extends AnimalEntity {
             this.produceParticles(ParticleTypes.SPLASH);
         }
         if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
-        if (this.getEggTicks() == 0) {
+        if (this.getEggTicks() == 0 && !this.isAiDisabled()) {
             setHasEgg(false);
             this.playSound(SoundEvents.ENTITY_TURTLE_EGG_HATCH, 1, 1);
             Optional.ofNullable(SnowedOverEntities.PENGUIN.create(world)).ifPresent(entity -> {
