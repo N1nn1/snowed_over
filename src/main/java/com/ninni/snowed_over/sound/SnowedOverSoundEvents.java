@@ -39,6 +39,7 @@ public interface SnowedOverSoundEvents {
     SoundEvent ENTITY_PENGUIN_EGG_CRACK = penguin("crack");
     SoundEvent ENTITY_PENGUIN_HATCH     = penguin("hatch");
     SoundEvent ENTITY_PENGUIN_SLIDE     = penguin("slide");
+    SoundEvent ENTITY_PENGUIN_BOOM      = penguin("boom");
     private static SoundEvent penguin(String type) {
         return createEntitySound("penguin", type);
     }

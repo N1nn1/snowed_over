@@ -166,5 +166,6 @@
       "snowed_over:entity/penguin/slide3"
     ],
     "subtitle": "subtitles.entity.snowed_over.penguin.slide"
-  }
+  },
+  "entity.penguin.boom": { "sounds": [ "snowed_over:entity/penguin/boom" ] }
 }
