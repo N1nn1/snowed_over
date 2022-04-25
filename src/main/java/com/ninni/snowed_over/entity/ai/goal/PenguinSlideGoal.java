@@ -2,6 +2,7 @@ package com.ninni.snowed_over.entity.ai.goal;
 
 import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
+import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.math.Vec3d;
@@ -45,6 +46,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.FOCUSED);
             penguin.setSliding(true);
+            penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE, 1, 1);
         }
     }
     @Override

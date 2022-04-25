@@ -7,6 +7,7 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSlideGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
+import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
@@ -16,6 +17,7 @@ import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -26,15 +28,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.BlockStateParticleEffect;
-import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundEvents;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.Random;
@@ -110,7 +112,7 @@ public class PenguinEntity extends AnimalEntity {
         if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
         if (this.getEggTicks() == 0 && !this.isAiDisabled()) {
             setHasEgg(false);
-            this.playSound(SoundEvents.ENTITY_TURTLE_EGG_HATCH, 1, 1);
+            this.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_HATCH, 1, 1);
             Optional.ofNullable(SnowedOverEntities.PENGUIN.create(world)).ifPresent(entity -> {
                 entity.setBreedingAge(-24000);
                 entity.refreshPositionAndAngles(this.getBlockPos().getX(), this.getBlockPos().getY(), this.getBlockPos().getZ(), 0.0F, 0.0F);
@@ -159,6 +161,25 @@ public class PenguinEntity extends AnimalEntity {
         this.setEggTicks(nbt.getInt("EggTicks"));
     }
 
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return switch (this.getMood()) {
+            case AGITATED -> SnowedOverSoundEvents.ENTITY_PENGUIN_AGITATED;
+            case FOCUSED -> SnowedOverSoundEvents.ENTITY_PENGUIN_FOCUSED;
+            case CONFUSED -> SnowedOverSoundEvents.ENTITY_PENGUIN_CONFUSED;
+            default -> SnowedOverSoundEvents.ENTITY_PENGUIN_HAPPY;
+        };    }
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(DamageSource source) {
+        return SnowedOverSoundEvents.ENTITY_PENGUIN_HURT;
+    }
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SnowedOverSoundEvents.ENTITY_PENGUIN_DEATH;
+    }
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
