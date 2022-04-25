@@ -28,6 +28,17 @@ public class SnowedOverEntities {
                                .trackRangeBlocks(8),
         new int[]{ 0x5c392d, 0xdacabc }
     );
+    public static final EntityType<PenguinEntity> PENGUIN = register(
+        "penguin",
+        FabricEntityTypeBuilder.createMob()
+                               .entityFactory(PenguinEntity::new)
+                               .defaultAttributes(PenguinEntity::createPenguinAttributes)
+                               .spawnGroup(SpawnGroup.CREATURE)
+                               .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.WORLD_SURFACE_WG, PenguinEntity::canSpawn)
+                               .dimensions(EntityDimensions.changing(0.55F, 0.9F))
+                               .trackRangeBlocks(8),
+        new int[]{ 0x292929, 0xfff089 }
+    );
 
 
     @SuppressWarnings("unchecked")

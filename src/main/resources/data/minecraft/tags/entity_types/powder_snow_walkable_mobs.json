@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "snowed_over:reindeer"
+    "snowed_over:reindeer",
+    "snowed_over:penguin"
   ]
 }
