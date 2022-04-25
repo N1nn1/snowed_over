@@ -101,8 +101,12 @@ public class PenguinEntity extends AnimalEntity {
             this.WingsFlapTicks = 0;
         }
         if (this.getMood() == PenguinMood.AGITATED) {
-            this.produceParticles(ParticleTypes.SPLASH);
-        }
+            for(int i = 0; i < 1; ++i) {
+                double velocityX = this.random.nextGaussian() * -5;
+                double velocityY = this.random.nextGaussian() * -5;
+                double velocityZ = this.random.nextGaussian() * -5;
+                this.world.addParticle(ParticleTypes.SPLASH, this.getParticleX(0.5), this.getRandomBodyY() + 0.5, this.getParticleZ(0.5), velocityX, velocityY, velocityZ);
+            }        }
         if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
         if (this.getEggTicks() == 0 && !this.isAiDisabled()) {
             setHasEgg(false);
@@ -122,15 +126,6 @@ public class PenguinEntity extends AnimalEntity {
                 double velocityZ = this.random.nextGaussian() * 0.15;
                 this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getLandingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
             }
-        }
-    }
-
-    protected void produceParticles(ParticleEffect parameters) {
-        for(int i = 0; i < 1; ++i) {
-            double velocityX = this.random.nextGaussian() * -5;
-            double velocityY = this.random.nextGaussian() * -5;
-            double velocityZ = this.random.nextGaussian() * -5;
-            this.world.addParticle(parameters, this.getParticleX(0.5), this.getRandomBodyY() + 0.5, this.getParticleZ(0.5), velocityX, velocityY, velocityZ);
         }
     }
 
