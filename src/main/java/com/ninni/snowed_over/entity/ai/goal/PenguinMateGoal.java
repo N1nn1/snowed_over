@@ -20,7 +20,7 @@ import java.util.Random;
 
     @Override
     public boolean canStart() {
-        if (this.penguin.hasEgg()) return false;
+        if (this.penguin.hasEgg() || !this.penguin.isOnGround()) return false;
         return super.canStart();
     }
 

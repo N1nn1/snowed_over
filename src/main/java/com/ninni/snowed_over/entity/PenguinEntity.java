@@ -5,16 +5,26 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinFleeEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinLookAtEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSlideGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinSwimAroundGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.ai.control.AquaticMoveControl;
+import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
+import net.minecraft.entity.ai.pathing.AmphibiousPathNodeMaker;
+import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.ai.pathing.PathNodeNavigator;
+import net.minecraft.entity.ai.pathing.PathNodeType;
+import net.minecraft.entity.ai.pathing.SwimNavigation;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
@@ -22,6 +32,7 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CodEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -32,8 +43,12 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -49,16 +64,24 @@ public class PenguinEntity extends AnimalEntity {
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(ItemTags.FISHES);
     public int WingsFlapTicks;
 
-    public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) { super(entityType, world); }
+    public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) {
+        super(entityType, world);
+        this.moveControl = new AquaticMoveControl(this, 85, 10, 0.4F, 1.0F, false);
+        this.stepHeight = 1F;
+    }
+
+    //TODO: custom attack goal, add damage, swim animtions
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
+        this.targetSelector.add(0, new ActiveTargetGoal<>(this, CodEntity.class, false));
+
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.5));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.4));
         this.goalSelector.add(3, new FollowParentGoal(this, 1.2));
         this.goalSelector.add(4, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
+        this.goalSelector.add(6, new PenguinSwimAroundGoal(this, 1, 10));
         this.goalSelector.add(6, new PenguinWanderAroundFarGoal(this, 1));
         this.goalSelector.add(7, new PenguinSlideGoal(this, 1.8));
         this.goalSelector.add(8, new LookAroundGoal(this));
@@ -85,6 +108,20 @@ public class PenguinEntity extends AnimalEntity {
     protected int computeFallDamage(float fallDistance, float damageMultiplier) { return super.computeFallDamage(fallDistance, damageMultiplier) - 10; }
 
     private void flapWing() { this.WingsFlapTicks = 1; }
+
+    @Override
+    public void travel(Vec3d movementInput) {
+        if (this.canMoveVoluntarily() && this.isSubmergedInWater()) {
+            this.updateVelocity(this.getMovementSpeed(), movementInput);
+            this.move(MovementType.SELF, this.getVelocity());
+            this.setVelocity(this.getVelocity().multiply(0.9D));
+        } else {
+            super.travel(movementInput);
+        }
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) { return dimensions.height * 0.75F; }
 
     @Override
     public void tickMovement() {
@@ -120,12 +157,20 @@ public class PenguinEntity extends AnimalEntity {
             setEggTicks(1);
         }
 
-        if (this.isSliding()){
+        if (this.isSliding() && !this.touchingWater){
             for(int i = 0; i < 1; ++i) {
                 double velocityX = this.random.nextGaussian() * 0.15;
                 double velocityY = this.random.nextGaussian() * 0.15;
                 double velocityZ = this.random.nextGaussian() * 0.15;
                 this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getLandingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
+            }
+        }
+        if (this.submergedInWater && this.isNavigating()){
+            for(int i = 0; i < 1; ++i) {
+                double velocityX = this.random.nextGaussian() * 0.15;
+                double velocityY = this.random.nextGaussian() * 0.15;
+                double velocityZ = this.random.nextGaussian() * 0.15;
+                this.world.addParticle(ParticleTypes.BUBBLE, this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
             }
         }
     }
@@ -174,6 +219,49 @@ public class PenguinEntity extends AnimalEntity {
     protected SoundEvent getDeathSound() { return SnowedOverSoundEvents.ENTITY_PENGUIN_DEATH; }
     @Override
     protected float getSoundVolume() { return 0.6F; }
+
+    @Override
+    protected EntityNavigation createNavigation(World world) {
+        return new PenguinSwimNavigation(this, world);
+    }
+
+    static class PenguinSwimNavigation extends SwimNavigation {
+
+        PenguinSwimNavigation(PenguinEntity penguin, World world) {
+            super(penguin, world);
+        }
+
+        @Override
+        protected PathNodeNavigator createPathNodeNavigator(int range) {
+            this.nodeMaker = new PenguinSwimPathNodeMaker(true);
+            return new PathNodeNavigator(this.nodeMaker, range);
+        }
+
+        @Override
+        protected boolean isAtValidPosition() {
+            return true;
+        }
+
+        @Override
+        public boolean isValidPosition(BlockPos pos) {
+            return !this.world.getBlockState(pos.down()).isAir();
+        }
+    }
+
+    static class PenguinSwimPathNodeMaker extends AmphibiousPathNodeMaker {
+        private final BlockPos.Mutable pos = new BlockPos.Mutable();
+
+        public PenguinSwimPathNodeMaker(boolean bl) {
+            super(bl);
+        }
+
+        @Override
+        public PathNodeType getDefaultNodeType(BlockView world, int x, int y, int z) {
+            this.pos.set(x, y - 1, z);
+            BlockState blockState = world.getBlockState(this.pos);
+            return blockState.isIn(BlockTags.ICE) ? PathNodeType.OPEN : getLandNodeType(world, this.pos.move(Direction.UP));
+        }
+    }
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {

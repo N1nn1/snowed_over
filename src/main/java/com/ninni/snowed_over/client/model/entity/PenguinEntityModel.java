@@ -147,7 +147,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         rightLeg.pivotX = -2.5F;
         leftWing.roll = 0.0F;
         rightWing.roll = 0.0F;
-        if (entity.isSliding()) {
+        if (entity.isSliding() || entity.isTouchingWater()) {
             body.pitch = ((float)Math.PI / 2);
             body.pivotY += 1F;
             head.pivotZ = -4.5F;
@@ -180,12 +180,12 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         limbDistance = MathHelper.clamp(limbDistance, -0.45F, 0.45F);
         egg.visible = entity.hasEgg();
 
-        float speed = 1.0f;
+        float speed = 1.5f;
         float degree = 1.0f;
         head.pitch = headPitch * ((float) Math.PI / 180f);
         head.yaw = headYaw * ((float) Math.PI / 180f);
         if (entity.hasEgg()) head.pitch += 0.5F;
-        if (entity.isSliding()) {
+        if (entity.isSliding() || entity.isSubmergedInWater()) {
             body.roll = 0F;
             head.roll = 0F;
             tail.yaw = 0F;
@@ -207,6 +207,11 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
                 rightLeg.pitch = MathHelper.cos(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 0.8F * limbDistance;
                 leftLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F) * degree * 2.8F * limbDistance;
                 rightLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 2.8F * limbDistance;
+        }
+
+        if (entity.isTouchingWater()) {
+            leftLeg.pitch = MathHelper.cos(animationProgress * speed * 0.4F) * degree * 1.6F * 0.25F;
+            rightLeg.pitch = MathHelper.cos(animationProgress * speed * 0.4F + (float) Math.PI) * degree * 1.6F * 0.25F;
         }
 
         if (entity.getMood() == PenguinMood.AGITATED) {

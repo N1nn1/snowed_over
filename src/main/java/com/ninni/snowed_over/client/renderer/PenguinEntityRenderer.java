@@ -8,6 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.MobEntityRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Identifier;
 
@@ -27,6 +28,14 @@ public class PenguinEntityRenderer<T extends LivingEntity> extends MobEntityRend
 
     public PenguinEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new PenguinEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.PENGUIN)), 0.3F);
+    }
+
+    @Override
+    protected void setupTransforms(PenguinEntity penguin, MatrixStack matrixStack, float f, float g, float h) {
+        super.setupTransforms(penguin, matrixStack, f, g, h);
+        if (penguin.isSubmergedInWater()) {
+            matrixStack.translate(0, 0.2, 0);
+        }
     }
 
     @Override
