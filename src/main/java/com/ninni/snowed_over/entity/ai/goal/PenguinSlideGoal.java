@@ -46,7 +46,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.FOCUSED);
             penguin.setSliding(true);
-            penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE, 1, 1);
+            penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE, 0.5F, 1);
         }
     }
     @Override

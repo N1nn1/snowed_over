@@ -23,5 +23,11 @@
   "subtitles.entity.snowed_over.reindeer.angry": "Reindeer upsets",
   "subtitles.entity.snowed_over.reindeer.eat": "Reindeer munches",
   "subtitles.entity.snowed_over.reindeer.jump": "Reindeer rears up",
+  "subtitles.entity.snowed_over.penguin.idle": "Penguin squawks",
+  "subtitles.entity.snowed_over.penguin.hurt": "Penguin hurts",
+  "subtitles.entity.snowed_over.penguin.death": "Penguin dies",
+  "subtitles.entity.snowed_over.penguin.crack": "Penguin tries to break free",
+  "subtitles.entity.snowed_over.penguin.hatch": "Penguin hatches",
+  "subtitles.entity.snowed_over.penguin.slide": "Penguin slides",
   "subtitles.item.snowed_over.pinecone.eat": "Chewing"
 }

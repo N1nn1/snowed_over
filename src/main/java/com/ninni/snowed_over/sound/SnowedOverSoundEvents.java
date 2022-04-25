@@ -33,14 +33,12 @@ public interface SnowedOverSoundEvents {
         return createEntitySound("reindeer", type);
     }
 
-    SoundEvent ENTITY_PENGUIN_HAPPY    = penguin("happy");
-    SoundEvent ENTITY_PENGUIN_CONFUSED = penguin("confused");
-    SoundEvent ENTITY_PENGUIN_FOCUSED  = penguin("focused");
-    SoundEvent ENTITY_PENGUIN_AGITATED = penguin("agitated");
-    SoundEvent ENTITY_PENGUIN_HURT     = penguin("hurt");
-    SoundEvent ENTITY_PENGUIN_DEATH    = penguin("death");
-    SoundEvent ENTITY_PENGUIN_HATCH    = penguin("hatch");
-    SoundEvent ENTITY_PENGUIN_SLIDE    = penguin("slide");
+    SoundEvent ENTITY_PENGUIN_AMBIENT   = penguin("idle");
+    SoundEvent ENTITY_PENGUIN_HURT      = penguin("hurt");
+    SoundEvent ENTITY_PENGUIN_DEATH     = penguin("death");
+    SoundEvent ENTITY_PENGUIN_EGG_CRACK = penguin("crack");
+    SoundEvent ENTITY_PENGUIN_HATCH     = penguin("hatch");
+    SoundEvent ENTITY_PENGUIN_SLIDE     = penguin("slide");
     private static SoundEvent penguin(String type) {
         return createEntitySound("penguin", type);
     }

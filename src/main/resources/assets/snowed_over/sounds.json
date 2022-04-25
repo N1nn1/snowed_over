@@ -7,6 +7,8 @@
     ],
     "subtitle": "subtitles.item.snowed_over.pinecone.eat"
   },
+
+
   "block.compacted_snow.break": {
     "sounds": [
       "snowed_over:block/compacted_snow/heavy1",
@@ -51,6 +53,8 @@
       "snowed_over:block/compacted_snow/light4"
     ]
   },
+
+
   "entity.reindeer.gallop": {
     "sounds": [
       "snowed_over:entity/reindeer/gallop1",
@@ -114,5 +118,53 @@
       "mob/horse/jump"
     ],
     "subtitle": "subtitles.entity.snowed_over.reindeer.jump"
+  },
+
+
+  "entity.penguin.idle": {
+    "sounds": [
+      "snowed_over:entity/penguin/idle1",
+      "snowed_over:entity/penguin/idle2",
+      "snowed_over:entity/penguin/idle3",
+      "snowed_over:entity/penguin/idle4",
+      "snowed_over:entity/penguin/idle5",
+      "snowed_over:entity/penguin/idle6",
+      "snowed_over:entity/penguin/idle7"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.idle"
+  },
+  "entity.penguin.hurt": {
+    "sounds": [
+      "snowed_over:entity/penguin/hurt1",
+      "snowed_over:entity/penguin/hurt2",
+      "snowed_over:entity/penguin/hurt3",
+      "snowed_over:entity/penguin/hurt4"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.hurt"
+  },
+  "entity.penguin.death": {
+    "sounds": [ "snowed_over:entity/penguin/death" ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.death"
+  },
+  "entity.penguin.crack": {
+    "sounds": [
+      "snowed_over:entity/penguin/crack1",
+      "snowed_over:entity/penguin/crack2",
+      "snowed_over:entity/penguin/crack3",
+      "snowed_over:entity/penguin/crack4"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.crack"
+  },
+  "entity.penguin.hatch": {
+    "sounds": [ "snowed_over:entity/penguin/hatch" ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.hatch"
+  },
+  "entity.penguin.slide": {
+    "sounds": [
+      "snowed_over:entity/penguin/slide1",
+      "snowed_over:entity/penguin/slide2",
+      "snowed_over:entity/penguin/slide3"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.penguin.slide"
   }
 }

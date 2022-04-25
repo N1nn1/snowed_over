@@ -74,9 +74,7 @@ public class PenguinEntity extends AnimalEntity {
     }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return stack.isIn(ItemTags.FISHES);
-    }
+    public boolean isBreedingItem(ItemStack stack) { return stack.isIn(ItemTags.FISHES); }
 
     @Override
     public boolean canBreatheInWater() { return true; }
@@ -84,9 +82,7 @@ public class PenguinEntity extends AnimalEntity {
     public boolean isPushedByFluids() { return false; }
 
 
-    private void flapWing() {
-        this.WingsFlapTicks = 1;
-    }
+    private void flapWing() { this.WingsFlapTicks = 1; }
 
     @Override
     public void tickMovement() {
@@ -99,9 +95,8 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.WingsFlapTicks > 0 && ++this.WingsFlapTicks > 8) {
-            this.WingsFlapTicks = 0;
-        }
+        if (this.WingsFlapTicks > 0 && ++this.WingsFlapTicks > 8) { this.WingsFlapTicks = 0; }
+
         if (this.getMood() == PenguinMood.AGITATED) {
             for(int i = 0; i < 1; ++i) {
                 double velocityX = this.random.nextGaussian() * -5;
@@ -109,7 +104,9 @@ public class PenguinEntity extends AnimalEntity {
                 double velocityZ = this.random.nextGaussian() * -5;
                 this.world.addParticle(ParticleTypes.SPLASH, this.getParticleX(0.5), this.getRandomBodyY() + 0.5, this.getParticleZ(0.5), velocityX, velocityY, velocityZ);
             }        }
+
         if (this.hasEgg()) setEggTicks(getEggTicks() - 1);
+
         if (this.getEggTicks() == 0 && !this.isAiDisabled()) {
             setHasEgg(false);
             this.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_HATCH, 1, 1);
@@ -164,22 +161,17 @@ public class PenguinEntity extends AnimalEntity {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return switch (this.getMood()) {
-            case AGITATED -> SnowedOverSoundEvents.ENTITY_PENGUIN_AGITATED;
-            case FOCUSED -> SnowedOverSoundEvents.ENTITY_PENGUIN_FOCUSED;
-            case CONFUSED -> SnowedOverSoundEvents.ENTITY_PENGUIN_CONFUSED;
-            default -> SnowedOverSoundEvents.ENTITY_PENGUIN_HAPPY;
-        };    }
-    @Nullable
-    @Override
-    protected SoundEvent getHurtSound(DamageSource source) {
-        return SnowedOverSoundEvents.ENTITY_PENGUIN_HURT;
+        if (this.hasEgg() && this.random.nextInt(4) == 0) return SnowedOverSoundEvents.ENTITY_PENGUIN_EGG_CRACK;
+        else return SnowedOverSoundEvents.ENTITY_PENGUIN_AMBIENT;
     }
     @Nullable
     @Override
-    protected SoundEvent getDeathSound() {
-        return SnowedOverSoundEvents.ENTITY_PENGUIN_DEATH;
-    }
+    protected SoundEvent getHurtSound(DamageSource source) { return SnowedOverSoundEvents.ENTITY_PENGUIN_HURT; }
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() { return SnowedOverSoundEvents.ENTITY_PENGUIN_DEATH; }
+    @Override
+    protected float getSoundVolume() { return 0.6F; }
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
