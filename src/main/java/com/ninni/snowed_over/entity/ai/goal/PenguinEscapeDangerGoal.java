@@ -6,8 +6,8 @@ import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 
 public class PenguinEscapeDangerGoal extends EscapeDangerGoal {
-    public PenguinEscapeDangerGoal(PathAwareEntity mob, double speed) {
-        super(mob, speed);
+    public PenguinEscapeDangerGoal(PathAwareEntity penguin, double speed) {
+        super(penguin, speed);
     }
 
     @Override

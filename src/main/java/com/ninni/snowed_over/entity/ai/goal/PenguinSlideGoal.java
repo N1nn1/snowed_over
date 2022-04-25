@@ -8,8 +8,8 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
-    public PenguinSlideGoal(PathAwareEntity pathAwareEntity, double d) {
-        super(pathAwareEntity, d);
+    public PenguinSlideGoal(PathAwareEntity penguin, double speed) {
+        super(penguin, speed);
     }
 
     @Override

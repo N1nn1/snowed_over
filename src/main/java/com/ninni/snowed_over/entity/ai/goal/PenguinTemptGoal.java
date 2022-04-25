@@ -7,8 +7,8 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.recipe.Ingredient;
 
 public class PenguinTemptGoal extends TemptGoal {
-    public PenguinTemptGoal(PathAwareEntity entity, double speed, Ingredient food, boolean canBeScared) {
-        super(entity, speed, food, canBeScared);
+    public PenguinTemptGoal(PathAwareEntity penguin, double speed, Ingredient food, boolean canBeScared) {
+        super(penguin, speed, food, canBeScared);
     }
 
     @Override
