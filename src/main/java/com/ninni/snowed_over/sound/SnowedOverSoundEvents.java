@@ -13,24 +13,36 @@ public interface SnowedOverSoundEvents {
     }
 
     SoundEvent BLOCK_COMPACTED_SNOW_BREAK = compacted_snow("break");
-    SoundEvent BLOCK_COMPACTED_SNOW_STEP = compacted_snow("step");
+    SoundEvent BLOCK_COMPACTED_SNOW_STEP  = compacted_snow("step");
     SoundEvent BLOCK_COMPACTED_SNOW_PLACE = compacted_snow("place");
-    SoundEvent BLOCK_COMPACTED_SNOW_HIT = compacted_snow("hit");
-    SoundEvent BLOCK_COMPACTED_SNOW_FALL = compacted_snow("fall");
+    SoundEvent BLOCK_COMPACTED_SNOW_HIT   = compacted_snow("hit");
+    SoundEvent BLOCK_COMPACTED_SNOW_FALL  = compacted_snow("fall");
     private static SoundEvent compacted_snow(String type) {
         return createBlockSound("compacted_snow", type);
     }
 
-    SoundEvent ENTITY_REINDEER_GALLOP = reindeer("gallop");
+    SoundEvent ENTITY_REINDEER_GALLOP  = reindeer("gallop");
     SoundEvent ENTITY_REINDEER_BREATHE = reindeer("breathe");
     SoundEvent ENTITY_REINDEER_AMBIENT = reindeer("idle");
-    SoundEvent ENTITY_REINDEER_HURT = reindeer("hurt");
-    SoundEvent ENTITY_REINDEER_DEATH = reindeer("death");
-    SoundEvent ENTITY_REINDEER_ANGRY = reindeer("angry");
-    SoundEvent ENTITY_REINDEER_EAT = reindeer("eat");
-    SoundEvent ENTITY_REINDEER_JUMP = reindeer("jump");
+    SoundEvent ENTITY_REINDEER_HURT    = reindeer("hurt");
+    SoundEvent ENTITY_REINDEER_DEATH   = reindeer("death");
+    SoundEvent ENTITY_REINDEER_ANGRY   = reindeer("angry");
+    SoundEvent ENTITY_REINDEER_EAT     = reindeer("eat");
+    SoundEvent ENTITY_REINDEER_JUMP    = reindeer("jump");
     private static SoundEvent reindeer(String type) {
         return createEntitySound("reindeer", type);
+    }
+
+    SoundEvent ENTITY_PENGUIN_HAPPY    = penguin("happy");
+    SoundEvent ENTITY_PENGUIN_CONFUSED = penguin("confused");
+    SoundEvent ENTITY_PENGUIN_FOCUSED  = penguin("focused");
+    SoundEvent ENTITY_PENGUIN_AGITATED = penguin("agitated");
+    SoundEvent ENTITY_PENGUIN_HURT     = penguin("hurt");
+    SoundEvent ENTITY_PENGUIN_DEATH    = penguin("death");
+    SoundEvent ENTITY_PENGUIN_HATCH    = penguin("hatch");
+    SoundEvent ENTITY_PENGUIN_SLIDE    = penguin("slide");
+    private static SoundEvent penguin(String type) {
+        return createEntitySound("penguin", type);
     }
 
     private static SoundEvent register(String id) {
