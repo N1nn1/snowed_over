@@ -2,6 +2,7 @@ package com.ninni.snowed_over.client.model.entity;
 
 import com.google.common.collect.ImmutableList;
 import com.ninni.snowed_over.entity.PenguinEntity;
+import com.ninni.snowed_over.entity.PenguinMood;
 import net.minecraft.client.model.Dilation;
 import net.minecraft.client.model.ModelData;
 import net.minecraft.client.model.ModelPart;
@@ -162,7 +163,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
             rightLeg.pivotX += 1F;
         }
 
-        if (entity.WingsFlapTicks != 0) {
+        if (entity.WingsFlapTicks != 0 && entity.getMood() != PenguinMood.AGITATED) {
             leftWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * 0.2F - 0.2F;
             rightWing.roll = MathHelper.cos((float)entity.age + tickDelta * 1.5F) * -0.2F + 0.2F;
         }
@@ -191,16 +192,30 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
             rightLeg.roll = 0F;
             leftLeg.pivotZ += 0.5F;
             rightLeg.pivotZ += 0.5F;
-        } else {
-            body.roll = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.2F * limbDistance;
-            head.roll = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.4F * limbDistance;
-            tail.yaw = MathHelper.sin(limbAngle * speed * 0.6F) * degree * 0.8F * limbDistance;
-            leftWing.pitch = MathHelper.sin(limbAngle * speed * 0.2F) * degree * 0.6F * limbDistance;
-            rightWing.pitch = MathHelper.sin(limbAngle * speed * 0.2F) * degree * 0.6F * limbDistance;
-            leftLeg.pitch = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.8F * limbDistance;
-            rightLeg.pitch = MathHelper.cos(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 0.8F * limbDistance;
-            leftLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F) * degree * 2.8F * limbDistance;
-            rightLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 2.8F * limbDistance;
+        } else if (entity.getMood() != PenguinMood.AGITATED) {
+                leftWing.pitch = MathHelper.sin(limbAngle * speed * 0.2F) * degree * 0.6F * limbDistance;
+                rightWing.pitch = MathHelper.sin(limbAngle * speed * 0.2F) * degree * 0.6F * limbDistance;
+                body.roll = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.2F * limbDistance;
+                head.roll = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.4F * limbDistance;
+                tail.yaw = MathHelper.sin(limbAngle * speed * 0.6F) * degree * 0.8F * limbDistance;
+                leftLeg.pitch = MathHelper.cos(limbAngle * speed * 0.4F) * degree * 0.8F * limbDistance;
+                rightLeg.pitch = MathHelper.cos(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 0.8F * limbDistance;
+                leftLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F) * degree * 2.8F * limbDistance;
+                rightLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 2.8F * limbDistance;
+        }
+
+        if (entity.getMood() == PenguinMood.AGITATED) {
+            float speedAgitated = 2.0f;
+            float degreeAgitated = 2.0f;
+            leftWing.pitch = MathHelper.sin(animationProgress * speedAgitated * 0.6F + (float) Math.PI) * degreeAgitated * 0.6F * 0.25F + (float)Math.PI;
+            rightWing.pitch = MathHelper.sin(animationProgress * speedAgitated * 0.6F) * degreeAgitated * 0.6F * 0.25F + (float)Math.PI;
+            body.roll = MathHelper.cos(limbAngle * speedAgitated * 0.4F) * degreeAgitated * 0.2F * limbDistance;
+            head.roll = MathHelper.cos(limbAngle * speedAgitated * 0.4F) * degreeAgitated * 0.4F * limbDistance;
+            tail.yaw = MathHelper.sin(limbAngle * speedAgitated * 0.6F) * degreeAgitated * 0.8F * limbDistance;
+            leftLeg.pitch = MathHelper.cos(limbAngle * speedAgitated * 0.4F) * degreeAgitated * 0.8F * limbDistance;
+            rightLeg.pitch = MathHelper.cos(limbAngle * speedAgitated * 0.4F + (float) Math.PI) * degreeAgitated * 0.8F * limbDistance;
+            leftLeg.pivotZ += MathHelper.sin(limbAngle * speedAgitated * 0.4F) * degreeAgitated * 2.8F * limbDistance;
+            rightLeg.pivotZ += MathHelper.sin(limbAngle * speedAgitated * 0.4F + (float) Math.PI) * degreeAgitated * 2.8F * limbDistance;
         }
     }
 

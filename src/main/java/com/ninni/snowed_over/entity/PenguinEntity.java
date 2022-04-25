@@ -55,8 +55,8 @@ public class PenguinEntity extends AnimalEntity {
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
-        this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.4));
-        this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.2));
+        this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.5));
+        this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.4));
         this.goalSelector.add(3, new FollowParentGoal(this, 1.2));
         this.goalSelector.add(4, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
         this.goalSelector.add(6, new PenguinWanderAroundFarGoal(this, 1));
