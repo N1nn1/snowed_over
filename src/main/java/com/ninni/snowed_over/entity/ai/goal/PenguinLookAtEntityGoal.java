@@ -7,8 +7,8 @@ import net.minecraft.entity.ai.goal.LookAtEntityGoal;
 import net.minecraft.entity.mob.MobEntity;
 
 public class PenguinLookAtEntityGoal  extends LookAtEntityGoal {
-    public PenguinLookAtEntityGoal(MobEntity mob, Class<? extends LivingEntity> targetType, float range) {
-        super(mob, targetType, range);
+    public PenguinLookAtEntityGoal(MobEntity penguin, Class<? extends LivingEntity> targetType, float range) {
+        super(penguin, targetType, range);
     }
 
     @Override

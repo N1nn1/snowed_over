@@ -9,8 +9,8 @@ import net.minecraft.entity.passive.PolarBearEntity;
 @SuppressWarnings("RawTypes")
 public class PenguinFleeEntityGoal extends FleeEntityGoal<PolarBearEntity> {
 
-    public PenguinFleeEntityGoal(PathAwareEntity mob, Class<PolarBearEntity> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
-        super(mob, fleeFromType, distance, slowSpeed, fastSpeed);
+    public PenguinFleeEntityGoal(PathAwareEntity penguin, Class<PolarBearEntity> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
+        super(penguin, fleeFromType, distance, slowSpeed, fastSpeed);
     }
 
     @Override

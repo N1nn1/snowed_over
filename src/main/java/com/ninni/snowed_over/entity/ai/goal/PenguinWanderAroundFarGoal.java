@@ -6,8 +6,8 @@ import net.minecraft.entity.mob.PathAwareEntity;
 
 public class PenguinWanderAroundFarGoal extends WanderAroundFarGoal {
 
-    public PenguinWanderAroundFarGoal(PathAwareEntity pathAwareEntity, double d) {
-        super(pathAwareEntity, d);
+    public PenguinWanderAroundFarGoal(PathAwareEntity penguin, double speed) {
+        super(penguin, speed);
     }
 
     @Override
