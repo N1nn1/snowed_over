@@ -81,6 +81,8 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public boolean isPushedByFluids() { return false; }
 
+    @Override
+    protected int computeFallDamage(float fallDistance, float damageMultiplier) { return super.computeFallDamage(fallDistance, damageMultiplier) - 10; }
 
     private void flapWing() { this.WingsFlapTicks = 1; }
 
