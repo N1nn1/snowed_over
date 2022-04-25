@@ -18,7 +18,12 @@ public class PenguinEntityRenderer<T extends LivingEntity> extends MobEntityRend
     public static final Identifier HAPPY_TEXTURE    = new Identifier(MOD_ID, "textures/entity/penguin/penguin_happy.png");
     public static final Identifier CONFUSED_TEXTURE = new Identifier(MOD_ID, "textures/entity/penguin/penguin_confused.png");
     public static final Identifier FOCUSED_TEXTURE  = new Identifier(MOD_ID, "textures/entity/penguin/penguin_focused.png");
-    public static final Identifier AGITATED_TEXTURE    = new Identifier(MOD_ID, "textures/entity/penguin/penguin_agitated.png");
+    public static final Identifier AGITATED_TEXTURE = new Identifier(MOD_ID, "textures/entity/penguin/penguin_agitated.png");
+
+    public static final Identifier BABY_HAPPY_TEXTURE    = new Identifier(MOD_ID, "textures/entity/penguin/hatchling/penguin_happy.png");
+    public static final Identifier BABY_CONFUSED_TEXTURE = new Identifier(MOD_ID, "textures/entity/penguin/hatchling/penguin_confused.png");
+    public static final Identifier BABY_FOCUSED_TEXTURE  = new Identifier(MOD_ID, "textures/entity/penguin/hatchling/penguin_focused.png");
+    public static final Identifier BABY_AGITATED_TEXTURE = new Identifier(MOD_ID, "textures/entity/penguin/hatchling/penguin_agitated.png");
 
     public PenguinEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new PenguinEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.PENGUIN)), 0.3F);
@@ -27,7 +32,15 @@ public class PenguinEntityRenderer<T extends LivingEntity> extends MobEntityRend
     @Override
     public Identifier getTexture(PenguinEntity entity) {
         PenguinMood mood = entity.getMood();
-        return switch (mood) {
+        if (entity.isBaby()) {
+            return switch (mood) {
+                case AGITATED -> BABY_AGITATED_TEXTURE;
+                case FOCUSED -> BABY_FOCUSED_TEXTURE;
+                case CONFUSED -> BABY_CONFUSED_TEXTURE;
+                default -> BABY_HAPPY_TEXTURE;
+            };
+        } else
+            return switch (mood) {
             case AGITATED -> AGITATED_TEXTURE;
             case FOCUSED -> FOCUSED_TEXTURE;
             case CONFUSED -> CONFUSED_TEXTURE;
