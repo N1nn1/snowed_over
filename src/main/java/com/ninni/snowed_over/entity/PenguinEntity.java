@@ -45,12 +45,9 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.BlockView;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -231,7 +228,7 @@ public class PenguinEntity extends AnimalEntity {
 
         @Override
         protected PathNodeNavigator createPathNodeNavigator(int range) {
-            this.nodeMaker = new PenguinSwimPathNodeMaker(true);
+            this.nodeMaker = new AmphibiousPathNodeMaker(true);
             return new PathNodeNavigator(this.nodeMaker, range);
         }
 
@@ -239,19 +236,6 @@ public class PenguinEntity extends AnimalEntity {
         protected boolean isAtValidPosition() { return true; }
         @Override
         public boolean isValidPosition(BlockPos pos) { return !this.world.getBlockState(pos.down()).isAir(); }
-    }
-
-    static class PenguinSwimPathNodeMaker extends AmphibiousPathNodeMaker {
-        private final BlockPos.Mutable pos = new BlockPos.Mutable();
-
-        public PenguinSwimPathNodeMaker(boolean bl) { super(bl); }
-
-        @Override
-        public PathNodeType getDefaultNodeType(BlockView world, int x, int y, int z) {
-            this.pos.set(x, y - 1, z);
-            BlockState blockState = world.getBlockState(this.pos);
-            return blockState.isIn(BlockTags.ICE) ? PathNodeType.OPEN : getLandNodeType(world, this.pos.move(Direction.UP));
-        }
     }
 
     @Override
