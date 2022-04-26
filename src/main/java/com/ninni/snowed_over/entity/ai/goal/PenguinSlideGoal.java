@@ -3,7 +3,7 @@ package com.ninni.snowed_over.entity.ai.goal;
 import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import net.minecraft.entity.ai.NoPenaltyTargeting;
+import net.minecraft.entity.ai.FuzzyTargeting;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.math.Vec3d;
@@ -16,7 +16,7 @@ public class PenguinSlideGoal extends WanderAroundFarGoal {
 
     @Override
     @Nullable
-    protected Vec3d getWanderTarget() { return NoPenaltyTargeting.find(this.mob, 10, 0); }
+    protected Vec3d getWanderTarget() { return this.mob.getRandom().nextFloat() >= this.probability ? FuzzyTargeting.find(this.mob, 10, 0) : super.getWanderTarget(); }
 
     @Override
     public boolean canStart() {
