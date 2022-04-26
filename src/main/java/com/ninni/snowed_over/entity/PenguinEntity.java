@@ -4,6 +4,7 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinEscapeDangerGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinFleeEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinLookAtEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinMeleeAttackGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSlideGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSwimAroundGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
@@ -44,6 +45,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
@@ -76,7 +78,7 @@ public class PenguinEntity extends AnimalEntity {
     protected void initGoals() {
         this.targetSelector.add(0, new ActiveTargetGoal<>(this, CodEntity.class, false));
 
-        this.goalSelector.add(0, new MeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.add(0, new PenguinMeleeAttackGoal(this, 1.0, true));
         this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.5));
         this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.4));
@@ -208,6 +210,10 @@ public class PenguinEntity extends AnimalEntity {
     protected SoundEvent getAmbientSound() {
         if (this.hasEgg() && this.random.nextInt(4) == 0) return SnowedOverSoundEvents.ENTITY_PENGUIN_EGG_CRACK;
         else return SnowedOverSoundEvents.ENTITY_PENGUIN_AMBIENT;
+    }
+    @Override
+    protected SoundEvent getSwimSound() {
+        return SoundEvents.ENTITY_FISH_SWIM;
     }
     @Nullable
     @Override
