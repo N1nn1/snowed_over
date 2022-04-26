@@ -21,7 +21,6 @@ import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.pathing.AmphibiousPathNodeMaker;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
@@ -243,7 +242,7 @@ public class PenguinEntity extends AnimalEntity {
         @Override
         protected boolean isAtValidPosition() { return true; }
         @Override
-        public boolean isValidPosition(BlockPos pos) { return !this.world.getBlockState(pos.down()).isAir(); }
+        public boolean isValidPosition(BlockPos pos) { return !this.world.getBlockState(pos.down(2)).isAir(); }
     }
 
     static class PenguinMoveControl extends MoveControl {
@@ -284,21 +283,6 @@ public class PenguinEntity extends AnimalEntity {
         }
     }
 
-    static class SwimToRandomPlaceGoal extends SwimAroundGoal {
-        private final PenguinEntity penguin;
-
-        public SwimToRandomPlaceGoal(PenguinEntity penguin) {
-            super(penguin, 1.0D, 40);
-            this.penguin = penguin;
-        }
-
-        @Override
-        public boolean canStart() {
-            if (this.penguin.hasEgg()) return false;
-            return this.penguin.hasSelfControl() && super.canStart();
-        }
-    }
-    protected boolean hasSelfControl() { return true; }
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) { return SnowedOverEntities.PENGUIN.create(world); }
 
