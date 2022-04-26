@@ -17,10 +17,11 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MovementType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.control.AquaticMoveControl;
+import net.minecraft.entity.ai.control.MoveControl;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.FollowParentGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
+import net.minecraft.entity.ai.goal.SwimAroundGoal;
 import net.minecraft.entity.ai.pathing.AmphibiousPathNodeMaker;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.PathNodeNavigator;
@@ -33,9 +34,12 @@ import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.entity.passive.CodEntity;
+import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.PolarBearEntity;
+import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -47,6 +51,7 @@ import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -66,7 +71,7 @@ public class PenguinEntity extends AnimalEntity {
     public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
         this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
-        this.moveControl = new AquaticMoveControl(this, 85, 10, 0.4F, 1.0F, false);
+        this.moveControl = new PenguinEntity.PenguinMoveControl(this);
         this.stepHeight = 1F;
     }
 
@@ -74,18 +79,21 @@ public class PenguinEntity extends AnimalEntity {
     protected void initGoals() {
         this.targetSelector.add(0, new ActiveTargetGoal<>(this, CodEntity.class, false));
 
-        this.goalSelector.add(0, new PenguinMeleeAttackGoal(this, 1.0, true));
-        this.goalSelector.add(1, new PenguinMateGoal(this, 1.0));
-        this.goalSelector.add(2, new PenguinFleeEntityGoal(this, PolarBearEntity.class, 6.0F, 1.2, 1.5));
-        this.goalSelector.add(2, new PenguinEscapeDangerGoal(this, 1.4));
-        this.goalSelector.add(3, new FollowParentGoal(this, 1.2));
-        this.goalSelector.add(4, new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
-        this.goalSelector.add(6, new PenguinSwimAroundGoal(this, 1, 10));
-        this.goalSelector.add(6, new PenguinWanderAroundFarGoal(this, 1));
-        this.goalSelector.add(7, new PenguinSlideGoal(this, 1.8));
-        this.goalSelector.add(8, new LookAroundGoal(this));
-        this.goalSelector.add(9, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(10, new PenguinLookAtEntityGoal(this, PenguinEntity.class, 6.0F));
+        this.goalSelector.add(0,  new PenguinMeleeAttackGoal(this, 1.0, true));
+        this.goalSelector.add(1,  new PenguinMateGoal(this, 1.0));
+        this.goalSelector.add(2,  new PenguinFleeEntityGoal(this, PolarBearEntity.class, 8.0F, 1.2, 1.5));
+        this.goalSelector.add(3,  new PenguinFleeEntityGoal(this, WolfEntity.class, 6.0F, 1.2, 1.5));
+        this.goalSelector.add(4,  new PenguinFleeEntityGoal(this, FoxEntity.class, 7.0F, 1.2, 1.5));
+        this.goalSelector.add(5,  new PenguinFleeEntityGoal(this, CatEntity.class, 6.0F, 1.2, 1.5));
+        this.goalSelector.add(6,  new PenguinEscapeDangerGoal(this, 1.4));
+        this.goalSelector.add(7,  new FollowParentGoal(this, 1.2));
+        this.goalSelector.add(8,  new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
+        this.goalSelector.add(9,  new PenguinSwimAroundGoal(this, 1, 10));
+        this.goalSelector.add(10, new PenguinWanderAroundFarGoal(this, 0.8));
+        this.goalSelector.add(11, new PenguinSlideGoal(this, 1.8));
+        this.goalSelector.add(12, new LookAroundGoal(this));
+        this.goalSelector.add(13, new PenguinLookAtEntityGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.add(14, new PenguinLookAtEntityGoal(this, PenguinEntity.class, 6.0F));
     }
 
     public static DefaultAttributeContainer.Builder createPenguinAttributes() {
@@ -114,6 +122,7 @@ public class PenguinEntity extends AnimalEntity {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
             this.setVelocity(this.getVelocity().multiply(0.9D));
+            if (!this.isNavigating()) this.setVelocity(this.getVelocity().add(0.0D, -0.0025D, 0.0D));
         } else { super.travel(movementInput); }
     }
 
@@ -231,13 +240,65 @@ public class PenguinEntity extends AnimalEntity {
             this.nodeMaker = new AmphibiousPathNodeMaker(true);
             return new PathNodeNavigator(this.nodeMaker, range);
         }
-
         @Override
         protected boolean isAtValidPosition() { return true; }
         @Override
         public boolean isValidPosition(BlockPos pos) { return !this.world.getBlockState(pos.down()).isAir(); }
     }
 
+    static class PenguinMoveControl extends MoveControl {
+        private final PenguinEntity penguin;
+
+        public PenguinMoveControl(PenguinEntity penguin) {
+            super(penguin);
+            this.penguin = penguin;
+        }
+
+        @Override
+        public void tick() {
+            if (this.state == MoveControl.State.MOVE_TO && !this.penguin.getNavigation().isIdle()) {
+                double d = this.targetX - this.penguin.getX();
+                double e = this.targetY - this.penguin.getY();
+                double f = this.targetZ - this.penguin.getZ();
+                double g = d * d + e * e + f * f;
+                if (g < 2.5) { this.entity.setForwardSpeed(0.0F); }
+                else {
+                    this.penguin.setYaw(this.wrapDegrees(this.penguin.getYaw(), (float) (MathHelper.atan2(f, d) * 57.3) - 90.0F, 10.0F));
+                    this.penguin.bodyYaw = this.penguin.getYaw();
+                    this.penguin.headYaw = this.penguin.getYaw();
+                    float movementSpeed = (float) (this.speed * this.penguin.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
+                    if (this.penguin.isTouchingWater()) {
+                        this.penguin.setMovementSpeed(movementSpeed * 0.4F);
+                        float j = -((float) (MathHelper.atan2(e, MathHelper.sqrt((float) (d * d + f * f))) * 57.3));
+                        this.penguin.setPitch(this.wrapDegrees(this.penguin.getPitch(), MathHelper.clamp(MathHelper.wrapDegrees(j), -85.0F, 85.0F), 5.0F));
+                        this.penguin.forwardSpeed = MathHelper.cos(this.penguin.getPitch() * (float)Math.PI/180f) * movementSpeed;
+                        this.penguin.upwardSpeed = -MathHelper.sin(this.penguin.getPitch() * (float)Math.PI/180f);
+                    } else { this.penguin.setMovementSpeed(movementSpeed); }
+                }
+            } else {
+                this.penguin.setMovementSpeed(0.0F);
+                this.penguin.setSidewaysSpeed(0.0F);
+                this.penguin.setUpwardSpeed(0.0F);
+                this.penguin.setForwardSpeed(0.0F);
+            }
+        }
+    }
+
+    static class SwimToRandomPlaceGoal extends SwimAroundGoal {
+        private final PenguinEntity penguin;
+
+        public SwimToRandomPlaceGoal(PenguinEntity penguin) {
+            super(penguin, 1.0D, 40);
+            this.penguin = penguin;
+        }
+
+        @Override
+        public boolean canStart() {
+            if (this.penguin.hasEgg()) return false;
+            return this.penguin.hasSelfControl() && super.canStart();
+        }
+    }
+    protected boolean hasSelfControl() { return true; }
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) { return SnowedOverEntities.PENGUIN.create(world); }
 

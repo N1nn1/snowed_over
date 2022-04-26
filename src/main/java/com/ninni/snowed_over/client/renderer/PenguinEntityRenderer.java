@@ -33,7 +33,7 @@ public class PenguinEntityRenderer<T extends LivingEntity> extends MobEntityRend
     @Override
     protected void setupTransforms(PenguinEntity penguin, MatrixStack matrixStack, float f, float g, float h) {
         super.setupTransforms(penguin, matrixStack, f, g, h);
-        if (penguin.isSubmergedInWater()) {
+        if (penguin.isTouchingWater()) {
             matrixStack.translate(0, 0.2, 0);
         }
     }

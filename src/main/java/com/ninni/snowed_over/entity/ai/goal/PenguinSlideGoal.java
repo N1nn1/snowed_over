@@ -4,40 +4,24 @@ import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.minecraft.entity.ai.NoPenaltyTargeting;
+import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
-public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
+public class PenguinSlideGoal extends WanderAroundFarGoal {
     public PenguinSlideGoal(PathAwareEntity penguin, double speed) {
         super(penguin, speed);
     }
 
     @Override
     @Nullable
-    protected Vec3d getWanderTarget() {
-        return NoPenaltyTargeting.find(this.mob, 10, 0);
-    }
+    protected Vec3d getWanderTarget() { return NoPenaltyTargeting.find(this.mob, 10, 0); }
 
     @Override
     public boolean canStart() {
-        if (mob.isNavigating() || this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isSubmergedInWater()) return false;
-        else {
-            if (!this.ignoringChance) {
-                if (this.mob.getRandom().nextInt(toGoalTicks(this.chance)) != 0) {
-                    return false;
-                }
-            }
-            Vec3d vec3d = this.getWanderTarget();
-            if (vec3d == null) {
-                return false;
-            } else {
-                this.targetX = vec3d.x;
-                this.targetZ = vec3d.z;
-                this.ignoringChance = false;
-                return true;
-            }
-        }
+        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isSubmergedInWater()) return false;
+        return super.canStart();
     }
 
     @Override
@@ -48,7 +32,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
 
     @Override
     public void start() {
-        this.mob.getNavigation().startMovingTo(this.targetX, 0, this.targetZ, this.speed);
+        this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.FOCUSED);
             penguin.setSliding(true);
@@ -59,6 +43,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
     @Override
     public void stop() {
         super.stop();
+        //TODO: this goal doesn't end correctly
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.HAPPY);
             penguin.setSliding(false);

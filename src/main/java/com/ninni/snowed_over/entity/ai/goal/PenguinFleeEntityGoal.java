@@ -4,12 +4,10 @@ import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.PolarBearEntity;
 
-@SuppressWarnings("RawTypes")
-public class PenguinFleeEntityGoal extends FleeEntityGoal<PolarBearEntity> {
+public class PenguinFleeEntityGoal extends FleeEntityGoal {
 
-    public PenguinFleeEntityGoal(PathAwareEntity penguin, Class<PolarBearEntity> fleeFromType, float distance, double slowSpeed, double fastSpeed) {
+    public PenguinFleeEntityGoal(PathAwareEntity penguin, Class fleeFromType, float distance, double slowSpeed, double fastSpeed) {
         super(penguin, fleeFromType, distance, slowSpeed, fastSpeed);
     }
 
