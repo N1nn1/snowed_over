@@ -41,6 +41,12 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
     }
 
     @Override
+    public boolean shouldContinue() {
+        if(this.mob.isSubmergedInWater()) return false;
+        return super.shouldContinue();
+    }
+
+    @Override
     public void start() {
         this.mob.getNavigation().startMovingTo(this.targetX, 0, this.targetZ, this.speed);
         if (this.mob instanceof PenguinEntity penguin) {
@@ -49,6 +55,7 @@ public class PenguinSlideGoal extends PenguinWanderAroundFarGoal {
             penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE, 0.5F, 1);
         }
     }
+
     @Override
     public void stop() {
         super.stop();
