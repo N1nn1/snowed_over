@@ -67,6 +67,7 @@ public class PenguinEntity extends AnimalEntity {
 
     public PenguinEntity(EntityType<? extends AnimalEntity> entityType, World world) {
         super(entityType, world);
+        this.setPathfindingPenalty(PathNodeType.WATER, 0.0F);
         this.moveControl = new AquaticMoveControl(this, 85, 10, 0.4F, 1.0F, false);
         this.stepHeight = 1F;
     }
