@@ -20,7 +20,7 @@ public class PenguinSlideGoal extends WanderAroundFarGoal {
 
     @Override
     public boolean canStart() {
-        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isSubmergedInWater()) return false;
+        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isSubmergedInWater() || this.mob.isNavigating()) return false;
         return super.canStart();
     }
 

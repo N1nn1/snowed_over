@@ -120,7 +120,7 @@ public class PenguinEntity extends AnimalEntity {
         if (this.canMoveVoluntarily() && this.isSubmergedInWater()) {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
-            this.setVelocity(this.getVelocity().multiply(0.9D));
+            this.setVelocity(this.getVelocity().multiply(0.75D));
             if (!this.isNavigating()) this.setVelocity(this.getVelocity().add(0.0D, -0.0025D, 0.0D));
         } else { super.travel(movementInput); }
     }
@@ -137,6 +137,7 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public void tick() {
         super.tick();
+
         if (this.WingsFlapTicks > 0 && ++this.WingsFlapTicks > 8) { this.WingsFlapTicks = 0; }
 
         if (this.getMood() == PenguinMood.AGITATED) {
@@ -255,31 +256,34 @@ public class PenguinEntity extends AnimalEntity {
 
         @Override
         public void tick() {
-            if (this.state == MoveControl.State.MOVE_TO && !this.penguin.getNavigation().isIdle()) {
-                double d = this.targetX - this.penguin.getX();
-                double e = this.targetY - this.penguin.getY();
-                double f = this.targetZ - this.penguin.getZ();
-                double g = d * d + e * e + f * f;
-                if (g < 2.5) { this.entity.setForwardSpeed(0.0F); }
-                else {
-                    this.penguin.setYaw(this.wrapDegrees(this.penguin.getYaw(), (float) (MathHelper.atan2(f, d) * 57.3) - 90.0F, 10.0F));
-                    this.penguin.bodyYaw = this.penguin.getYaw();
-                    this.penguin.headYaw = this.penguin.getYaw();
-                    float movementSpeed = (float) (this.speed * this.penguin.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
-                    if (this.penguin.isTouchingWater()) {
-                        this.penguin.setMovementSpeed(movementSpeed * 0.4F);
-                        float j = -((float) (MathHelper.atan2(e, MathHelper.sqrt((float) (d * d + f * f))) * 57.3));
-                        this.penguin.setPitch(this.wrapDegrees(this.penguin.getPitch(), MathHelper.clamp(MathHelper.wrapDegrees(j), -85.0F, 85.0F), 5.0F));
-                        this.penguin.forwardSpeed = MathHelper.cos(this.penguin.getPitch() * (float)Math.PI/180f) * movementSpeed;
-                        this.penguin.upwardSpeed = -MathHelper.sin(this.penguin.getPitch() * (float)Math.PI/180f);
-                    } else { this.penguin.setMovementSpeed(movementSpeed); }
+            if (this.state != MoveControl.State.STRAFE) {
+                if (this.state == MoveControl.State.MOVE_TO && !this.penguin.getNavigation().isIdle()) {
+                    double d = this.targetX - this.penguin.getX();
+                    double e = this.targetY - this.penguin.getY();
+                    double f = this.targetZ - this.penguin.getZ();
+                    double g = d * d + e * e + f * f;
+                    if (g < 2.5) {
+                        this.entity.setForwardSpeed(0.0F);
+                    } else {
+                        float movementSpeed = (float) (this.speed * this.penguin.getAttributeValue(EntityAttributes.GENERIC_MOVEMENT_SPEED));
+                        this.penguin.setYaw(this.wrapDegrees(this.penguin.getYaw(), (float) (MathHelper.atan2(f, d) * 57.3) - 90.0F, 10.0F));
+                        this.penguin.bodyYaw = this.penguin.getYaw();
+                        this.penguin.headYaw = this.penguin.getYaw();
+                        if (this.penguin.isTouchingWater()) {
+                            this.penguin.setMovementSpeed(movementSpeed * 0.4F);
+                            float j = -((float) (MathHelper.atan2(e, MathHelper.sqrt((float) (d * d + f * f))) * 57.3));
+                            this.penguin.setPitch(this.wrapDegrees(this.penguin.getPitch(), MathHelper.clamp(MathHelper.wrapDegrees(j), -85.0F, 85.0F), 5.0F));
+                            this.penguin.forwardSpeed = MathHelper.cos(this.penguin.getPitch() * (float) Math.PI / 180f) * movementSpeed;
+                            this.penguin.upwardSpeed = -MathHelper.sin(this.penguin.getPitch() * (float) Math.PI / 180f);
+                        }
+                    }
+                } else {
+                    this.penguin.setMovementSpeed(0.0F);
+                    this.penguin.setSidewaysSpeed(0.0F);
+                    this.penguin.setUpwardSpeed(0.0F);
+                    this.penguin.setForwardSpeed(0.0F);
                 }
-            } else {
-                this.penguin.setMovementSpeed(0.0F);
-                this.penguin.setSidewaysSpeed(0.0F);
-                this.penguin.setUpwardSpeed(0.0F);
-                this.penguin.setForwardSpeed(0.0F);
-            }
+            } else return; super.tick();
         }
     }
 
