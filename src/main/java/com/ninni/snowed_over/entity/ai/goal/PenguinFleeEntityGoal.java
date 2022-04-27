@@ -18,10 +18,11 @@ public class PenguinFleeEntityGoal extends FleeEntityGoal {
     }
 
     @Override
-    public void start() {
-        super.start();
+    public void tick() {
+        super.tick();
         if (this.mob instanceof PenguinEntity penguin) penguin.setMood(PenguinMood.AGITATED);
     }
+
     @Override
     public void stop() {
         super.stop();
