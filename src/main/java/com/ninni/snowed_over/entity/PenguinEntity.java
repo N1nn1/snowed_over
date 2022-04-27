@@ -237,7 +237,7 @@ public class PenguinEntity extends AnimalEntity {
 
         @Override
         protected PathNodeNavigator createPathNodeNavigator(int range) {
-            this.nodeMaker = new AmphibiousPathNodeMaker(true);
+            this.nodeMaker = new AmphibiousPathNodeMaker(false);
             return new PathNodeNavigator(this.nodeMaker, range);
         }
         @Override
