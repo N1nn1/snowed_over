@@ -147,7 +147,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         rightLeg.pivotX = -2.5F;
         leftWing.roll = 0.0F;
         rightWing.roll = 0.0F;
-        if (entity.isSliding() || entity.isTouchingWater()) {
+        if (entity.isSliding() || entity.isTouchingWater() && !entity.hasEgg()) {
             body.pitch = ((float)Math.PI / 2);
             body.pivotY += 1F;
             head.pivotZ = -4.5F;
@@ -163,7 +163,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
             rightLeg.pivotY -= 2.5F;
             leftLeg.pivotX -= 1F;
             rightLeg.pivotX += 1F;
-            if (entity.isTouchingWater()) {
+            if (entity.isTouchingWater() && !entity.hasEgg()) {
                 leftWing.roll += MathHelper.cos(limbAngle * 1.5f * 0.6F) * 1.0f * 0.4F * limbDistance - 0.15F;
                 rightWing.roll += MathHelper.cos(limbAngle * 1.5f * 0.6F) * 1.0f * -0.4F * limbDistance + 0.15F;
             }
@@ -189,7 +189,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
         head.pitch = headPitch * ((float) Math.PI / 180f);
         head.yaw = headYaw * ((float) Math.PI / 180f);
         if (entity.hasEgg()) head.pitch += 0.5F;
-        if (entity.isSliding() || entity.isSubmergedInWater()) {
+        if (entity.isSliding() || entity.isSubmergedInWater() && !entity.hasEgg()) {
             body.roll = 0F;
             head.roll = 0F;
             tail.yaw = 0F;
@@ -213,7 +213,7 @@ public class PenguinEntityModel<T extends PenguinEntity> extends AnimalModel<Pen
                 rightLeg.pivotZ += MathHelper.sin(limbAngle * speed * 0.4F + (float) Math.PI) * degree * 2.8F * limbDistance;
         }
 
-        if (entity.isTouchingWater()) {
+        if (entity.isTouchingWater() && !entity.hasEgg()) {
             leftLeg.pitch = MathHelper.cos(animationProgress * speed * 0.4F) * degree * 1.6F * 0.25F;
             rightLeg.pitch = MathHelper.cos(animationProgress * speed * 0.4F + (float) Math.PI) * degree * 1.6F * 0.25F;
             leftWing.pitch = MathHelper.sin(animationProgress * speed * 0.1F) * degree * 0.8F * 0.25F;

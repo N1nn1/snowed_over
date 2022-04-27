@@ -7,6 +7,7 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinMateGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinMeleeAttackGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSlideGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSwimAroundGoal;
+import com.ninni.snowed_over.entity.ai.goal.PenguinSwimGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
@@ -79,6 +80,7 @@ public class PenguinEntity extends AnimalEntity {
         this.targetSelector.add(0, new ActiveTargetGoal<>(this, CodEntity.class, false));
 
         this.goalSelector.add(0,  new PenguinMeleeAttackGoal(this, 1.0, false));
+        this.goalSelector.add(0,  new PenguinSwimGoal(this));
         this.goalSelector.add(1,  new PenguinMateGoal(this, 1.0));
         this.goalSelector.add(2,  new PenguinFleeEntityGoal(this, PolarBearEntity.class, 8.0F, 1.2, 1.5));
         this.goalSelector.add(3,  new PenguinFleeEntityGoal(this, WolfEntity.class, 6.0F, 1.2, 1.5));
@@ -117,6 +119,7 @@ public class PenguinEntity extends AnimalEntity {
 
     @Override
     public void travel(Vec3d movementInput) {
+        if (this.hasEgg()) this.setVelocity(this.getVelocity().multiply(0.6D));
         if (this.canMoveVoluntarily() && this.isSubmergedInWater()) {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
@@ -170,7 +173,7 @@ public class PenguinEntity extends AnimalEntity {
                 this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getLandingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
             }
         }
-        if (this.submergedInWater && this.isNavigating()){
+        if (this.submergedInWater && this.isNavigating() && !this.hasEgg()){
             for(int i = 0; i < 1; ++i) {
                 double velocityX = this.random.nextGaussian() * 0.15;
                 double velocityY = this.random.nextGaussian() * 0.15;
@@ -269,7 +272,7 @@ public class PenguinEntity extends AnimalEntity {
                         this.penguin.setYaw(this.wrapDegrees(this.penguin.getYaw(), (float) (MathHelper.atan2(f, d) * 57.3) - 90.0F, 10.0F));
                         this.penguin.bodyYaw = this.penguin.getYaw();
                         this.penguin.headYaw = this.penguin.getYaw();
-                        if (this.penguin.isTouchingWater()) {
+                        if (this.penguin.isTouchingWater() && !this.penguin.hasEgg()) {
                             this.penguin.setMovementSpeed(movementSpeed * 0.4F);
                             float j = -((float) (MathHelper.atan2(e, MathHelper.sqrt((float) (d * d + f * f))) * 57.3));
                             this.penguin.setPitch(this.wrapDegrees(this.penguin.getPitch(), MathHelper.clamp(MathHelper.wrapDegrees(j), -85.0F, 85.0F), 5.0F));
