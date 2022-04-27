@@ -12,7 +12,7 @@ public class PenguinMeleeAttackGoal extends MeleeAttackGoal {
 
     @Override
     public boolean canStart() {
-        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg()) return false;
+        if (this.mob instanceof PenguinEntity penguin) if (penguin.hasEgg() || penguin.isBaby()) return false;
         return super.canStart();
     }
     @Override
