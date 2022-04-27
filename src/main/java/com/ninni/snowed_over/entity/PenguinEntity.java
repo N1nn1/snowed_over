@@ -87,7 +87,7 @@ public class PenguinEntity extends AnimalEntity {
         this.goalSelector.add(6,  new PenguinEscapeDangerGoal(this, 1.4));
         this.goalSelector.add(7,  new FollowParentGoal(this, 1.2));
         this.goalSelector.add(8,  new PenguinTemptGoal(this, 1.1,TEMPT_INGREDIENT, false));
-        this.goalSelector.add(9,  new PenguinSwimAroundGoal(this, 1, 10));
+        this.goalSelector.add(9,  new PenguinSwimAroundGoal(this, 1, 40));
         this.goalSelector.add(10, new PenguinWanderAroundFarGoal(this, 0.8));
         this.goalSelector.add(11, new PenguinSlideGoal(this, 1.8));
         this.goalSelector.add(12, new LookAroundGoal(this));
@@ -120,7 +120,7 @@ public class PenguinEntity extends AnimalEntity {
         if (this.canMoveVoluntarily() && this.isSubmergedInWater()) {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
-            this.setVelocity(this.getVelocity().multiply(0.75D));
+            this.setVelocity(this.getVelocity().multiply(0.8D));
             if (!this.isNavigating()) this.setVelocity(this.getVelocity().add(0.0D, -0.0025D, 0.0D));
         } else { super.travel(movementInput); }
     }
