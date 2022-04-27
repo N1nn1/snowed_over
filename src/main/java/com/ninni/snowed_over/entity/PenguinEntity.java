@@ -120,8 +120,8 @@ public class PenguinEntity extends AnimalEntity {
         if (this.canMoveVoluntarily() && this.isSubmergedInWater()) {
             this.updateVelocity(this.getMovementSpeed(), movementInput);
             this.move(MovementType.SELF, this.getVelocity());
-            this.setVelocity(this.getVelocity().multiply(0.8D));
-            if (!this.isNavigating()) this.setVelocity(this.getVelocity().add(0.0D, -0.0025D, 0.0D));
+            this.setVelocity(this.getVelocity().multiply(0.9D));
+            this.setVelocity(this.getVelocity().add(0.0D, -0.0025D, 0.0D));
         } else { super.travel(movementInput); }
     }
 
@@ -256,7 +256,7 @@ public class PenguinEntity extends AnimalEntity {
 
         @Override
         public void tick() {
-            if (this.state != MoveControl.State.STRAFE) {
+            if (this.state == MoveControl.State.STRAFE || this.state == MoveControl.State.JUMPING || this.entity.isOnGround()) { super.tick();}
                 if (this.state == MoveControl.State.MOVE_TO && !this.penguin.getNavigation().isIdle()) {
                     double d = this.targetX - this.penguin.getX();
                     double e = this.targetY - this.penguin.getY();
@@ -277,13 +277,7 @@ public class PenguinEntity extends AnimalEntity {
                             this.penguin.upwardSpeed = -MathHelper.sin(this.penguin.getPitch() * (float) Math.PI / 180f);
                         }
                     }
-                } else {
-                    this.penguin.setMovementSpeed(0.0F);
-                    this.penguin.setSidewaysSpeed(0.0F);
-                    this.penguin.setUpwardSpeed(0.0F);
-                    this.penguin.setForwardSpeed(0.0F);
                 }
-            } else return; super.tick();
         }
     }
 
