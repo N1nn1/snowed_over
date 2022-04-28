@@ -33,6 +33,7 @@ import net.minecraft.item.Items;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -126,10 +127,13 @@ public class ReindeerEntity extends HorseBaseEntity {
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient);
             }
-            if (this.getEquippedStack(EquipmentSlot.CHEST).isEmpty()) {
-                if (this.isHorseArmor(itemStack)) {
-                    this.equipStack(EquipmentSlot.CHEST, itemStack);
+            EquipmentSlot chest = EquipmentSlot.CHEST;
+            if (this.getEquippedStack(chest).isEmpty() && this.isHorseArmor(itemStack)) {
+                if (!player.getAbilities().creativeMode) {
+                    itemStack.decrement(1);
                 }
+                this.equipStack(chest, itemStack);
+                this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 1.0F, 1.0F);
             }
         }
             this.putPlayerOnBack(player);
