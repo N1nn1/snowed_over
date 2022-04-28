@@ -20,6 +20,7 @@ public class SnowedOverItems {
     public static final Item COMPACTED_SNOW_BRICK_STAIRS = register("compacted_snow_brick_stairs", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_STAIRS, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
     public static final Item COMPACTED_SNOW_BRICK_SLAB = register("compacted_snow_brick_slab", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_SLAB, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
     public static final Item COMPACTED_SNOW_FOUNDATION = register("compacted_snow_foundation", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_FOUNDATION, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
+    public static final Item HOOF_ARMOR = register("hoof_armor", new HoofArmorItem(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION)));
 
     private static Item register(String id, Item item) {
         return Registry.register(Registry.ITEM, new Identifier(SnowedOver.MOD_ID, id), item);

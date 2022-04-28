@@ -1,11 +1,16 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
+import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import com.ninni.snowed_over.tag.SnowedOverItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
@@ -16,6 +21,8 @@ import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.ai.goal.TemptGoal;
 import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.HorseBaseEntity;
@@ -30,15 +37,18 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.UUID;
 
 public class ReindeerEntity extends HorseBaseEntity {
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverItemTags.REINDEER_TEMPTS);
+    private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
     protected ReindeerEntity(EntityType<? extends HorseBaseEntity> entityType, World world) {
         super(entityType, world);
@@ -55,11 +65,32 @@ public class ReindeerEntity extends HorseBaseEntity {
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(6, new LookAroundGoal(this));
     }
+
     public static DefaultAttributeContainer.Builder createReindeerAttributes() {
         return createBaseHorseAttributes()
             .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.175)
             .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.4)
             .add(EntityAttributes.GENERIC_MAX_HEALTH, 16.0D);
+    }
+
+    @Override
+    protected void applyMovementEffects(BlockPos pos) {
+        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST))) {
+            this.addHoostyHavesEnchantment();
+        }
+    }
+
+    protected void addHoostyHavesEnchantment() {
+        int i = EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, this);
+        if (i > 0) {
+            EntityAttributeInstance instance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (instance != null) {
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * (2.0f + (float)i * 0.35f), EntityAttributeModifier.Operation.ADDITION);
+                if (!instance.hasModifier(attributeModifier)) {
+                    instance.addTemporaryModifier(attributeModifier);
+                }
+            }
+        }
     }
 
     @Override
@@ -91,9 +122,14 @@ public class ReindeerEntity extends HorseBaseEntity {
             }
 
             boolean bl = !this.isSaddled() && itemStack.isOf(Items.SADDLE);
-            if (this.isHorseArmor(itemStack) || bl) {
+            if (bl) {
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient);
+            }
+            if (this.getEquippedStack(EquipmentSlot.CHEST).isEmpty()) {
+                if (this.isHorseArmor(itemStack)) {
+                    this.equipStack(EquipmentSlot.CHEST, itemStack);
+                }
             }
         }
             this.putPlayerOnBack(player);
@@ -171,11 +207,16 @@ public class ReindeerEntity extends HorseBaseEntity {
         }
 
     }
+
+    @Override
+    public boolean isHorseArmor(ItemStack item) {
+        return item.getItem() == SnowedOverItems.HOOF_ARMOR;
+    }
+
     private void setEating() {
         if (!this.world.isClient) {
             this.setHorseFlag(64, true);
         }
-
     }
 
     @Override
