@@ -7,7 +7,6 @@ import com.ninni.snowed_over.tag.SnowedOverItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -28,19 +27,16 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.HorseArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -114,11 +110,11 @@ public class ReindeerEntity extends HorseBaseEntity {
     @Override
     protected void applyMovementEffects(BlockPos pos) {
         if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST))) {
-            this.addHoostyHavesEnchantment();
+            this.addHoostyHoovesEnchantment();
         }
     }
 
-    protected void addHoostyHavesEnchantment() {
+    protected void addHoostyHoovesEnchantment() {
         int i = EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, this);
         if (i > 0) {
             EntityAttributeInstance instance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
