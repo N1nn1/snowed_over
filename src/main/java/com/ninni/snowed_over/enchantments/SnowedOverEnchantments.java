@@ -9,8 +9,8 @@ public class SnowedOverEnchantments {
 
     public static final Enchantment HASTY_HOOVES = register("hasty_hooves", new HastyHoovesEnchantment());
 
-    private static Enchantment register(String name, Enchantment enchantment) {
-        return Registry.register(Registry.ENCHANTMENT, new Identifier(SnowedOver.MOD_ID, name), enchantment);
+    private static Enchantment register(String id, Enchantment enchantment) {
+        return Registry.register(Registry.ENCHANTMENT, new Identifier(SnowedOver.MOD_ID, id), enchantment);
     }
 
 }
