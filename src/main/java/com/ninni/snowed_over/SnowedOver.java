@@ -14,12 +14,12 @@ public class SnowedOver implements ModInitializer {
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
 	public void onInitialize() {
-		SnowedOverEnchantments.init();
 		SnowedOverStructures.init();
 		Reflection.initialize(
 			SnowedOverItems.class,
 			SnowedOverBlocks.class,
-			SnowedOverSoundEvents.class
+			SnowedOverSoundEvents.class,
+			SnowedOverEnchantments.class
 		);
 	}
 }
