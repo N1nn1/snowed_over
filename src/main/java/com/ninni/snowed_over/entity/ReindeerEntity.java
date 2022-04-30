@@ -49,9 +49,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverItemTags.REINDEER_TEMPTS);
     private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
-    protected ReindeerEntity(EntityType<? extends HorseBaseEntity> entityType, World world) {
-        super(entityType, world);
-    }
+    protected ReindeerEntity(EntityType<? extends HorseBaseEntity> entityType, World world) { super(entityType, world); }
 
     @Override
     protected void initGoals() {
@@ -68,17 +66,13 @@ public class ReindeerEntity extends HorseBaseEntity {
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        if (!this.items.getStack(1).isEmpty()) {
-            nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound()));
-        }
+        if (!this.items.getStack(1).isEmpty()) { nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound())); }
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        if (!this.items.getStack(1).isEmpty()) {
-            nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound()));
-        }
+        if (!this.items.getStack(1).isEmpty()) { nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound())); }
     }
 
     @Override
@@ -91,9 +85,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     @Override
-    public boolean hasArmorSlot() {
-        return true;
-    }
+    public boolean hasArmorSlot() { return true; }
 
     private void equipArmor(ItemStack stack) {
         this.equipStack(EquipmentSlot.CHEST, stack);
@@ -109,9 +101,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     protected void applyMovementEffects(BlockPos pos) {
-        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST))) {
-            this.addHoostyHoovesEnchantment();
-        }
+        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST))) { this.addHoostyHoovesEnchantment(); }
     }
 
     protected void addHoostyHoovesEnchantment() {
@@ -136,19 +126,13 @@ public class ReindeerEntity extends HorseBaseEntity {
             return ActionResult.success(this.world.isClient);
         }
 
-        if (this.hasPassengers()) {
-            return super.interactMob(player, hand);
-        }
+        if (this.hasPassengers()) { return super.interactMob(player, hand); }
 
         if (!itemStack.isEmpty()) {
-            if (this.isBreedingItem(itemStack)) {
-                return this.interactReindeer(player, itemStack);
-            }
+            if (this.isBreedingItem(itemStack)) { return this.interactReindeer(player, itemStack); }
 
             ActionResult actionResult = itemStack.useOnEntity(player, this, hand);
-            if (actionResult.isAccepted()) {
-                return actionResult;
-            }
+            if (actionResult.isAccepted()) { return actionResult; }
 
             if (!this.isTame()) {
                 this.playAngrySound();
@@ -167,15 +151,8 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     public ActionResult interactReindeer(PlayerEntity player, ItemStack stack) {
         boolean bl = this.receiveFood(player, stack);
-        if (!player.getAbilities().creativeMode) {
-            stack.decrement(1);
-        }
-
-        if (this.world.isClient) {
-            return ActionResult.CONSUME;
-        } else {
-            return bl ? ActionResult.SUCCESS : ActionResult.PASS;
-        }
+        if (!player.getAbilities().creativeMode) { stack.decrement(1); }
+        if (this.world.isClient) { return ActionResult.CONSUME; } else { return bl ? ActionResult.SUCCESS : ActionResult.PASS; }
     }
 
     @Override
@@ -213,9 +190,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
         if (j > 0 && (bl || !this.isTame()) && this.getTemper() < this.getMaxTemper()) {
             bl = true;
-            if (!this.world.isClient) {
-                this.addTemper(j);
-            }
+            if (!this.world.isClient) { this.addTemper(j); }
         }
 
         if (bl) {
@@ -230,23 +205,14 @@ public class ReindeerEntity extends HorseBaseEntity {
         this.setEating();
         if (!this.isSilent()) {
             SoundEvent soundEvent = this.getEatSound();
-            if (soundEvent != null) {
-                this.world.playSound(null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundCategory(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
-            }
+            if (soundEvent != null) { this.world.playSound(null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundCategory(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F); }
         }
-
     }
 
     @Override
-    public boolean isHorseArmor(ItemStack item) {
-        return item.getItem() == SnowedOverItems.HOOF_ARMOR;
-    }
+    public boolean isHorseArmor(ItemStack item) { return item.getItem() == SnowedOverItems.HOOF_ARMOR; }
 
-    private void setEating() {
-        if (!this.world.isClient) {
-            this.setHorseFlag(64, true);
-        }
-    }
+    private void setEating() { if (!this.world.isClient) { this.setHorseFlag(64, true); } }
 
     @Override
     public void updatePassengerPosition(Entity passenger) {
@@ -258,14 +224,10 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     @Override
-    public double getMountedHeightOffset() {
-        return (double)this.getHeight() * 0.7;
-    }
+    public double getMountedHeightOffset() { return (double)this.getHeight() * 0.7; }
 
     @Override
-    public boolean isBreedingItem(ItemStack stack) {
-        return TEMPT_INGREDIENT.test(stack);
-    }
+    public boolean isBreedingItem(ItemStack stack) { return TEMPT_INGREDIENT.test(stack); }
 
     @Override
     protected void playWalkSound(BlockSoundGroup group) {
@@ -301,9 +263,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY;
     }
     @Override
-    protected void playJumpSound() {
-        this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
-    }
+    protected void playJumpSound() { this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F); }
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){
