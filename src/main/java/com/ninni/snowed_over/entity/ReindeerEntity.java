@@ -28,8 +28,10 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.HorseArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -65,6 +67,41 @@ public class ReindeerEntity extends HorseBaseEntity {
         this.goalSelector.add(4, new WanderAroundFarGoal(this, 0.85));
         this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.add(6, new LookAroundGoal(this));
+    }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        if (!this.items.getStack(1).isEmpty()) {
+            nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound()));
+        }
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+        if (!this.items.getStack(1).isEmpty()) {
+            nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound()));
+        }
+    }
+
+    @Override
+    protected void updateSaddle() {
+        if (!this.world.isClient()) {
+            super.updateSaddle();
+            this.equipArmor(this.items.getStack(1));
+            this.setEquipmentDropChance(EquipmentSlot.CHEST, 0.0f);
+        }
+    }
+
+    @Override
+    public boolean hasArmorSlot() {
+        return true;
+    }
+
+    private void equipArmor(ItemStack stack) {
+        this.equipStack(EquipmentSlot.CHEST, stack);
+        this.setEquipmentDropChance(EquipmentSlot.CHEST, 0.0f);
     }
 
     public static DefaultAttributeContainer.Builder createReindeerAttributes() {
@@ -127,17 +164,9 @@ public class ReindeerEntity extends HorseBaseEntity {
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient);
             }
-            EquipmentSlot chest = EquipmentSlot.CHEST;
-            if (this.getEquippedStack(chest).isEmpty() && this.isHorseArmor(itemStack)) {
-                if (!player.getAbilities().creativeMode) {
-                    itemStack.decrement(1);
-                }
-                this.equipStack(chest, itemStack);
-                this.playSound(SoundEvents.ITEM_ARMOR_EQUIP_CHAIN, 1.0F, 1.0F);
-            }
         }
-            this.putPlayerOnBack(player);
-            return ActionResult.success(this.world.isClient);
+        this.putPlayerOnBack(player);
+        return ActionResult.success(this.world.isClient);
     }
 
     public ActionResult interactReindeer(PlayerEntity player, ItemStack stack) {
