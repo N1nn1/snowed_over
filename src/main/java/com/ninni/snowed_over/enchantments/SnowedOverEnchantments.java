@@ -9,7 +9,7 @@ public class SnowedOverEnchantments {
 
     public static final Enchantment HASTY_HOOVES = register("hasty_hooves", new HastyHoovesEnchantment());
 
-    public static Enchantment register(String name, Enchantment enchantment) {
+    private static Enchantment register(String name, Enchantment enchantment) {
         return Registry.register(Registry.ENCHANTMENT, new Identifier(SnowedOver.MOD_ID, name), enchantment);
     }
 
