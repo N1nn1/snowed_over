@@ -103,18 +103,12 @@ public class ReindeerEntity extends HorseBaseEntity {
     protected void applyMovementEffects(BlockPos pos) {
         if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0) {
             this.addHoostyHoovesEnchantment();
-        } else {
-            this.removeHastyHoovesSpeedBoost();
-        }
+        } else { this.removeHastyHoovesSpeedBoost(); }
     }
 
     protected void removeHastyHoovesSpeedBoost() {
         EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-        if (entityAttributeInstance != null) {
-            if (entityAttributeInstance.getModifier(HASTY_HOOVES_SPEED_BOOST_ID) != null) {
-                entityAttributeInstance.removeModifier(HASTY_HOOVES_SPEED_BOOST_ID);
-            }
-        }
+        if (entityAttributeInstance != null) { if (entityAttributeInstance.getModifier(HASTY_HOOVES_SPEED_BOOST_ID) != null) { entityAttributeInstance.removeModifier(HASTY_HOOVES_SPEED_BOOST_ID); } }
     }
 
     protected void addHoostyHoovesEnchantment() {
@@ -122,10 +116,8 @@ public class ReindeerEntity extends HorseBaseEntity {
         if (i > 0) {
             EntityAttributeInstance instance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (instance != null) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * (2.0f + (float)i * 0.35f), EntityAttributeModifier.Operation.ADDITION);
-                if (!instance.hasModifier(attributeModifier)) {
-                    instance.addTemporaryModifier(attributeModifier);
-                }
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * (2.0f + (float)i * 0.5f), EntityAttributeModifier.Operation.ADDITION);
+                if (!instance.hasModifier(attributeModifier)) { instance.addTemporaryModifier(attributeModifier); }
             }
         }
     }
