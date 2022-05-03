@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.EscapeDangerGoal;
 import net.minecraft.entity.ai.goal.FleeEntityGoal;
@@ -112,15 +113,16 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     protected void addHoostyHoovesEnchantment() {
-        int i = EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, this);
-        if (i > 0) {
-            EntityAttributeInstance instance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
-            if (instance != null) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * (2.0f + (float)i * 0.5f), EntityAttributeModifier.Operation.ADDITION);
-                if (!instance.hasModifier(attributeModifier)) { instance.addTemporaryModifier(attributeModifier); }
+        if (hasHastyHooves(this.getEquippedStack(EquipmentSlot.CHEST))) {
+            EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+            if (speed != null) {
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * ( 2F +(float)getHastyHooves(this) * 0.5f), EntityAttributeModifier.Operation.ADDITION);
+                if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
             }
         }
     }
+    public static boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
+    public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
