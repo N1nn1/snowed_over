@@ -101,7 +101,20 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     protected void applyMovementEffects(BlockPos pos) {
-        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST))) { this.addHoostyHoovesEnchantment(); }
+        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0) {
+            this.addHoostyHoovesEnchantment();
+        } else {
+            this.removeHastyHoovesSpeedBoost();
+        }
+    }
+
+    protected void removeHastyHoovesSpeedBoost() {
+        EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        if (entityAttributeInstance != null) {
+            if (entityAttributeInstance.getModifier(HASTY_HOOVES_SPEED_BOOST_ID) != null) {
+                entityAttributeInstance.removeModifier(HASTY_HOOVES_SPEED_BOOST_ID);
+            }
+        }
     }
 
     protected void addHoostyHoovesEnchantment() {
