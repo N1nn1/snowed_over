@@ -103,8 +103,8 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     protected void applyMovementEffects(BlockPos pos) {
-        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0) {
-            this.addHoostyHoovesEnchantment();
+        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0 && this.hasPassengers()) {
+            this.addHastyHoovesEnchantment();
         } else { this.removeHastyHoovesSpeedBoost(); }
     }
 
@@ -113,11 +113,12 @@ public class ReindeerEntity extends HorseBaseEntity {
         if (entityAttributeInstance != null) { if (entityAttributeInstance.getModifier(HASTY_HOOVES_SPEED_BOOST_ID) != null) { entityAttributeInstance.removeModifier(HASTY_HOOVES_SPEED_BOOST_ID); } }
     }
 
-    protected void addHoostyHoovesEnchantment() {
+    protected void addHastyHoovesEnchantment() {
         if (hasHastyHooves(this.getEquippedStack(EquipmentSlot.CHEST))) {
             EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (speed != null) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * ( 2F +(float)getHastyHooves(this) * 0.35f), EntityAttributeModifier.Operation.ADDITION);
+                float level = 0.045f * getHastyHooves(this);
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", (double)level, EntityAttributeModifier.Operation.ADDITION);
                 if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
             }
         }
