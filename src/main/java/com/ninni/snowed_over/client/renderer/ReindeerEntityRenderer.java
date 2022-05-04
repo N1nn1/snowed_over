@@ -2,6 +2,7 @@ package com.ninni.snowed_over.client.renderer;
 
 import com.ninni.snowed_over.client.init.SnowedOverEntityModelLayers;
 import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
+import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerArmorFeatureRenderer;
 import com.ninni.snowed_over.entity.ReindeerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +20,7 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
 
     public ReindeerEntityRenderer(EntityRendererFactory.Context ctx) {
         super(ctx, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER)), 0.6F);
+        this.addFeature(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
     }
 
     @Override

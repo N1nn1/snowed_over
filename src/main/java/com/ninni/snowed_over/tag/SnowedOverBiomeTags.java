@@ -5,7 +5,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.biome.Biome;
 
-import static com.ninni.snowed_over.SnowedOver.MOD_ID;
+import static com.ninni.snowed_over.SnowedOver.*;
 
 public class SnowedOverBiomeTags {
 

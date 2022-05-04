@@ -23,6 +23,7 @@ public class SnowedOverClient implements ClientModInitializer {
 
         new ImmutableMap.Builder<EntityModelLayer, EntityModelLayerRegistry.TexturedModelDataProvider>()
             .put(SnowedOverEntityModelLayers.REINDEER, ReindeerEntityModel::getTexturedModelData)
+            .put(SnowedOverEntityModelLayers.REINDEER_ARMOR, ReindeerEntityModel::getTexturedModelData)
             .put(SnowedOverEntityModelLayers.PENGUIN, PenguinEntityModel::getTexturedModelData)
             .build().forEach(EntityModelLayerRegistry::registerModelLayer);
     }
