@@ -117,7 +117,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         if (hasHastyHooves(this.getEquippedStack(EquipmentSlot.CHEST))) {
             EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (speed != null) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * ( 2F +(float)getHastyHooves(this) * 0.5f), EntityAttributeModifier.Operation.ADDITION);
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.03f * ( 2F +(float)getHastyHooves(this) * 0.35f), EntityAttributeModifier.Operation.ADDITION);
                 if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
             }
         }
