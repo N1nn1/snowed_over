@@ -56,7 +56,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new HorseBondWithPlayerGoal(this, 1.2));
+        this.goalSelector.add(1, new HorseBondWithPlayerGoal(this, 0.85));
         this.goalSelector.add(2, new FleeEntityGoal<>(this, WolfEntity.class, 6.0F, 1.6, 1.8));
         this.goalSelector.add(2, new EscapeDangerGoal(this, 1.0));
         this.goalSelector.add(3, new TemptGoal(this, 1.0, TEMPT_INGREDIENT, false));
