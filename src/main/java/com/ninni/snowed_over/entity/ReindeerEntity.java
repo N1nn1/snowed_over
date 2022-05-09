@@ -31,6 +31,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
@@ -91,6 +92,16 @@ public class ReindeerEntity extends HorseBaseEntity {
     public void tick() {
         super.tick();
         this.setNoDrag(!this.isOnGround());
+        if (this.world.isClient && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR) && this.getVelocity().lengthSquared() > 0.03 && hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) {
+            Vec3d vec3d = this.getRotationVec(0.0f);
+            float f = MathHelper.cos(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
+            float g = MathHelper.sin(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
+            float h = 1.2f - this.random.nextFloat() * 0.7f;
+            for (int i = 0; i < 2; ++i) {
+                this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 + (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h + (double)g, 0.0, 0.0, 0.0);
+                this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 - (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h - (double)g, 0.0, 0.0, 0.0);
+            }
+        }
     }
 
     @Override
