@@ -87,6 +87,12 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+        this.setNoDrag(!this.isOnGround());
+    }
+
+    @Override
     public boolean hasArmorSlot() { return true; }
 
     private void equipArmor(ItemStack stack) {
