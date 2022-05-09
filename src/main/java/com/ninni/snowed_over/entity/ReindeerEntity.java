@@ -38,6 +38,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
@@ -93,6 +94,12 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
 
     @Override
+    public void travel(Vec3d movementInput) {
+        if (!this.isOnGround() && hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) { this.setVelocity(getVelocity().add(0, 0.05, 0)); }
+        super.travel(movementInput);
+    }
+
+    @Override
     public boolean hasArmorSlot() { return true; }
 
     private void equipArmor(ItemStack stack) {
@@ -109,7 +116,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     protected void applyMovementEffects(BlockPos pos) {
-        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0 && this.hasPassengers()) {
+        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0 && this.hasPassengers() && this.isOnGround()) {
             this.addHastyHoovesEnchantment();
         } else { this.removeHastyHoovesSpeedBoost(); }
     }
@@ -129,7 +136,8 @@ public class ReindeerEntity extends HorseBaseEntity {
             }
         }
     }
-    public static boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
+    public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0; }
+    public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
     public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
 
     @Override
@@ -229,6 +237,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     private void setEating() { if (!this.world.isClient) { this.setHorseFlag(64, true); } }
 
+
     @Override
     public void updatePassengerPosition(Entity passenger) {
         if (this.hasPassenger(passenger)) {
@@ -243,6 +252,12 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     public boolean isBreedingItem(ItemStack stack) { return TEMPT_INGREDIENT.test(stack); }
+
+    @Override
+    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
+        if (hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) { return false; }
+        else return super.handleFallDamage(fallDistance, damageMultiplier, damageSource);
+    }
 
     @Override
     protected void playWalkSound(BlockSoundGroup group) {

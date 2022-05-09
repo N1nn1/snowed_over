@@ -3,6 +3,7 @@ package com.ninni.snowed_over.mixin.client;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.entity.ReindeerEntity;
 import com.ninni.snowed_over.item.SnowedOverItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -27,9 +28,9 @@ public class KeyboardMixin {
         if (player.getVehicle() instanceof ReindeerEntity reindeerEntity) {
             ItemStack stack = reindeerEntity.getEquippedStack(EquipmentSlot.CHEST);
             if (!reindeerEntity.isOnGround() && stack.isOf(SnowedOverItems.HOOF_ARMOR) && EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0) {
-                if (key == 32) {
+                if (key == 32 && !reindeerEntity.world.getBlockState(reindeerEntity.getBlockPos().down(64)).isOf(Blocks.AIR) && reindeerEntity.world.getBlockState(reindeerEntity.getBlockPos().down(3)).isOf(Blocks.AIR)) {
                     Vec3d velocity = reindeerEntity.getVelocity();
-                    reindeerEntity.setVelocityClient(velocity.x, velocity.y + 1.0D, velocity.z);
+                    reindeerEntity.setVelocityClient(velocity.x, velocity.y + 0.35D, velocity.z);
                 }
             }
         }
