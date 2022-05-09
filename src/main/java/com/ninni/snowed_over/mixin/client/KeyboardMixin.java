@@ -26,7 +26,7 @@ public class KeyboardMixin {
         if (player == null) return;
         if (player.getVehicle() instanceof ReindeerEntity reindeerEntity) {
             ItemStack stack = reindeerEntity.getEquippedStack(EquipmentSlot.CHEST);
-            if (reindeerEntity.getFlyingCooldownTicks() == 0 && !reindeerEntity.isOnGround() && stack.isOf(SnowedOverItems.HOOF_ARMOR) && EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0) {
+            if (!reindeerEntity.isOnGround() && stack.isOf(SnowedOverItems.HOOF_ARMOR) && EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0) {
                 if (key == 32) {
                     Vec3d velocity = reindeerEntity.getVelocity();
                     reindeerEntity.setVelocityClient(velocity.x, velocity.y + 1.0D, velocity.z);
