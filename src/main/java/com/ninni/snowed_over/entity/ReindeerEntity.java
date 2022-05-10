@@ -92,7 +92,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     public void tick() {
         super.tick();
         this.setNoDrag(!this.isOnGround());
-        if (this.world.isClient && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR) && this.getVelocity().lengthSquared() > 0.03 && hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) {
+        if (this.world.isClient && this.canCloudJump() && this.getVelocity().lengthSquared() > 0.03 ) {
             Vec3d vec3d = this.getRotationVec(0.0f);
             float f = MathHelper.cos(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
             float g = MathHelper.sin(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
@@ -106,7 +106,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     public void travel(Vec3d movementInput) {
-        if (!this.isOnGround() && hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) { this.setVelocity(getVelocity().add(0, 0.05, 0)); }
+        if (canCloudJump()) { this.setVelocity(getVelocity().add(0, 0.05, 0)); }
         super.travel(movementInput);
     }
 
@@ -148,6 +148,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         }
     }
     public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0; }
+    public boolean canCloudJump() { return this.hasCloudJumper(getEquippedStack(EquipmentSlot.CHEST)) && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR); }
     public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
     public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
 
@@ -306,7 +307,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     //TODO: make so it plays a new custom jump sound when in the air with the enchantment
     @Override
     protected void playJumpSound() {
-        if (this.hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);
+        if (canCloudJump()) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);
         else this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
     }
 

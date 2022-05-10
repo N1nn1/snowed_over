@@ -1,15 +1,11 @@
 package com.ninni.snowed_over.mixin.client;
 
-import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import com.ninni.snowed_over.item.SnowedOverItems;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,12 +21,11 @@ public class KeyboardMixin {
         PlayerEntity player = instance.player;
         if (instance.currentScreen != null) return;
         if (player == null) return;
-        if (player.getVehicle() instanceof ReindeerEntity reindeerEntity) {
-            ItemStack stack = reindeerEntity.getEquippedStack(EquipmentSlot.CHEST);
-            if (!reindeerEntity.isOnGround() && stack.isOf(SnowedOverItems.HOOF_ARMOR) && EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0) {
-                if (key == 32 && !reindeerEntity.world.getBlockState(reindeerEntity.getBlockPos().down(64)).isOf(Blocks.AIR) && reindeerEntity.world.getBlockState(reindeerEntity.getBlockPos().down(3)).isOf(Blocks.AIR)) {
-                    Vec3d velocity = reindeerEntity.getVelocity();
-                    reindeerEntity.setVelocityClient(velocity.x, velocity.y + 0.35D, velocity.z);
+        if (player.getVehicle() instanceof ReindeerEntity reindeer) {
+            if (!reindeer.isOnGround() && reindeer.hasCloudJumper(reindeer.getEquippedStack(EquipmentSlot.CHEST))) {
+                if (key == 32 && !reindeer.world.getBlockState(reindeer.getBlockPos().down(64)).isOf(Blocks.AIR) && reindeer.world.getBlockState(reindeer.getBlockPos().down(3)).isOf(Blocks.AIR)) {
+                    Vec3d velocity = reindeer.getVelocity();
+                    reindeer.setVelocityClient(velocity.x, velocity.y + 0.35D, velocity.z);
                 }
             }
         }
