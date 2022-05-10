@@ -128,8 +128,7 @@
       "snowed_over:entity/penguin/idle3",
       "snowed_over:entity/penguin/idle4",
       "snowed_over:entity/penguin/idle5",
-      "snowed_over:entity/penguin/idle6",
-      "snowed_over:entity/penguin/idle7"
+      "snowed_over:entity/penguin/idle6"
     ],
     "subtitle": "subtitles.entity.snowed_over.penguin.idle"
   },
