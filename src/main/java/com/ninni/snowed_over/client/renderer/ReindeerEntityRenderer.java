@@ -5,7 +5,6 @@ import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
 import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerArmorFeatureRenderer;
 import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerFestiveOverlayFeatureRenderer;
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -31,9 +30,8 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
         this.addFeature(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
         this.addFeature(new SaddleFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_saddle.png")));
 
-        String string = Formatting.strip(reindeer.getName().getString());
         Calendar calendar = Calendar.getInstance();
-        if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26 || calendar.get(Calendar.MONTH) + 1 == 8 && calendar.get(Calendar.DATE) == 2 || "Rudolph".equals(string)) {
+        if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26 || calendar.get(Calendar.MONTH) + 1 == 8 && calendar.get(Calendar.DATE) == 2 || "Rudolph".equals(Formatting.strip(reindeer.getName().getString()))) {
             this.addFeature(new ReindeerFestiveOverlayFeatureRenderer(this));
             this.festivity = true;
         } //checks if it's Christmas, if it's the world reindeer day or if the reindeer's caller Rudolph to apply a custom skin
@@ -42,7 +40,7 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
     @Override
     public Identifier getTexture(ReindeerEntity entity) {
         String string = Formatting.strip(entity.getName().getString());
-        if (festivity || "Rudolph".equals(string)) { return TEXTURE_FESTIVE;}
+        if (festivity || "Rudolph".equals(Formatting.strip(entity.getName().getString()))) { return TEXTURE_FESTIVE;}
         return TEXTURE;
     }
 }

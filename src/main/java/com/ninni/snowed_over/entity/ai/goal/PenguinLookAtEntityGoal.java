@@ -22,8 +22,7 @@ public class PenguinLookAtEntityGoal  extends LookAtEntityGoal {
     @Override
     public void start() {
         super.start();
-        String string = Formatting.strip(mob.getName().getString());
-        if ("Dwayne".equals(string) || "dwayne".equals(string)) { mob.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_BOOM, 0.35F, 1);}
+        if ("Dwayne".equals(Formatting.strip(mob.getName().getString()))) { mob.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_BOOM, 0.35F, 1);}
         if (this.mob instanceof PenguinEntity penguin) penguin.setMood(PenguinMood.CONFUSED);
     }
     @Override
