@@ -142,7 +142,7 @@ public class ReindeerEntity extends HorseBaseEntity {
             EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
             if (speed != null) {
                 float level = 0.045f * getHastyHooves(this);
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", (double)level, EntityAttributeModifier.Operation.ADDITION);
+                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", level, EntityAttributeModifier.Operation.ADDITION);
                 if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
             }
         }
@@ -305,7 +305,10 @@ public class ReindeerEntity extends HorseBaseEntity {
     }
     //TODO: make so it plays a new custom jump sound when in the air with the enchantment
     @Override
-    protected void playJumpSound() { this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F); }
+    protected void playJumpSound() {
+        if (this.hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);
+        else this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
+    }
 
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){

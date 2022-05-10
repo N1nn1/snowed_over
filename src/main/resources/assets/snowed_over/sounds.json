@@ -119,6 +119,12 @@
     ],
     "subtitle": "subtitles.entity.snowed_over.reindeer.jump"
   },
+  "entity.reindeer.cloud_jump": {
+    "sounds": [
+      "snowed_over:entity/reindeer/cloud_jump"
+    ],
+    "subtitle": "subtitles.entity.snowed_over.reindeer.cloud_jump"
+  },
 
 
   "entity.penguin.idle": {

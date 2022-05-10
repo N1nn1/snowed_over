@@ -29,6 +29,7 @@ public interface SnowedOverSoundEvents {
     SoundEvent ENTITY_REINDEER_ANGRY   = reindeer("angry");
     SoundEvent ENTITY_REINDEER_EAT     = reindeer("eat");
     SoundEvent ENTITY_REINDEER_JUMP    = reindeer("jump");
+    SoundEvent ENTITY_REINDEER_CLOUD_JUMP    = reindeer("cloud_jump");
     private static SoundEvent reindeer(String type) {
         return createEntitySound("reindeer", type);
     }
