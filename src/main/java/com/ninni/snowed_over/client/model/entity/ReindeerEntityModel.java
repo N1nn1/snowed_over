@@ -201,10 +201,11 @@ public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<R
         this.rightArm.pivotY = 12.0F;
         this.leftArm.pivotZ = -4.5F;
         this.rightArm.pivotZ = -4.5F;
+        if (!entity.canCloudJump()) this.head.pitch = angryAnim + (1.0F - angryAnim) * this.head.pitch;
+        else this.head.pitch = angryAnim * 0.5F + (1.0F - angryAnim) * this.head.pitch;
         this.body.pitch = angryAnim * -0.8F + (1.0F - angryAnim) * this.body.pitch;
         this.head.pivotY = angryAnim * -1.0F + (1.0F - angryAnim) * this.head.pivotY;
         this.head.pivotZ = angryAnim * -3F + (1.0F - angryAnim) * this.head.pivotZ;
-        this.head.pitch = angryAnim + (1.0F - angryAnim) * this.head.pitch;
         this.leftArm.pivotY = angryAnim * 4F + (1.0F - angryAnim) * this.leftArm.pivotY;
         this.rightArm.pivotY = angryAnim * 4F + (1.0F - angryAnim) * this.rightArm.pivotY;
         this.leftArm.pivotZ = angryAnim * -8F + (1.0F - angryAnim) * this.leftArm.pivotZ;
