@@ -106,7 +106,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
     @Override
     public void travel(Vec3d movementInput) {
-        if (canCloudJump()) { this.setVelocity(getVelocity().add(0, 0.05, 0)); }
+        if (canCloudJump()) { this.setVelocity(getVelocity().add(0, 0.07, 0)); }
         super.travel(movementInput);
     }
 
