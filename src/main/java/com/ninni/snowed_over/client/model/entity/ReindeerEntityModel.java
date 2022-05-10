@@ -231,6 +231,14 @@ public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<R
         rightArm.pitch = MathHelper.cos(limbAngle * speed * 0.6F + (float)Math.PI) * 1.4F * limbDistance;
         leftArm.pitch = MathHelper.cos(limbAngle * speed * 0.6F) * 1.4F * limbDistance;
 
+        if (entity.canCloudJump()) {
+            rightLeg.pitch = MathHelper.cos(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.75F;
+            leftLeg.pitch = MathHelper.sin(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.75F;
+            rightArm.pitch = MathHelper.sin(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.5F;
+            leftArm.pitch = MathHelper.cos(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.5F;
+            if (entity.hasPassengers()) head.pitch += MathHelper.cos(limbAngle * speed * 0.2F) * 0.1 * limbDistance + 0.5F;
+        }
+
         if (entity.hasPassengers()) {
             leftRein.visible = true;
             rightRein.visible = true;
