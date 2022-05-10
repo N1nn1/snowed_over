@@ -91,8 +91,8 @@ public class ReindeerEntity extends HorseBaseEntity {
     @Override
     public void tick() {
         super.tick();
-        this.setNoDrag(!this.isOnGround());
-        if (this.world.isClient && this.canCloudJump() && this.getVelocity().lengthSquared() > 0.03 ) {
+        this.setNoDrag(canCloudJump());
+        if (this.world.isClient && canCloudJump() && this.getVelocity().lengthSquared() > 0.03 ) {
             Vec3d vec3d = this.getRotationVec(0.0f);
             float f = MathHelper.cos(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
             float g = MathHelper.sin(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
