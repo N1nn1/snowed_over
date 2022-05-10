@@ -43,7 +43,6 @@ public class PenguinSlideGoal extends WanderAroundFarGoal {
     @Override
     public void stop() {
         super.stop();
-        //TODO: this goal doesn't end correctly
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.HAPPY);
             penguin.setSliding(false);
