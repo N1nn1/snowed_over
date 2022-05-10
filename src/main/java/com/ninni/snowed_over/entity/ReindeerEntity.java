@@ -303,6 +303,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         super.getAngrySound();
         return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY;
     }
+    //TODO: make so it plays a new custom jump sound when in the air with the enchantment
     @Override
     protected void playJumpSound() { this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F); }
 
