@@ -177,7 +177,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         }
     }
     public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0; }
-    public boolean canCloudJump() { return this.hasCloudJumper(getEquippedStack(EquipmentSlot.CHEST)) && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR); }
+    public boolean canCloudJump() { return this.hasCloudJumper(getEquippedStack(EquipmentSlot.CHEST)) && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR) && this.world.getBlockState(this.getBlockPos().down(2)).isOf(Blocks.AIR) && this.world.getBlockState(this.getBlockPos().down(1)).isOf(Blocks.AIR) && !this.isOnGround(); }
     public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
     public boolean hasFrostWalker(ItemStack stack) { return EnchantmentHelper.getLevel(Enchantments.FROST_WALKER, stack) > 0; }
     public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
