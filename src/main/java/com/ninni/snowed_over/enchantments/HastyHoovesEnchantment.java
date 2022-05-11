@@ -6,10 +6,10 @@ import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ItemStack;
 
-public class HastyHoovesEnchantment extends Enchantment {
+public class HastyHoovesEnchantment extends SWEnchantment {
 
-    public HastyHoovesEnchantment() {
-        super(Rarity.COMMON, EnchantmentTarget.WEARABLE, new EquipmentSlot[]{EquipmentSlot.CHEST});
+    public HastyHoovesEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+        super(weight, type, slotTypes);
     }
 
     @Override

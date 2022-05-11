@@ -6,7 +6,11 @@ import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import com.ninni.snowed_over.tag.SnowedOverItemTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FluidBlock;
+import net.minecraft.block.Material;
+import net.minecraft.block.ShapeContext;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EquipmentSlot;
@@ -92,6 +96,11 @@ public class ReindeerEntity extends HorseBaseEntity {
     public void tick() {
         super.tick();
         this.setNoDrag(canCloudJump());
+        if (!world.isClient()) {
+            if (this.hasFrostWalker(this.getEquippedStack(EquipmentSlot.CHEST))) {
+                freezeWater();
+            }
+        }
         if (this.world.isClient && canCloudJump() && this.getVelocity().lengthSquared() > 0.03 ) {
             Vec3d vec3d = this.getRotationVec(0.0f);
             float f = MathHelper.cos(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
@@ -101,6 +110,22 @@ public class ReindeerEntity extends HorseBaseEntity {
                 this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 + (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h + (double)g, 0.0, 0.0, 0.0);
                 this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 - (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h - (double)g, 0.0, 0.0, 0.0);
             }
+        }
+    }
+
+    private void freezeWater() {
+        BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
+        int i = EnchantmentHelper.getEquipmentLevel(Enchantments.FROST_WALKER, this);
+        float f = Math.min(16, 2 + i);
+        BlockPos.Mutable mutable = new BlockPos.Mutable();
+        for (BlockPos blockPos : BlockPos.iterate(this.getBlockPos().add(-f, -1.0, -f), this.getBlockPos().add(f, -1.0, f))) {
+            BlockState blockState3;
+            if (!blockPos.isWithinDistance(this.getPos(), f)) continue;
+            mutable.set(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ());
+            BlockState blockState2 = this.world.getBlockState(mutable);
+            if (!blockState2.isAir() || (blockState3 = this.world.getBlockState(blockPos)).getMaterial() != Material.WATER || blockState3.get(FluidBlock.LEVEL) != 0 || !blockState.canPlaceAt(this.world, blockPos) || !this.world.canPlace(blockState, blockPos, ShapeContext.absent())) continue;
+            this.world.setBlockState(blockPos, blockState);
+            this.world.createAndScheduleBlockTick(blockPos, Blocks.FROSTED_ICE, MathHelper.nextInt(this.getRandom(), 60, 120));
         }
     }
 
@@ -154,6 +179,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0; }
     public boolean canCloudJump() { return this.hasCloudJumper(getEquippedStack(EquipmentSlot.CHEST)) && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR); }
     public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
+    public boolean hasFrostWalker(ItemStack stack) { return EnchantmentHelper.getLevel(Enchantments.FROST_WALKER, stack) > 0; }
     public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
 
     @Override
