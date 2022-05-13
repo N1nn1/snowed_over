@@ -28,7 +28,7 @@ public class ClientPlayerEntityMixin {
         if (ridingEntity instanceof ReindeerEntity reindeer) {
             BlockPos blockPos = reindeer.getBlockPos();
             World world = reindeer.world;
-            if (!reindeer.isOnGround() && reindeer.hasCloudJumper(reindeer.getEquippedStack(EquipmentSlot.CHEST)) && world.getBlockState(blockPos.down(64)).isOf(Blocks.AIR) && world.getBlockState(blockPos.down(3)).isOf(Blocks.AIR)) {
+            if (!reindeer.isOnGround() && reindeer.hasCloudJumper(reindeer.getEquippedStack(EquipmentSlot.CHEST)) && !world.getBlockState(blockPos.down(64)).isOf(Blocks.AIR) && world.getBlockState(blockPos.down(3)).isOf(Blocks.AIR)) {
                 if (!flag && this.input.jumping) {
                     Vec3d velocity = reindeer.getVelocity();
                     reindeer.setVelocityClient(velocity.x, velocity.y + 0.35D, velocity.z);
