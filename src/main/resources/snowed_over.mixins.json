@@ -11,7 +11,7 @@
     "PowderSnowMixin",
     "StructureFeatureAccessor",
     "WolfEntityMixin",
-    "client.KeyboardMixin"
+    "client.ClientPlayerEntityMixin"
   ],
   "client": [
     "client.EntityModelLayersInvoker",
