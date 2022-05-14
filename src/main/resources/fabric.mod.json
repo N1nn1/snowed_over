@@ -4,12 +4,9 @@
   "version": "${version}",
 
   "name": "Snowed Over",
-  "description": "Simple mod that makes more blocks able to be snowy",
+  "description": "An upgrade for minecraft's snowy biomes!",
   "authors": ["Ninni"],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
+  "contact": { "sources": "https://github.com/N1nn1/snowed_over" },
 
   "license": "CC0-1.0",
   "icon": "assets/snowed_over/icon.png",
