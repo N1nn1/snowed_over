@@ -95,7 +95,7 @@ public class ReindeerEntity extends HorseBaseEntity {
     @Override
     public void tick() {
         super.tick();
-        this.setNoDrag(canCloudJump());
+        this.setNoDrag(canCloudJump() && !this.isLeashed());
         if (!world.isClient()) {
             if (this.hasFrostWalker(this.getEquippedStack(EquipmentSlot.CHEST))) {
                 freezeWater();
