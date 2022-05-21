@@ -9,16 +9,16 @@ import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
-public class SOCriterion extends SimpleCriterionTrigger<SOCriterion.Conditions> {
+public class SnowedOverCriterion extends SimpleCriterionTrigger<SnowedOverCriterion.TriggerInstance> {
     private final ResourceLocation ID;
 
-    public SOCriterion(String name) {
+    public SnowedOverCriterion(String name) {
         ID = new ResourceLocation(SnowedOver.MOD_ID, name);
     }
 
     @Override
-    protected Conditions createInstance(JsonObject jsonObject, EntityPredicate.Composite composite, DeserializationContext deserializationContext) {
-        return new SOCriterion.Conditions(ID, composite);
+    protected TriggerInstance createInstance(JsonObject jsonObject, EntityPredicate.Composite composite, DeserializationContext deserializationContext) {
+        return new SnowedOverCriterion.TriggerInstance(ID, composite);
     }
 
     @Override
@@ -27,11 +27,11 @@ public class SOCriterion extends SimpleCriterionTrigger<SOCriterion.Conditions> 
     }
 
     public void trigger(ServerPlayer player) {
-        this.trigger(player, (conditions)->true);
+        this.trigger(player, conditions -> true);
     }
 
-    public static class Conditions extends AbstractCriterionTriggerInstance {
-        public Conditions(ResourceLocation resourceLocation, EntityPredicate.Composite composite) {
+    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+        public TriggerInstance(ResourceLocation resourceLocation, EntityPredicate.Composite composite) {
             super(resourceLocation, composite);
         }
     }
