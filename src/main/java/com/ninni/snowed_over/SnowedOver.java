@@ -7,6 +7,7 @@ import com.ninni.snowed_over.init.SnowedOverBlocks;
 import com.ninni.snowed_over.init.SnowedOverItems;
 import com.ninni.snowed_over.init.SnowedOverSoundEvents;
 import com.ninni.snowed_over.init.SnowedOverStructures;
+import com.ninni.snowed_over.network.SnowedOverNetworkHandler;
 import com.ninni.snowed_over.util.SnowedOverVanillaIntegration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -36,5 +37,6 @@ public class SnowedOver {
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
 		SnowedOverVanillaIntegration.init();
+		event.enqueueWork(SnowedOverNetworkHandler::init);
 	}
 }

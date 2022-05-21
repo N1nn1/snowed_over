@@ -7,8 +7,10 @@
     "EnchantmentHelperMixin",
     "LeavesBlockMixin",
     "LocateCommandMixin",
+    "PlayerAccessor",
     "PowderSnowMixin",
-    "WolfEntityMixin"
+    "WolfEntityMixin",
+    "client.ServerPlayerMixin"
   ],
   "client": [
     "client.LocalPlayerMixin"
