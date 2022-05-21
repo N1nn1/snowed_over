@@ -1,4 +1,4 @@
-package com.ninni.snowed_over.mixin.client;
+package com.ninni.snowed_over.mixin;
 
 import com.ninni.snowed_over.client.screen.ReindeerInventoryMenu;
 import com.ninni.snowed_over.entity.ReindeerEntity;

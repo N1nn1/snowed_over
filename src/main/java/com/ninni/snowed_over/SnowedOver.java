@@ -1,5 +1,6 @@
 package com.ninni.snowed_over;
 
+import com.ninni.snowed_over.events.MobEvents;
 import com.ninni.snowed_over.init.SnowedOverEnchantments;
 import com.ninni.snowed_over.init.SnowedOverEntityTypes;
 import com.ninni.snowed_over.events.MiscEvents;
@@ -32,6 +33,7 @@ public class SnowedOver {
 		SnowedOverStructures.STRUCTURES.register(modEventBus);
 
 		eventBus.register(this);
+		eventBus.register(new MobEvents());
 		eventBus.register(new MiscEvents());
 	}
 

@@ -73,7 +73,7 @@ public class PenguinEntity extends Animal {
         super(entityType, world);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.moveControl = new PenguinEntity.PenguinMoveControl(this);
-        this.maxUpStep = 1F;
+        this.maxUpStep = 1.0F;
     }
 
     @Override

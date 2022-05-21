@@ -6,9 +6,10 @@ modId="snowed_over"
 version="1.18.2-1.0.0"
 displayName="Snowed Over"
 logoFile="snowed_over.png"
-credits="You the player!"
+credits="Orcinus"
 authors="Ninni"
 description='''
+A *cool* mod that plans to add small features to the snowy biomes
 '''
 [[dependencies.snowed_over]]
 modId="forge"

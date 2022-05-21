@@ -1,4 +1,4 @@
-package com.ninni.snowed_over.util.world.gen.structures;
+package com.ninni.snowed_over.world.gen.structures;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;

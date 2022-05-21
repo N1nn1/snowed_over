@@ -1,7 +1,7 @@
 package com.ninni.snowed_over.init;
 
 import com.ninni.snowed_over.SnowedOver;
-import com.ninni.snowed_over.util.world.gen.structures.RevampedIglooFeature;
+import com.ninni.snowed_over.world.gen.structures.RevampedIglooFeature;
 import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;

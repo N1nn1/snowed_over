@@ -4,13 +4,11 @@
   "package": "com.ninni.snowed_over.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "EnchantmentHelperMixin",
     "LeavesBlockMixin",
     "LocateCommandMixin",
     "PlayerAccessor",
     "PowderSnowMixin",
-    "WolfEntityMixin",
-    "client.ServerPlayerMixin"
+    "ServerPlayerMixin"
   ],
   "client": [
     "client.LocalPlayerMixin"

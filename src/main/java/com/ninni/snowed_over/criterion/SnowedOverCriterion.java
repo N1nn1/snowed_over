@@ -31,8 +31,10 @@ public class SnowedOverCriterion extends SimpleCriterionTrigger<SnowedOverCriter
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
+
         public TriggerInstance(ResourceLocation resourceLocation, EntityPredicate.Composite composite) {
             super(resourceLocation, composite);
         }
+
     }
 }
