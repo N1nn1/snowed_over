@@ -5,39 +5,38 @@ import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
 import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerArmorFeatureRenderer;
 import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerFestiveOverlayFeatureRenderer;
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.feature.SaddleFeatureRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SaddleLayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Calendar;
 
-import static com.ninni.snowed_over.SnowedOver.*;
+import static com.ninni.snowed_over.SnowedOver.MOD_ID;
 
-@Environment(EnvType.CLIENT)
-public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRenderer<ReindeerEntity, ReindeerEntityModel<ReindeerEntity>> {
-    public static final Identifier TEXTURE = new Identifier(MOD_ID, "textures/entity/reindeer/reindeer.png");
-    public static final Identifier TEXTURE_FESTIVE = new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_festive.png");
+@OnlyIn(Dist.CLIENT)
+public class ReindeerEntityRenderer<T extends LivingEntity> extends MobRenderer<ReindeerEntity, ReindeerEntityModel<ReindeerEntity>> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer.png");
+    public static final ResourceLocation TEXTURE_FESTIVE = new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_festive.png");
     private boolean festivity;
 
-    public ReindeerEntityRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER)), 0.6F);
+    public ReindeerEntityRenderer(EntityRendererProvider.Context ctx) {
+        super(ctx, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER)), 0.6F);
         Calendar calendar = Calendar.getInstance();
-        this.addFeature(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
-        this.addFeature(new SaddleFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_saddle.png")));
+        this.addLayer(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
+        this.addLayer(new SaddleLayer<>(this, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_saddle.png")));
         if (calendar.get(Calendar.MONTH) + 1 == 12 && calendar.get(Calendar.DATE) >= 24 && calendar.get(Calendar.DATE) <= 26 || calendar.get(Calendar.MONTH) + 1 == 8 && calendar.get(Calendar.DATE) == 2) {
-            this.addFeature(new ReindeerFestiveOverlayFeatureRenderer(this));
+            this.addLayer(new ReindeerFestiveOverlayFeatureRenderer(this));
             this.festivity = true;
         } //checks if it's Christmas or if it's the world reindeer day to apply a custom skin
     }
 
     @Override
-    public Identifier getTexture(ReindeerEntity entity) {
-        if (festivity) { return TEXTURE_FESTIVE;}
-        return TEXTURE;
+    public ResourceLocation getTextureLocation(ReindeerEntity pEntity) {
+        return festivity ? TEXTURE_FESTIVE : TEXTURE;
     }
 }
 

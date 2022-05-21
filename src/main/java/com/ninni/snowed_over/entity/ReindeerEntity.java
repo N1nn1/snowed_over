@@ -1,249 +1,262 @@
 package com.ninni.snowed_over.entity;
 
-import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
-import com.ninni.snowed_over.item.SnowedOverItems;
-import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import com.ninni.snowed_over.tag.SnowedOverItemTags;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FluidBlock;
-import net.minecraft.block.Material;
-import net.minecraft.block.ShapeContext;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.goal.EscapeDangerGoal;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.ai.goal.HorseBondWithPlayerGoal;
-import net.minecraft.entity.ai.goal.LookAroundGoal;
-import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.SwimGoal;
-import net.minecraft.entity.ai.goal.TemptGoal;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.attribute.DefaultAttributeContainer;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.passive.HorseBaseEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.recipe.Ingredient;
-import net.minecraft.sound.BlockSoundGroup;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.world.World;
-import net.minecraft.world.event.GameEvent;
+import com.ninni.snowed_over.init.SnowedOverEnchantments;
+import com.ninni.snowed_over.init.SnowedOverItemTags;
+import com.ninni.snowed_over.init.SnowedOverItems;
+import com.ninni.snowed_over.init.SnowedOverSoundEvents;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RunAroundLikeCrazyGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.horse.AbstractHorse;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 import java.util.UUID;
 
-public class ReindeerEntity extends HorseBaseEntity {
-    public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverItemTags.REINDEER_TEMPTS);
+public class ReindeerEntity extends AbstractHorse {
+    public static final Ingredient TEMPT_INGREDIENT = Ingredient.of(SnowedOverItemTags.REINDEER_TEMPTS);
     private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
-    protected ReindeerEntity(EntityType<? extends HorseBaseEntity> entityType, World world) { super(entityType, world); }
-
-    @Override
-    protected void initGoals() {
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new HorseBondWithPlayerGoal(this, 0.85));
-        this.goalSelector.add(2, new FleeEntityGoal<>(this, WolfEntity.class, 6.0F, 1.6, 1.8));
-        this.goalSelector.add(2, new EscapeDangerGoal(this, 1.0));
-        this.goalSelector.add(3, new TemptGoal(this, 1.0, TEMPT_INGREDIENT, false));
-        this.goalSelector.add(4, new WanderAroundFarGoal(this, 0.85));
-        this.goalSelector.add(5, new LookAtEntityGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.add(6, new LookAroundGoal(this));
+    public ReindeerEntity(EntityType<? extends AbstractHorse> type, Level world) {
+        super(type, world);
     }
 
     @Override
-    public void writeCustomDataToNbt(NbtCompound nbt) {
-        super.writeCustomDataToNbt(nbt);
-        if (!this.items.getStack(1).isEmpty()) { nbt.put("ArmorItem", this.items.getStack(1).writeNbt(new NbtCompound())); }
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new FloatGoal(this));
+        this.goalSelector.addGoal(1, new RunAroundLikeCrazyGoal(this, 0.85));
+        this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Wolf.class, 6.0F, 1.6, 1.8));
+        this.goalSelector.addGoal(2, new PanicGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.0, TEMPT_INGREDIENT, false));
+        this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.85));
+        this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
     }
 
     @Override
-    public void readCustomDataFromNbt(NbtCompound nbt) {
-        super.readCustomDataFromNbt(nbt);
-        ItemStack itemStack;
-        if (nbt.contains("ArmorItem", 10) && !(itemStack = ItemStack.fromNbt(nbt.getCompound("ArmorItem"))).isEmpty() && this.isHorseArmor(itemStack)) { this.items.setStack(1, itemStack); }
+    public void addAdditionalSaveData(CompoundTag pCompound) {
+        super.addAdditionalSaveData(pCompound);
+        if (!this.inventory.getItem(1).isEmpty()) {
+            pCompound.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
+        }
     }
 
     @Override
-    protected void updateSaddle() {
-        if (!this.world.isClient()) {
-            super.updateSaddle();
-            this.equipArmor(this.items.getStack(1));
-            this.setEquipmentDropChance(EquipmentSlot.CHEST, 0.0f);
+    public void readAdditionalSaveData(CompoundTag pCompound) {
+        super.readAdditionalSaveData(pCompound);
+        if (pCompound.contains("ArmorItem", 10)) {
+            ItemStack itemstack = ItemStack.of(pCompound.getCompound("ArmorItem"));
+            if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
+                this.inventory.setItem(1, itemstack);
+            }
+        }
+    }
+
+    @Override
+    protected void updateContainerEquipment() {
+        if (!this.level.isClientSide()) {
+            super.updateContainerEquipment();
+            this.equipArmor(this.inventory.getItem(1));
+            this.setDropChance(EquipmentSlot.CHEST, 0.0F);
         }
     }
 
     @Override
     public void tick() {
         super.tick();
-        this.setNoDrag(canCloudJump() && !this.isLeashed());
-        if (!world.isClient()) {
-            if (this.hasFrostWalker(this.getEquippedStack(EquipmentSlot.CHEST))) {
+        this.setDiscardFriction(canCloudJump() && !this.isLeashed());
+        if (!level.isClientSide()) {
+            if (this.hasFrostWalker(this.getItemBySlot(EquipmentSlot.CHEST))) {
                 freezeWater();
             }
         }
-        if (this.world.isClient && canCloudJump() && this.getVelocity().lengthSquared() > 0.03 ) {
-            Vec3d vec3d = this.getRotationVec(0.0f);
-            float f = MathHelper.cos(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
-            float g = MathHelper.sin(this.getYaw() * ((float)Math.PI / 180)) * 0.3f;
+        if (this.level.isClientSide() && canCloudJump() && this.getDeltaMovement().lengthSqr() > 0.03 ) {
+            Vec3 vec3d = this.getViewVector(0.0f);
+            float f = Mth.cos(this.getYRot() * ((float)Math.PI / 180)) * 0.3f;
+            float g = Mth.sin(this.getYRot() * ((float)Math.PI / 180)) * 0.3f;
             float h = 1.2f - this.random.nextFloat() * 0.7f;
             for (int i = 0; i < 2; ++i) {
-                this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 + (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h + (double)g, 0.0, 0.0, 0.0);
-                this.world.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 - (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h - (double)g, 0.0, 0.0, 0.0);
+                this.level.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 + (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h + (double)g, 0.0, 0.0, 0.0);
+                this.level.addParticle(ParticleTypes.END_ROD, this.getX() - vec3d.x * (double)h * 0.75 - (double)f, this.getY() - vec3d.y + 1, this.getZ() - vec3d.z * (double)h - (double)g, 0.0, 0.0, 0.0);
             }
         }
     }
 
     private void freezeWater() {
-        BlockState blockState = Blocks.FROSTED_ICE.getDefaultState();
-        int i = EnchantmentHelper.getEquipmentLevel(Enchantments.FROST_WALKER, this);
+        BlockState blockState = Blocks.FROSTED_ICE.defaultBlockState();
+        int i = EnchantmentHelper.getEnchantmentLevel(Enchantments.FROST_WALKER, this);
         float f = Math.min(16, 2 + i);
-        BlockPos.Mutable mutable = new BlockPos.Mutable();
-        for (BlockPos blockPos : BlockPos.iterate(this.getBlockPos().add(-f, -1.0, -f), this.getBlockPos().add(f, -1.0, f))) {
+        BlockPos.MutableBlockPos mutable = new BlockPos.MutableBlockPos();
+        for (BlockPos blockPos : BlockPos.betweenClosed(this.blockPosition().offset(-f, -1.0, -f), this.blockPosition().offset(f, -1.0, f))) {
             BlockState blockState3;
-            if (!blockPos.isWithinDistance(this.getPos(), f)) continue;
+            if (!blockPos.closerToCenterThan(this.position(), f)) continue;
             mutable.set(blockPos.getX(), blockPos.getY() + 1, blockPos.getZ());
-            BlockState blockState2 = this.world.getBlockState(mutable);
-            if (!blockState2.isAir() || (blockState3 = this.world.getBlockState(blockPos)).getMaterial() != Material.WATER || blockState3.get(FluidBlock.LEVEL) != 0 || !blockState.canPlaceAt(this.world, blockPos) || !this.world.canPlace(blockState, blockPos, ShapeContext.absent())) continue;
-            this.world.setBlockState(blockPos, blockState);
-            this.world.createAndScheduleBlockTick(blockPos, Blocks.FROSTED_ICE, MathHelper.nextInt(this.getRandom(), 60, 120));
+            BlockState blockState2 = this.level.getBlockState(mutable);
+            if (!blockState2.isAir() || (blockState3 = this.level.getBlockState(blockPos)).getMaterial() != Material.WATER || blockState3.getValue(LiquidBlock.LEVEL) != 0 || !blockState.canSurvive(this.level, blockPos) || !this.level.isUnobstructed(blockState, blockPos, CollisionContext.empty())) continue;
+            this.level.setBlockAndUpdate(blockPos, blockState);
+            this.level.scheduleTick(blockPos, Blocks.FROSTED_ICE, Mth.nextInt(this.getRandom(), 60, 120));
         }
     }
 
     @Override
-    public void travel(Vec3d movementInput) {
-        if (canCloudJump()) { this.setVelocity(getVelocity().add(0, 0.07, 0)); }
-        super.travel(movementInput);
+    public void travel(Vec3 pTravelVector) {
+        if (canCloudJump()) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0, 0.07, 0));
+        }
+        super.travel(pTravelVector);
     }
 
     @Override
-    public boolean hasArmorSlot() { return true; }
+    public boolean canWearArmor() {
+        return true;
+    }
 
     private void equipArmor(ItemStack stack) {
-        this.equipStack(EquipmentSlot.CHEST, stack);
-        this.setEquipmentDropChance(EquipmentSlot.CHEST, 0.0f);
+        this.setItemSlot(EquipmentSlot.CHEST, stack);
+        this.setDropChance(EquipmentSlot.CHEST, 0.0f);
     }
 
-    public static DefaultAttributeContainer.Builder createReindeerAttributes() {
+    public static AttributeSupplier.Builder createReindeerAttributes() {
         return createBaseHorseAttributes()
-            .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.175)
-            .add(EntityAttributes.HORSE_JUMP_STRENGTH, 0.4)
-            .add(EntityAttributes.GENERIC_MAX_HEALTH, 16.0D);
+            .add(Attributes.MOVEMENT_SPEED, 0.175)
+            .add(Attributes.JUMP_STRENGTH, 0.4)
+            .add(Attributes.MAX_HEALTH, 16.0D);
     }
 
     @Override
-    protected void applyMovementEffects(BlockPos pos) {
-        if (this.isHorseArmor(this.getEquippedStack(EquipmentSlot.CHEST)) && EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, this.getEquippedStack(EquipmentSlot.CHEST)) > 0 && this.hasPassengers() && this.isOnGround()) {
+    protected void onChangedBlock(BlockPos pos) {
+        if (this.isArmor(this.getItemBySlot(EquipmentSlot.CHEST)) && EnchantmentHelper.getItemEnchantmentLevel(SnowedOverEnchantments.HASTY_HOOVES.get(), this.getItemBySlot(EquipmentSlot.CHEST)) > 0 && this.isVehicle() && this.isOnGround()) {
             this.addHastyHoovesEnchantment();
         } else { this.removeHastyHoovesSpeedBoost(); }
     }
 
     protected void removeHastyHoovesSpeedBoost() {
-        EntityAttributeInstance entityAttributeInstance = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        AttributeInstance entityAttributeInstance = this.getAttribute(Attributes.MOVEMENT_SPEED);
         if (entityAttributeInstance != null) { if (entityAttributeInstance.getModifier(HASTY_HOOVES_SPEED_BOOST_ID) != null) { entityAttributeInstance.removeModifier(HASTY_HOOVES_SPEED_BOOST_ID); } }
     }
 
     protected void addHastyHoovesEnchantment() {
-        if (hasHastyHooves(this.getEquippedStack(EquipmentSlot.CHEST))) {
-            EntityAttributeInstance speed = this.getAttributeInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
+        if (hasHastyHooves(this.getItemBySlot(EquipmentSlot.CHEST))) {
+            AttributeInstance speed = this.getAttribute(Attributes.MOVEMENT_SPEED);
             float level = getHastyHooves(this);
             if (speed != null && level == 1) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.025, EntityAttributeModifier.Operation.ADDITION);
-                if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
+                AttributeModifier attributeModifier = new AttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.025, AttributeModifier.Operation.ADDITION);
+                if (!speed.hasModifier(attributeModifier)) { speed.addTransientModifier(attributeModifier); }
             }
             if (speed != null && level == 2) {
-                EntityAttributeModifier attributeModifier = new EntityAttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.075, EntityAttributeModifier.Operation.ADDITION);
-                if (!speed.hasModifier(attributeModifier)) { speed.addTemporaryModifier(attributeModifier); }
+                AttributeModifier attributeModifier = new AttributeModifier(HASTY_HOOVES_SPEED_BOOST_ID, "Hasty hooves speed boost", 0.075, AttributeModifier.Operation.ADDITION);
+                if (!speed.hasModifier(attributeModifier)) { speed.addTransientModifier(attributeModifier); }
             }
         }
     }
-    public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.CLOUD_JUMPER, stack) > 0; }
-    public boolean canCloudJump() { return this.hasCloudJumper(getEquippedStack(EquipmentSlot.CHEST)) && this.world.getBlockState(this.getBlockPos().down(3)).isOf(Blocks.AIR) && this.world.getBlockState(this.getBlockPos().down(2)).isOf(Blocks.AIR) && this.world.getBlockState(this.getBlockPos().down(1)).isOf(Blocks.AIR) && !this.isOnGround(); }
-    public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getLevel(SnowedOverEnchantments.HASTY_HOOVES, stack) > 0; }
-    public boolean hasFrostWalker(ItemStack stack) { return EnchantmentHelper.getLevel(Enchantments.FROST_WALKER, stack) > 0; }
-    public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEquipmentLevel(SnowedOverEnchantments.HASTY_HOOVES, entity); }
+    public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(SnowedOverEnchantments.CLOUD_JUMPER.get(), stack) > 0; }
+    public boolean canCloudJump() { return this.hasCloudJumper(getItemBySlot(EquipmentSlot.CHEST)) && this.level.getBlockState(this.blockPosition().below(3)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(2)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(1)).is(Blocks.AIR) && !this.isOnGround(); }
+    public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(SnowedOverEnchantments.HASTY_HOOVES.get(), stack) > 0; }
+    public boolean hasFrostWalker(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FROST_WALKER, stack) > 0; }
+    public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEnchantmentLevel(SnowedOverEnchantments.HASTY_HOOVES.get(), entity); }
 
     @Override
-    public ActionResult interactMob(PlayerEntity player, Hand hand) {
-        ItemStack itemStack = player.getStackInHand(hand);
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
 
-        if (this.isTame() && player.shouldCancelInteraction()) {
+        if (this.isTamed() && player.isSecondaryUseActive()) {
             this.openInventory(player);
-            return ActionResult.success(this.world.isClient);
+            return InteractionResult.sidedSuccess(this.level.isClientSide());
         }
 
-        if (this.hasPassengers()) { return super.interactMob(player, hand); }
+        if (this.isVehicle()) { return super.mobInteract(player, hand); }
 
         if (!itemStack.isEmpty()) {
-            if (this.isBreedingItem(itemStack)) { return this.interactReindeer(player, itemStack); }
+            if (this.isFood(itemStack)) { return this.interactReindeer(player, itemStack); }
 
-            ActionResult actionResult = itemStack.useOnEntity(player, this, hand);
-            if (actionResult.isAccepted()) { return actionResult; }
+            InteractionResult actionResult = itemStack.interactLivingEntity(player, this, hand);
+            if (actionResult.consumesAction()) { return actionResult; }
 
-            if (!this.isTame()) {
-                this.playAngrySound();
-                return ActionResult.success(this.world.isClient);
+            if (!this.isTamed()) {
+                this.makeMad();
+                return InteractionResult.sidedSuccess(this.level.isClientSide());
             }
 
-            boolean bl = !this.isSaddled() && itemStack.isOf(Items.SADDLE);
+            boolean bl = !this.isSaddled() && itemStack.is(Items.SADDLE);
             if (bl) {
                 this.openInventory(player);
-                return ActionResult.success(this.world.isClient);
+                return InteractionResult.sidedSuccess(this.level.isClientSide());
             }
         }
-        this.putPlayerOnBack(player);
-        return ActionResult.success(this.world.isClient);
+        this.doPlayerRide(player);
+        return InteractionResult.sidedSuccess(this.level.isClientSide());
     }
 
-    public ActionResult interactReindeer(PlayerEntity player, ItemStack stack) {
-        boolean bl = this.receiveFood(player, stack);
-        if (!player.getAbilities().creativeMode) { stack.decrement(1); }
-        if (this.world.isClient) { return ActionResult.CONSUME; } else { return bl ? ActionResult.SUCCESS : ActionResult.PASS; }
+    public InteractionResult interactReindeer(Player player, ItemStack stack) {
+        boolean bl = this.handleEating(player, stack);
+        if (!player.getAbilities().instabuild) { stack.shrink(1); }
+        if (this.level.isClientSide()) { return InteractionResult.CONSUME; } else { return bl ? InteractionResult.SUCCESS : InteractionResult.PASS; }
     }
 
     @Override
-    protected boolean receiveFood(PlayerEntity player, ItemStack item) {
+    protected boolean handleEating(Player player, ItemStack item) {
         boolean bl = false;
         float f = 0.0F;
         int j = 0;
-        if (item.isOf(Items.WHEAT)) {
+        if (item.is(Items.WHEAT)) {
             f = 2.0F;
             j = 2;
-        } else if (item.isOf(Items.CARROT)) {
+        } else if (item.is(Items.CARROT)) {
             f = 2.0F;
             j = 3;
-        } else if (item.isOf(Items.SUGAR)) {
+        } else if (item.is(Items.SUGAR)) {
             f = 1.0F;
             j = 1;
-        } else if (item.isOf(Blocks.GLOW_LICHEN.asItem())) {
+        } else if (item.is(Blocks.GLOW_LICHEN.asItem())) {
             f = 20.0F;
             j = 15;
-        } else if (item.isOf(Items.APPLE)) {
+        } else if (item.is(Items.APPLE)) {
             f = 3.0F;
             j = 3;
-        } else if (item.isOf(Items.GOLDEN_CARROT)) {
+        } else if (item.is(Items.GOLDEN_CARROT)) {
             f = 4.0F;
             j = 6;
-        } else if (item.isOf(Items.GOLDEN_APPLE) || item.isOf(Items.ENCHANTED_GOLDEN_APPLE)) {
+        } else if (item.is(Items.GOLDEN_APPLE) || item.is(Items.ENCHANTED_GOLDEN_APPLE)) {
             f = 10.0F;
             j = 10;
         }
@@ -253,14 +266,14 @@ public class ReindeerEntity extends HorseBaseEntity {
             bl = true;
         }
 
-        if (j > 0 && (bl || !this.isTame()) && this.getTemper() < this.getMaxTemper()) {
+        if (j > 0 && (bl || !this.isTamed()) && this.getTemper() < this.getMaxTemper()) {
             bl = true;
-            if (!this.world.isClient) { this.addTemper(j); }
+            if (!this.level.isClientSide()) { this.modifyTemper(j); }
         }
 
         if (bl) {
             this.playEatingAnimation();
-            this.emitGameEvent(GameEvent.EAT, this.getCameraBlockPos());
+            this.gameEvent(GameEvent.EAT, this.eyeBlockPosition());
         }
 
         return bl;
@@ -269,81 +282,87 @@ public class ReindeerEntity extends HorseBaseEntity {
     private void playEatingAnimation() {
         this.setEating();
         if (!this.isSilent()) {
-            SoundEvent soundEvent = this.getEatSound();
-            if (soundEvent != null) { this.world.playSound(null, this.getX(), this.getY(), this.getZ(), soundEvent, this.getSoundCategory(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F); }
+            SoundEvent soundevent = this.getEatingSound();
+            if (soundevent != null) { this.level.playSound(null, this.getX(), this.getY(), this.getZ(), soundevent, this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F); }
         }
     }
 
     @Override
-    public boolean isHorseArmor(ItemStack item) { return item.getItem() == SnowedOverItems.HOOF_ARMOR; }
+    public boolean isArmor(ItemStack pStack) {
+        return pStack.getItem() == SnowedOverItems.HOOF_ARMOR.get();
+    }
 
-    private void setEating() { if (!this.world.isClient) { this.setHorseFlag(64, true); } }
-
+    private void setEating() { if (!this.level.isClientSide()) { this.setFlag(64, true); } }
 
     @Override
-    public void updatePassengerPosition(Entity passenger) {
+    public void positionRider(Entity passenger) {
         if (this.hasPassenger(passenger)) {
-            float f = MathHelper.cos(this.bodyYaw * 0.0175F);
-            float g = MathHelper.sin(this.bodyYaw * 0.0175F);
-            passenger.setPosition(this.getX() + (double)(0.3F * g), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset(), this.getZ() - (double)(0.3F * f));
+            float f = Mth.cos(this.yBodyRot * 0.0175F);
+            float g = Mth.sin(this.yBodyRot * 0.0175F);
+            passenger.setPos(this.getX() + (double)(0.3F * g), this.getY() + this.getPassengersRidingOffset() + passenger.getMyRidingOffset(), this.getZ() - (double)(0.3F * f));
         }
     }
 
     @Override
-    public double getMountedHeightOffset() { return (double)this.getHeight() * 0.7; }
-
-    @Override
-    public boolean isBreedingItem(ItemStack stack) { return TEMPT_INGREDIENT.test(stack); }
-
-    @Override
-    public boolean handleFallDamage(float fallDistance, float damageMultiplier, DamageSource damageSource) {
-        if (hasCloudJumper(this.getEquippedStack(EquipmentSlot.CHEST))) { return false; }
-        else return super.handleFallDamage(fallDistance, damageMultiplier, damageSource);
+    public double getPassengersRidingOffset() {
+        return this.getBbHeight() * 0.7;
     }
 
     @Override
-    protected void playWalkSound(BlockSoundGroup group) {
-        this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_GALLOP, group.getVolume() * 0.15F, group.getPitch());
+    public boolean isFood(ItemStack pStack) {
+        return TEMPT_INGREDIENT.test(pStack);
+    }
+
+    @Override
+    public boolean causeFallDamage(float pFallDistance, float pMultiplier, DamageSource pSource) {
+        return !this.hasCloudJumper(this.getItemBySlot(EquipmentSlot.CHEST)) && super.causeFallDamage(pFallDistance, pMultiplier, pSource);
+    }
+
+    @Override
+    protected void playGallopSound(SoundType type) {
+        this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_GALLOP.get(), type.getVolume() * 0.15F, type.getPitch());
         if (this.random.nextInt(10) == 0) {
-            this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_BREATHE, group.getVolume() * 0.6F, group.getPitch());
+            this.playSound(SoundEvents.HORSE_BREATHE, type.getVolume() * 0.6F, type.getPitch());
         }
-
     }
+
     @Override
     protected SoundEvent getAmbientSound() {
         super.getAmbientSound();
-        return SnowedOverSoundEvents.ENTITY_REINDEER_AMBIENT;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_AMBIENT.get();
     }
     @Override
     protected SoundEvent getDeathSound() {
         super.getDeathSound();
-        return SnowedOverSoundEvents.ENTITY_REINDEER_DEATH;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_DEATH.get();
     }
+
     @Nullable
     @Override
-    protected SoundEvent getEatSound() {
-        return SnowedOverSoundEvents.ENTITY_REINDEER_EAT;
+    protected SoundEvent getEatingSound() {
+        return SnowedOverSoundEvents.ENTITY_REINDEER_EAT.get();
     }
+
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         super.getHurtSound(source);
-        return SnowedOverSoundEvents.ENTITY_REINDEER_HURT;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_HURT.get();
     }
     @Override
     protected SoundEvent getAngrySound() {
         super.getAngrySound();
-        return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY;
+        return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY.get();
     }
     //TODO: make so it plays a new custom jump sound when in the air with the enchantment
     @Override
     protected void playJumpSound() {
-        if (canCloudJump()) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);
-        else this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
+        if (canCloudJump()) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP.get(), 1F, 1.0F);
+        else this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP.get(), 0.25F, 1.0F);
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){
-        BlockState state = world.getBlockState(pos.down());
-        return state.isOf(Blocks.GRASS_BLOCK) && world.getBaseLightLevel(pos, 0) > 8;
+    public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random){
+        BlockState state = world.getBlockState(pos.below());
+        return state.is(Blocks.GRASS_BLOCK) && world.getRawBrightness(pos, 0) > 8;
     }
 }

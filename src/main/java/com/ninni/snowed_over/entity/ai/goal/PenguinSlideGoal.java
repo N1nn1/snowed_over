@@ -2,41 +2,44 @@ package com.ninni.snowed_over.entity.ai.goal;
 
 import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
-import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import net.minecraft.entity.ai.FuzzyTargeting;
-import net.minecraft.entity.ai.goal.WanderAroundFarGoal;
-import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.util.math.Vec3d;
+import com.ninni.snowed_over.init.SnowedOverSoundEvents;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.util.LandRandomPos;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class PenguinSlideGoal extends WanderAroundFarGoal {
-    public PenguinSlideGoal(PathAwareEntity penguin, double speed) {
-        super(penguin, speed);
+public class PenguinSlideGoal extends WaterAvoidingRandomStrollGoal {
+
+    public PenguinSlideGoal(PathfinderMob penguin, double speedModifier) {
+        super(penguin, speedModifier);
     }
 
-    @Override
     @Nullable
-    protected Vec3d getWanderTarget() { return this.mob.getRandom().nextFloat() >= this.probability ? FuzzyTargeting.find(this.mob, 10, 0) : super.getWanderTarget(); }
-
     @Override
-    public boolean canStart() {
-        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isSubmergedInWater() || this.mob.isNavigating() || this.mob.getVehicle() != null) return false;
-        return super.canStart();
+    protected Vec3 getPosition() {
+        return this.mob.getRandom().nextFloat() >= this.probability ? LandRandomPos.getPos(this.mob, 10, 0) : super.getPosition();
     }
 
     @Override
-    public boolean shouldContinue() {
-        if(this.mob.isSubmergedInWater()) return false;
-        return super.shouldContinue();
+    public boolean canUse() {
+        if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg() || mob.isUnderWater() || this.mob.isPathFinding() || this.mob.getVehicle() != null) return false;
+        return super.canUse();
+    }
+
+    @Override
+    public boolean canContinueToUse() {
+        if (this.mob.isUnderWater()) return false;
+        return super.canContinueToUse();
     }
 
     @Override
     public void start() {
-        this.mob.getNavigation().startMovingTo(this.targetX, this.targetY, this.targetZ, this.speed);
+        this.mob.getNavigation().moveTo(this.wantedX, this.wantedY, this.wantedZ, this.speedModifier);
         if (this.mob instanceof PenguinEntity penguin) {
             penguin.setMood(PenguinMood.FOCUSED);
             penguin.setSliding(true);
-            penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE, 0.5F, 1);
+            penguin.playSound(SnowedOverSoundEvents.ENTITY_PENGUIN_SLIDE.get(), 0.5F, 1);
         }
     }
 

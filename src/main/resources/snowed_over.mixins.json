@@ -5,17 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EnchantmentHelperMixin",
-    "FrostWalkerEnchantmentMixin",
     "LeavesBlockMixin",
     "LocateCommandMixin",
     "PowderSnowMixin",
-    "StructureFeatureAccessor",
-    "WolfEntityMixin",
-    "client.ClientPlayerEntityMixin"
+    "WolfEntityMixin"
   ],
   "client": [
-    "client.EntityModelLayersInvoker",
-    "client.EntityModelLayersMixin"
+    "client.LocalPlayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

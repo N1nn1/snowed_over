@@ -1,50 +1,48 @@
 package com.ninni.snowed_over.client.renderer.entity.feature;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
-import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.feature.FeatureRenderer;
-import net.minecraft.client.render.entity.feature.FeatureRendererContext;
-import net.minecraft.client.render.entity.model.AnimalModel;
-import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.item.ItemRenderer;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 public class ReindeerArmorFeatureRenderer<T extends LivingEntity, M extends EntityModel<T>>
-    extends FeatureRenderer<T, M> {
-    private final Identifier texture;
+    extends RenderLayer<T, M> {
+    private final ResourceLocation texture;
     private final M model;
 
-    public ReindeerArmorFeatureRenderer(FeatureRendererContext<T, M> context, M model, Identifier texture) {
+    public ReindeerArmorFeatureRenderer(RenderLayerParent<T, M> context, M model, ResourceLocation texture) {
         super(context);
         this.model = model;
         this.texture = texture;
     }
 
     @Override
-    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        ItemStack itemStack = entity.getEquippedStack(EquipmentSlot.CHEST);
+    public void render(PoseStack matrices, MultiBufferSource vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        ItemStack itemStack = entity.getItemBySlot(EquipmentSlot.CHEST);
 
-        if (!((ReindeerEntity)entity).hasArmorInSlot()) { return; }
+        if (!((ReindeerEntity)entity).isWearingArmor()) { return; }
 
-        (this.getContextModel()).copyStateTo(this.model);
-        (this.model).animateModel(entity, limbAngle, limbDistance, tickDelta);
-        (this.model).setAngles(entity, limbAngle, limbDistance, animationProgress, headYaw, headPitch);
+        (this.getParentModel()).copyPropertiesTo(this.model);
+        (this.model).prepareMobModel(entity, limbAngle, limbDistance, tickDelta);
+        (this.model).setupAnim(entity, limbAngle, limbDistance, animationProgress, headYaw, headPitch);
 
-        (this.model).render(matrices, vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCull(this.texture)), light, OverlayTexture.DEFAULT_UV, 1.0f, 1.0f, 1.0f, 1.0f);
-        this.renderArmor(matrices, vertexConsumers, light, itemStack.hasGlint(), model, 1.0f, 1.0f, 1.0f);
+        (this.model).renderToBuffer(matrices, vertexConsumers.getBuffer(RenderType.entityCutoutNoCull(this.texture)), light, OverlayTexture.NO_OVERLAY, 1.0f, 1.0f, 1.0f, 1.0f);
+        this.renderArmor(matrices, vertexConsumers, light, itemStack.hasFoil(), model, 1.0f, 1.0f, 1.0f);
     }
 
-    @SuppressWarnings("rawtypes")
-    private void renderArmor(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, boolean usesSecondLayer, M model, float red, float green, float blue) {
-        VertexConsumer vertexConsumer = ItemRenderer.getArmorGlintConsumer(vertexConsumers, RenderLayer.getArmorCutoutNoCull(this.texture), false, usesSecondLayer);
-        ((AnimalModel)model).render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, red, green, blue, 1.0f);
+    private void renderArmor(PoseStack matrices, MultiBufferSource vertexConsumers, int light, boolean usesSecondLayer, M model, float red, float green, float blue) {
+        VertexConsumer vertexConsumer = ItemRenderer.getArmorFoilBuffer(vertexConsumers, RenderType.armorCutoutNoCull(this.texture), false, usesSecondLayer);
+        model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, red, green, blue, 1.0f);
     }
 }
 

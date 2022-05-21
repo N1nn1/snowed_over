@@ -1,23 +1,22 @@
 package com.ninni.snowed_over.client.init;
 
-import com.ninni.snowed_over.mixin.client.EntityModelLayersInvoker;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 
-import static com.ninni.snowed_over.SnowedOver.*;
+import static com.ninni.snowed_over.SnowedOver.MOD_ID;
 
 public class SnowedOverEntityModelLayers {
 
-    public static final EntityModelLayer REINDEER = registerMain("reindeer");
-    public static final EntityModelLayer REINDEER_ARMOR = register("reindeer", "armor");
-    public static final EntityModelLayer PENGUIN  = registerMain("penguin");
+    public static final ModelLayerLocation REINDEER = registerMain("reindeer");
+    public static final ModelLayerLocation REINDEER_ARMOR = register("reindeer", "armor");
+    public static final ModelLayerLocation PENGUIN  = registerMain("penguin");
 
-    private static EntityModelLayer registerMain(String id) {
-        return EntityModelLayersInvoker.register(new Identifier(MOD_ID, id).toString(), "main");
+    private static ModelLayerLocation registerMain(String id) {
+        return new ModelLayerLocation(new ResourceLocation(MOD_ID, id), "main");
     }
 
-    private static EntityModelLayer register(String id, String layer) {
-        return EntityModelLayersInvoker.register(new Identifier(MOD_ID, id).toString(), layer);
+    private static ModelLayerLocation register(String id, String layer) {
+        return new ModelLayerLocation(new ResourceLocation(MOD_ID, id), layer);
     }
 }
 

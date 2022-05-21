@@ -1,15 +1,29 @@
 package com.ninni.snowed_over.enchantments;
 
-import com.ninni.snowed_over.item.SnowedOverItems;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ItemStack;
+import com.ninni.snowed_over.init.SnowedOverItems;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class HastyHoovesEnchantment extends SWEnchantment {
 
-    public HastyHoovesEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
-        super(weight, type, slotTypes);
+    public HastyHoovesEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots) {
+        super(pRarity, pCategory, pApplicableSlots);
+    }
+
+    @Override
+    public int getMinCost(int pLevel) {
+        return 5 + (pLevel - 1) * 8;
+    }
+
+    @Override
+    public int getMaxCost(int pLevel) {
+        return super.getMaxCost(pLevel) + 50;
+    }
+
+    @Override
+    public boolean canEnchant(ItemStack pStack) {
+        return pStack.getItem() == SnowedOverItems.HOOF_ARMOR.get() && super.canEnchant(pStack);
     }
 
     @Override
@@ -17,18 +31,4 @@ public class HastyHoovesEnchantment extends SWEnchantment {
         return 2;
     }
 
-    @Override
-    public int getMinPower(int level) {
-        return 5 + (level - 1) * 8;
-    }
-
-    @Override
-    public int getMaxPower(int level) {
-        return super.getMaxPower(level) + 50;
-    }
-
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() == SnowedOverItems.HOOF_ARMOR && super.isAcceptableItem(stack);
-    }
 }

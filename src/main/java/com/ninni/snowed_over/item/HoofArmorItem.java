@@ -1,22 +1,28 @@
 package com.ninni.snowed_over.item;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Wearable;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 
-public class HoofArmorItem extends Item implements Wearable {
+public class HoofArmorItem extends Item {
 
-    public HoofArmorItem(Settings settings) {
-        super(settings);
+    public HoofArmorItem(Properties pProperties) {
+        super(pProperties);
     }
 
     @Override
-    public boolean isEnchantable(ItemStack stack) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        return super.canApplyAtEnchantingTable(stack, enchantment) || enchantment == Enchantments.FROST_WALKER;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack pStack) {
         return true;
     }
 
     @Override
-    public int getEnchantability() {
-        return 1;
+    public int getEnchantmentValue() {
+        return 2;
     }
 }
