@@ -51,10 +51,10 @@ public class OpenReindeerScreenPacket {
             if (entity instanceof ReindeerEntity reindeer) {
                 SimpleContainer inventory = new SimpleContainer(packet.getSize());
                 Inventory playerInventory = ((PlayerAccessor)clientPlayer).getInventory();
-                ReindeerInventoryMenu hoglinInventoryContainer = new ReindeerInventoryMenu(packet.getContainerId(), playerInventory, inventory, reindeer);
-                clientPlayer.containerMenu = hoglinInventoryContainer;
-                ReindeerInventoryScreen hoglinInventoryScreen = new ReindeerInventoryScreen(hoglinInventoryContainer, playerInventory, reindeer);
-                minecraft.setScreen(hoglinInventoryScreen);
+                ReindeerInventoryMenu reindeerContainer = new ReindeerInventoryMenu(packet.getContainerId(), playerInventory, inventory, reindeer);
+                clientPlayer.containerMenu = reindeerContainer;
+                ReindeerInventoryScreen reindeerScreen = new ReindeerInventoryScreen(reindeerContainer, playerInventory, reindeer);
+                minecraft.setScreen(reindeerScreen);
             }
         });
         ctx.get().setPacketHandled(true);
