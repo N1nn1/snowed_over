@@ -22,7 +22,6 @@ public class SnowedOver {
 
 	public SnowedOver() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-		IEventBus eventBus = MinecraftForge.EVENT_BUS;
 		modEventBus.addListener(this::commonSetup);
 
 		SnowedOverBlocks.BLOCKS.register(modEventBus);
@@ -32,9 +31,10 @@ public class SnowedOver {
 		SnowedOverSoundEvents.SOUNDS.register(modEventBus);
 		SnowedOverStructures.STRUCTURES.register(modEventBus);
 
-		eventBus.register(this);
-		eventBus.register(new MobEvents());
-		eventBus.register(new MiscEvents());
+		MinecraftForge.EVENT_BUS.register(this);
+
+		MinecraftForge.EVENT_BUS.register(new MiscEvents());
+		MinecraftForge.EVENT_BUS.register(new MobEvents());
 	}
 
 	private void commonSetup(final FMLCommonSetupEvent event) {
