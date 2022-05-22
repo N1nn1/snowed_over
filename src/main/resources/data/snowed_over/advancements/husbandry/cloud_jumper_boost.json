@@ -1,0 +1,28 @@
+{
+  "parent": "minecraft:husbandry/root",
+  "display": {
+    "icon": {
+      "item": "snowed_over:hoof_armor"
+    },
+    "title": {
+      "translate": "advancements.snowed_over.cloud_jumper_boost.title"
+    },
+    "description": {
+      "translate": "advancements.snowed_over.cloud_jumper_boost.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "do_trade": {
+      "trigger": "snowed_over:cloud_jumper_boost"
+    }
+  },
+  "requirements": [
+    [
+      "do_trade"
+    ]
+  ]
+}

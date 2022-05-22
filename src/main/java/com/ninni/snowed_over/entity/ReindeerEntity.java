@@ -1,5 +1,6 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.criterion.SnowedOverCriteria;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
@@ -37,6 +38,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.ActionResult;
@@ -339,6 +341,14 @@ public class ReindeerEntity extends HorseBaseEntity {
     protected void playJumpSound() {
         if (canCloudJump()) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);
         else this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_JUMP, 0.25F, 1.0F);
+    }
+
+    @Override
+    public void startJumping(int height) {
+        super.startJumping(height);
+        if (!this.world.isClient() && canCloudJump()) {
+            SnowedOverCriteria.CLOUD_JUMPER_BOOST.trigger((ServerPlayerEntity) this.getPrimaryPassenger());
+        }
     }
 
     @SuppressWarnings("unused")

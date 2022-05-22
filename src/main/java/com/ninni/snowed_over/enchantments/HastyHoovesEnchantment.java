@@ -1,10 +1,7 @@
 package com.ninni.snowed_over.enchantments;
 
-import com.ninni.snowed_over.item.SnowedOverItems;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentTarget;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ItemStack;
 
 public class HastyHoovesEnchantment extends SWEnchantment {
 
@@ -27,8 +24,4 @@ public class HastyHoovesEnchantment extends SWEnchantment {
         return super.getMaxPower(level) + 50;
     }
 
-    @Override
-    public boolean isAcceptableItem(ItemStack stack) {
-        return stack.getItem() == SnowedOverItems.HOOF_ARMOR && super.isAcceptableItem(stack);
-    }
 }
