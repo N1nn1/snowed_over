@@ -8,6 +8,9 @@ import com.ninni.snowed_over.init.SnowedOverSoundEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -56,6 +59,7 @@ import java.util.Random;
 import java.util.UUID;
 
 public class ReindeerEntity extends AbstractHorse {
+    private static final EntityDataAccessor<Boolean> CAN_CLOUD_JUMP = SynchedEntityData.defineId(ReindeerEntity.class, EntityDataSerializers.BOOLEAN);
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.of(SnowedOverItemTags.REINDEER_TEMPTS);
     private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
@@ -76,8 +80,15 @@ public class ReindeerEntity extends AbstractHorse {
     }
 
     @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(CAN_CLOUD_JUMP, false);
+    }
+
+    @Override
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);
+        pCompound.putBoolean("CanCloudJump", this.entityData.get(CAN_CLOUD_JUMP));
         if (!this.inventory.getItem(1).isEmpty()) {
             pCompound.put("ArmorItem", this.inventory.getItem(1).save(new CompoundTag()));
         }
@@ -86,6 +97,7 @@ public class ReindeerEntity extends AbstractHorse {
     @Override
     public void readAdditionalSaveData(CompoundTag pCompound) {
         super.readAdditionalSaveData(pCompound);
+        this.entityData.set(CAN_CLOUD_JUMP, pCompound.getBoolean("CanCloudJump"));
         if (pCompound.contains("ArmorItem", 10)) {
             ItemStack itemstack = ItemStack.of(pCompound.getCompound("ArmorItem"));
             if (!itemstack.isEmpty() && this.isArmor(itemstack)) {
@@ -103,16 +115,24 @@ public class ReindeerEntity extends AbstractHorse {
         }
     }
 
+    public boolean hasCloudJumpData() {
+        return this.entityData.get(CAN_CLOUD_JUMP);
+    }
+
     @Override
     public void tick() {
         super.tick();
-        this.setDiscardFriction(canCloudJump() && !this.isLeashed());
+
+        this.setDiscardFriction(this.canCloudJump() && !this.isLeashed());
+
         if (!level.isClientSide()) {
+            boolean flag = this.level.isNight();
+            this.entityData.set(CAN_CLOUD_JUMP, flag);
             if (this.hasFrostWalker(this.getItemBySlot(EquipmentSlot.CHEST))) {
                 freezeWater();
             }
         }
-        if (this.level.isClientSide() && canCloudJump() && this.getDeltaMovement().lengthSqr() > 0.03 ) {
+        if (this.level.isClientSide() && this.canCloudJump() && this.getDeltaMovement().lengthSqr() > 0.03 ) {
             Vec3 vec3d = this.getViewVector(0.0f);
             float f = Mth.cos(this.getYRot() * ((float)Math.PI / 180)) * 0.3f;
             float g = Mth.sin(this.getYRot() * ((float)Math.PI / 180)) * 0.3f;
@@ -142,7 +162,7 @@ public class ReindeerEntity extends AbstractHorse {
 
     @Override
     public void travel(Vec3 pTravelVector) {
-        if (canCloudJump()) {
+        if (this.canCloudJump()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0, 0.07, 0));
         }
         super.travel(pTravelVector);
@@ -191,8 +211,9 @@ public class ReindeerEntity extends AbstractHorse {
             }
         }
     }
+
     public boolean hasCloudJumper(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(SnowedOverEnchantments.CLOUD_JUMPER.get(), stack) > 0; }
-    public boolean canCloudJump() { return this.hasCloudJumper(getItemBySlot(EquipmentSlot.CHEST)) && this.level.getBlockState(this.blockPosition().below(3)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(2)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(1)).is(Blocks.AIR) && !this.isOnGround(); }
+    public boolean canCloudJump() { return this.hasCloudJumpData() && this.hasCloudJumper(getItemBySlot(EquipmentSlot.CHEST)) && this.level.getBlockState(this.blockPosition().below(3)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(2)).is(Blocks.AIR) && this.level.getBlockState(this.blockPosition().below(1)).is(Blocks.AIR) && !this.isOnGround(); }
     public boolean hasHastyHooves(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(SnowedOverEnchantments.HASTY_HOOVES.get(), stack) > 0; }
     public boolean hasFrostWalker(ItemStack stack) { return EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FROST_WALKER, stack) > 0; }
     public static int getHastyHooves(LivingEntity entity) { return EnchantmentHelper.getEnchantmentLevel(SnowedOverEnchantments.HASTY_HOOVES.get(), entity); }

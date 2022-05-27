@@ -6,8 +6,8 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class SWEnchantment extends Enchantment {
 
-    public SWEnchantment(Rarity pRarity, EnchantmentCategory pCategory, EquipmentSlot[] pApplicableSlots) {
-        super(pRarity, pCategory, pApplicableSlots);
+    public SWEnchantment() {
+        super(Rarity.VERY_RARE, EnchantmentCategory.WEARABLE, new EquipmentSlot[]{EquipmentSlot.CHEST});
     }
 
 }

@@ -2,10 +2,11 @@ package com.ninni.snowed_over.item;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Wearable;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 
-public class HoofArmorItem extends Item {
+public class HoofArmorItem extends Item implements Wearable {
 
     public HoofArmorItem(Properties pProperties) {
         super(pProperties);

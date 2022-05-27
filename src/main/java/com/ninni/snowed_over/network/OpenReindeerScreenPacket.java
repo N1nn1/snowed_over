@@ -3,7 +3,6 @@ package com.ninni.snowed_over.network;
 import com.ninni.snowed_over.client.screen.ReindeerInventoryMenu;
 import com.ninni.snowed_over.client.screen.ReindeerInventoryScreen;
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import com.ninni.snowed_over.mixin.PlayerAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
@@ -50,7 +49,7 @@ public class OpenReindeerScreenPacket {
             }
             if (entity instanceof ReindeerEntity reindeer) {
                 SimpleContainer inventory = new SimpleContainer(packet.getSize());
-                Inventory playerInventory = ((PlayerAccessor)clientPlayer).getInventory();
+                Inventory playerInventory = clientPlayer.getInventory();
                 ReindeerInventoryMenu reindeerContainer = new ReindeerInventoryMenu(packet.getContainerId(), playerInventory, inventory, reindeer);
                 clientPlayer.containerMenu = reindeerContainer;
                 ReindeerInventoryScreen reindeerScreen = new ReindeerInventoryScreen(reindeerContainer, playerInventory, reindeer);

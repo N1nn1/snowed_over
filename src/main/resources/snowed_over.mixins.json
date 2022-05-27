@@ -6,7 +6,6 @@
   "mixins": [
     "LeavesBlockMixin",
     "LocateCommandMixin",
-    "PlayerAccessor",
     "PowderSnowMixin",
     "ServerPlayerMixin"
   ],
