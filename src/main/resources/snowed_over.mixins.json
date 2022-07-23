@@ -8,6 +8,7 @@
     "LeavesBlockMixin",
     "LocateCommandMixin",
     "PowderSnowMixin",
+    "ServerPlayerEntityMixin",
     "StructureFeatureAccessor",
     "WolfEntityMixin",
     "client.ClientPlayerEntityMixin"

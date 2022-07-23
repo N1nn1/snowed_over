@@ -207,7 +207,7 @@ public class ReindeerEntity extends HorseBaseEntity {
             }
 
             boolean bl = !this.isSaddled() && itemStack.isOf(Items.SADDLE);
-            if (bl) {
+            if (this.isHorseArmor(itemStack) || bl) {
                 this.openInventory(player);
                 return ActionResult.success(this.world.isClient);
             }
