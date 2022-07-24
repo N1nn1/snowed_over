@@ -19,4 +19,5 @@ public abstract class FrostWalkerEnchantmentMixin extends Enchantment {
     public boolean isAcceptableItem(ItemStack stack) {
         return stack.getItem() instanceof HoofArmorItem;
     }
+
 }

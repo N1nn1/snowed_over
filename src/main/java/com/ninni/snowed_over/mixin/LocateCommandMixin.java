@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class LocateCommandMixin {
     private static final SimpleCommandExceptionType IGLOO_NULL = new SimpleCommandExceptionType(new TranslatableText("snowed_over.commands.locate.revamped_igloo"));
 
-    @Inject(at = @At("HEAD"), method = "execute", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "execute")
     private static void execute(ServerCommandSource source, RegistryPredicateArgumentType.RegistryPredicate<ConfiguredStructureFeature<?, ?>> structureFeature, CallbackInfoReturnable<Integer> cir)  throws CommandSyntaxException {
         if (structureFeature.test(ConfiguredStructureFeatures.IGLOO)) {
             throw IGLOO_NULL.create();

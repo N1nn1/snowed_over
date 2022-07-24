@@ -7,9 +7,9 @@ import net.minecraft.world.biome.Biome;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
-public class SnowedOverBiomeTags {
+public interface SnowedOverBiomeTags {
 
-    public static final TagKey<Biome> REVAMPED_IGLOO_HAS_STRUCTURE = create("revamped_igloo");
+    TagKey<Biome> REVAMPED_IGLOO_HAS_STRUCTURE = create("revamped_igloo");
 
     private static TagKey<Biome> create(String id) {
         return TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, id));

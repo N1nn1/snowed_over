@@ -11,8 +11,8 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinSwimGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
+import com.ninni.snowed_over.tag.SnowedOverBlockTags;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
@@ -290,7 +290,7 @@ public class PenguinEntity extends AnimalEntity {
     @SuppressWarnings("unused")
     public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){
         BlockState state = world.getBlockState(pos.down());
-        return state.isOf(Blocks.GRASS_BLOCK) && world.getBaseLightLevel(pos, 0) > 8;
+        return state.isIn(SnowedOverBlockTags.PENGUIN_SPAWNABLE_ON) && world.getBaseLightLevel(pos, 0) > 8;
     }
 
 }
