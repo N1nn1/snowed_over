@@ -15,7 +15,6 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.EntityRendererRegistry;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.entity.Entity;
@@ -51,9 +50,7 @@ public class SnowedOverClient implements ClientModInitializer {
                     SimpleInventory simpleInventory = new SimpleInventory(slotCount);
                     ReindeerScreenHandler reindeerScreenHandler = new ReindeerScreenHandler(syncId, clientPlayerEntity.getInventory(), simpleInventory, reindeer);
                     clientPlayerEntity.currentScreenHandler = reindeerScreenHandler;
-                    MinecraftClient.getInstance().execute(() -> {
-                        MinecraftClient.getInstance().setScreen(new ReindeerScreen(reindeerScreenHandler, clientPlayerEntity.getInventory(), reindeer));
-                    });
+                    client.execute(() -> client.setScreen(new ReindeerScreen(reindeerScreenHandler, clientPlayerEntity.getInventory(), reindeer)));
                 }
             });
         });
