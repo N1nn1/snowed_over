@@ -1,10 +1,10 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.SnowedOverTags;
 import com.ninni.snowed_over.criterion.SnowedOverCriteria;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import com.ninni.snowed_over.SnowedOverTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
