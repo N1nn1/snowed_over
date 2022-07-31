@@ -1,0 +1,44 @@
+{
+  "itemGroup.snowed_over.item_group": "Snowed Over",
+  "mod.snowed_over.contact.discord": "Discord",
+
+  "advancements.snowed_over.cloud_jumper_boost.title": "Dashing through the... Sky?",
+  "advancements.snowed_over.cloud_jumper_boost.description": "Spicca il volo a cavallo di una renna",
+
+  "snowed_over.commands.locate.revamped_igloo": "Utilizza /locate structure snowed_over:revamped_igloo",
+
+  "entity.snowed_over.reindeer": "Renna",
+  "entity.snowed_over.penguin": "Pinguino",
+
+  "enchantment.snowed_over.hasty_hooves": "Zampe spedite",
+  "enchantment.snowed_over.cloud_jumper": "Saltatore di nuvole",
+
+  "item.snowed_over.pinecone": "Pigna",
+  "item.snowed_over.compacted_snow_brick": "Mattone di neve compatta",
+  "item.snowed_over.reindeer_spawn_egg": "Uovo generatore di renna",
+  "item.snowed_over.penguin_spawn_egg": "Uovo generatore di pinguino",
+  "item.snowed_over.hoof_armor": "Armatura per Zoccoli",
+
+  "block.snowed_over.compacted_snow_bricks": "Mattoni di neve compatta",
+  "block.snowed_over.compacted_snow_brick_wall": "Muretto di mattoni di neve compatta",
+  "block.snowed_over.compacted_snow_brick_slab": "Lastra di mattoni di neve compatta",
+  "block.snowed_over.compacted_snow_brick_stairs": "Scalini di mattoni di neve compatta",
+  "block.snowed_over.compacted_snow_foundation": "Fondamenta di neve compatta",
+
+  "subtitles.entity.snowed_over.reindeer.gallop": "Tendini della renna fanno click",
+  "subtitles.entity.snowed_over.reindeer.breathe": "Renna ansima",
+  "subtitles.entity.snowed_over.reindeer.idle": "Renna bramisce",
+  "subtitles.entity.snowed_over.reindeer.hurt": "Renna ferita",
+  "subtitles.entity.snowed_over.reindeer.death": "Renna muore",
+  "subtitles.entity.snowed_over.reindeer.angry": "Renna si arrabbia",
+  "subtitles.entity.snowed_over.reindeer.eat": "Renna mastica",
+  "subtitles.entity.snowed_over.reindeer.jump": "Renna si alza",
+  "subtitles.entity.snowed_over.reindeer.cloud_jump": "Renna si eleva",
+  "subtitles.entity.snowed_over.penguin.idle": "Pinguino garrisce",
+  "subtitles.entity.snowed_over.penguin.hurt": "Pinguino ferito",
+  "subtitles.entity.snowed_over.penguin.death": "Pinguino muore",
+  "subtitles.entity.snowed_over.penguin.crack": "Pinguino cerca di liberarsi",
+  "subtitles.entity.snowed_over.penguin.hatch": "Pinguino si schiude",
+  "subtitles.entity.snowed_over.penguin.slide": "Pinguino scivola",
+  "subtitles.item.snowed_over.pinecone.eat": "Morsicatura"
+}
