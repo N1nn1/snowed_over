@@ -10,12 +10,10 @@
     "PowderSnowMixin",
     "ServerPlayerEntityMixin",
     "StructureFeatureAccessor",
-    "WolfEntityMixin",
-    "client.ClientPlayerEntityMixin"
+    "WolfEntityMixin"
   ],
   "client": [
-    "client.EntityModelLayersInvoker",
-    "client.EntityModelLayersMixin"
+    "client.ClientPlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

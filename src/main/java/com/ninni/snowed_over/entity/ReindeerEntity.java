@@ -31,7 +31,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -55,12 +55,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Random;
 import java.util.UUID;
 
-public class ReindeerEntity extends HorseBaseEntity {
+public class ReindeerEntity extends AbstractHorseEntity {
     private static final TrackedData<Boolean> CAN_CLOUD_JUMP = DataTracker.registerData(ReindeerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverItemTags.REINDEER_TEMPTS);
     private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
-    protected ReindeerEntity(EntityType<? extends HorseBaseEntity> entityType, World world) { super(entityType, world); }
+    protected ReindeerEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) { super(entityType, world); }
 
     @Override
     protected void initGoals() {
@@ -263,7 +263,7 @@ public class ReindeerEntity extends HorseBaseEntity {
 
         if (bl) {
             this.playEatingAnimation();
-            this.emitGameEvent(GameEvent.EAT, this.getCameraBlockPos());
+            this.emitGameEvent(GameEvent.EAT);
         }
 
         return bl;
@@ -337,7 +337,7 @@ public class ReindeerEntity extends HorseBaseEntity {
         super.getAngrySound();
         return SnowedOverSoundEvents.ENTITY_REINDEER_ANGRY;
     }
-    //TODO: make so it plays a new custom jump sound when in the air with the enchantment
+
     @Override
     protected void playJumpSound() {
         if (canCloudJump()) this.playSound(SnowedOverSoundEvents.ENTITY_REINDEER_CLOUD_JUMP, 1F, 1.0F);

@@ -1,6 +1,5 @@
 package com.ninni.snowed_over.item;
 
-import com.ninni.snowed_over.SnowedOver;
 import com.ninni.snowed_over.block.SnowedOverBlocks;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.registry.CompostingChanceRegistry;
@@ -8,7 +7,6 @@ import net.fabricmc.fabric.api.registry.FuelRegistry;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 

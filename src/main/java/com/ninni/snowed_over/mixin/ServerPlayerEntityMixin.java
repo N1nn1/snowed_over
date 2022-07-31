@@ -5,7 +5,7 @@ import com.ninni.snowed_over.entity.ReindeerEntity;
 import com.ninni.snowed_over.network.SnowedOverPacketIdentifiers;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.minecraft.entity.passive.HorseBaseEntity;
+import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.ScreenHandler;
@@ -28,7 +28,7 @@ public abstract class ServerPlayerEntityMixin {
     @Shadow private int screenHandlerSyncId;
 
     @Inject(at = @At("HEAD"), method = "openHorseInventory", cancellable = true)
-    private void openHorseInventory(HorseBaseEntity horse, Inventory inventory, CallbackInfo ci) {
+    private void openHorseInventory(AbstractHorseEntity horse, Inventory inventory, CallbackInfo ci) {
         ServerPlayerEntity $this = (ServerPlayerEntity) (Object) this;
         if (horse instanceof ReindeerEntity reindeer) {
             ci.cancel();

@@ -5,7 +5,7 @@ import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import static com.ninni.snowed_over.SnowedOver.MOD_ID;
+import static com.ninni.snowed_over.SnowedOver.*;
 
 public interface SnowedOverBlockTags {
 

@@ -1,23 +1,30 @@
 package com.ninni.snowed_over.client.init;
 
-import com.ninni.snowed_over.mixin.client.EntityModelLayersInvoker;
+import com.ninni.snowed_over.client.model.entity.PenguinEntityModel;
+import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.util.Identifier;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
-public class SnowedOverEntityModelLayers {
+@Environment(EnvType.CLIENT)
+public interface SnowedOverEntityModelLayers {
 
-    public static final EntityModelLayer REINDEER = registerMain("reindeer");
-    public static final EntityModelLayer REINDEER_ARMOR = register("reindeer", "armor");
-    public static final EntityModelLayer PENGUIN  = registerMain("penguin");
+    EntityModelLayer REINDEER = main("reindeer", ReindeerEntityModel::getTexturedModelData);
+    EntityModelLayer REINDEER_ARMOR = register("reindeer", "armor", ReindeerEntityModel::getTexturedModelData);
+    EntityModelLayer PENGUIN  = main("penguin", PenguinEntityModel::getTexturedModelData);
 
-    private static EntityModelLayer registerMain(String id) {
-        return EntityModelLayersInvoker.register(new Identifier(MOD_ID, id).toString(), "main");
+    private static EntityModelLayer register(String id, String name, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
+        EntityModelLayer layer = new EntityModelLayer(new Identifier(MOD_ID, id), name);
+        EntityModelLayerRegistry.registerModelLayer(layer, provider);
+        return layer;
     }
 
-    private static EntityModelLayer register(String id, String layer) {
-        return EntityModelLayersInvoker.register(new Identifier(MOD_ID, id).toString(), layer);
+    private static EntityModelLayer main(String id, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
+        return register(id, "main", provider);
     }
 }
 
