@@ -1,8 +1,10 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.SnowedOverTags;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
+import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
@@ -14,7 +16,6 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
-import net.minecraft.world.biome.BiomeKeys;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
@@ -43,7 +44,8 @@ public class SnowedOverEntities {
     );
 
     static {
-        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SNOWY_PLAINS, BiomeKeys.FROZEN_OCEAN, BiomeKeys.SNOWY_BEACH), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 15, 4, 7);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(SnowedOverTags.PENGUIN_SPAWNS), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 15, 4, 7);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(ConventionalBiomeTags.CLIMATE_COLD), SpawnGroup.CREATURE, SnowedOverEntities.REINDEER, 10, 1, 4);
     }
 
 

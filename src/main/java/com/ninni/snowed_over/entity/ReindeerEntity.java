@@ -4,7 +4,7 @@ import com.ninni.snowed_over.criterion.SnowedOverCriteria;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import com.ninni.snowed_over.tag.SnowedOverItemTags;
+import com.ninni.snowed_over.SnowedOverTags;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -57,7 +57,7 @@ import java.util.UUID;
 
 public class ReindeerEntity extends AbstractHorseEntity {
     private static final TrackedData<Boolean> CAN_CLOUD_JUMP = DataTracker.registerData(ReindeerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverItemTags.REINDEER_TEMPTS);
+    public static final Ingredient TEMPT_INGREDIENT = Ingredient.fromTag(SnowedOverTags.REINDEER_TEMPTS);
     private static final UUID HASTY_HOOVES_SPEED_BOOST_ID = UUID.fromString("d9f1b970-be2b-4d4b-8978-e9f54bc1b04e");
 
     protected ReindeerEntity(EntityType<? extends AbstractHorseEntity> entityType, World world) { super(entityType, world); }
