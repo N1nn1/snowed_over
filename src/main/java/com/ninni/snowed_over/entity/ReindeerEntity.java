@@ -347,7 +347,8 @@ public class ReindeerEntity extends AbstractHorseEntity {
     @Override
     public void startJumping(int height) {
         super.startJumping(height);
-        if (!this.world.isClient() && canCloudJump()) {
+        boolean flag = this.canCloudJump();
+        if (flag) {
             SnowedOverCriteria.CLOUD_JUMPER_BOOST.trigger((ServerPlayerEntity) this.getPrimaryPassenger());
         }
     }
