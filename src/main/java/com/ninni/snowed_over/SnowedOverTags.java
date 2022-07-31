@@ -19,6 +19,7 @@ public interface SnowedOverTags {
     TagKey<Block> PENGUIN_SPAWNABLE_ON = TagKey.of(Registry.BLOCK_KEY, new Identifier(MOD_ID, "penguin_spawnable_on"));
 
     //Biome tags
-    TagKey<Biome> PENGUIN_SPAWNS = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "penguin_spawns"));
+    TagKey<Biome> PENGUIN_SPAWNS_IN = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "penguin_spawns_in"));
+    TagKey<Biome> PENGUIN_SPAWNS_ALTERNATE = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "penguin_spawns_alternate"));
     TagKey<Biome> REVAMPED_IGLOO_GENERATES = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "revamped_igloo_generates"));
 }

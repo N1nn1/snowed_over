@@ -1,5 +1,6 @@
 package com.ninni.snowed_over.entity;
 
+import com.ninni.snowed_over.SnowedOverTags;
 import com.ninni.snowed_over.entity.ai.goal.PenguinEscapeDangerGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinFleeEntityGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinLookAtEntityGoal;
@@ -11,8 +12,6 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinSwimGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import com.ninni.snowed_over.SnowedOverTags;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
@@ -50,18 +49,25 @@ import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.tag.BiomeTags;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
+import net.minecraft.util.registry.RegistryEntry;
+import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
+import net.minecraft.world.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class PenguinEntity extends AnimalEntity {
     private static final TrackedData<Integer> MOOD = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final TrackedData<Boolean> HAS_EGG = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -121,6 +127,14 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public boolean isPushedByFluids() { return false; }
 
+    public static boolean isValidNaturalSpawn(EntityType<? extends AnimalEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) { return world.getBlockState(pos.down()).isIn(BlockTags.ANIMALS_SPAWNABLE_ON) && AnimalEntity.isLightLevelValidForNaturalSpawn(world, pos); }
+    protected static boolean isLightLevelValidForNaturalSpawn(BlockRenderView world, BlockPos pos) { return world.getBaseLightLevel(pos, 0) > 8; }
+
+    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
+        if (world.getBiome(pos).isIn(SnowedOverTags.PENGUIN_SPAWNS_ALTERNATE)) return PenguinEntity.isLightLevelValidForNaturalSpawn(world, pos) && world.getBlockState(pos.down()).isIn(SnowedOverTags.PENGUIN_SPAWNABLE_ON);
+        return PenguinEntity.isValidNaturalSpawn(entity, world, reason, pos, random);
+    }
+
     @Override
     protected int computeFallDamage(float fallDistance, float damageMultiplier) { return super.computeFallDamage(fallDistance, damageMultiplier) - 5; }
 
@@ -179,7 +193,7 @@ public class PenguinEntity extends AnimalEntity {
                 double velocityX = this.random.nextGaussian() * 0.15;
                 double velocityY = this.random.nextGaussian() * 0.15;
                 double velocityZ = this.random.nextGaussian() * 0.15;
-                this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getLandingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
+                this.world.addParticle(new BlockStateParticleEffect(ParticleTypes.BLOCK, this.getSteppingBlockState()), this.getParticleX(1), this.getRandomBodyY() - 0.5, this.getParticleZ(1) - 0.75, velocityX, velocityY, velocityZ);
             }
         }
         if (this.submergedInWater && this.isNavigating() && !this.hasEgg()){
@@ -295,11 +309,5 @@ public class PenguinEntity extends AnimalEntity {
 
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) { return SnowedOverEntities.PENGUIN.create(world); }
-
-    @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        BlockState state = world.getBlockState(pos.down());
-        return state.isIn(SnowedOverTags.PENGUIN_SPAWNABLE_ON) && world.getBaseLightLevel(pos, 0) > 8;
-    }
 
 }
