@@ -12,18 +12,22 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import static com.ninni.snowed_over.SnowedOver.*;
+
 @SuppressWarnings("unused")
 public class SnowedOverItems {
-    public static final Item PINECONE = register("pinecone", new PineconeItem(new FabricItemSettings().group(ItemGroup.MISC).food(new FoodComponent.Builder().hunger(2).saturationModifier(0.0F).build())));
-    public static final Item COMPACTED_SNOW_BRICK = register("compacted_snow_brick", new Item(new FabricItemSettings().group(ItemGroup.MISC)));
-    public static final Item COMPACTED_SNOW_BRICKS = register("compacted_snow_bricks", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICKS, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
-    public static final Item COMPACTED_SNOW_BRICK_STAIRS = register("compacted_snow_brick_stairs", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_STAIRS, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
-    public static final Item COMPACTED_SNOW_BRICK_SLAB = register("compacted_snow_brick_slab", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_SLAB, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
-    public static final Item COMPACTED_SNOW_FOUNDATION = register("compacted_snow_foundation", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_FOUNDATION, new FabricItemSettings().group(ItemGroup.BUILDING_BLOCKS)));
-    public static final Item HOOF_ARMOR = register("hoof_armor", new HoofArmorItem(new FabricItemSettings().maxCount(1).group(ItemGroup.TRANSPORTATION)));
+    public static final Item PINECONE = register("pinecone", new PineconeItem(new FabricItemSettings().group(ITEM_GROUP).food(new FoodComponent.Builder().hunger(2).saturationModifier(0.0F).build())));
+
+    public static final Item COMPACTED_SNOW_BRICK = register("compacted_snow_brick", new Item(new FabricItemSettings().group(ITEM_GROUP)));
+    public static final Item COMPACTED_SNOW_BRICKS = register("compacted_snow_bricks", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICKS, new FabricItemSettings().group(ITEM_GROUP)));
+    public static final Item COMPACTED_SNOW_BRICK_STAIRS = register("compacted_snow_brick_stairs", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_STAIRS, new FabricItemSettings().group(ITEM_GROUP)));
+    public static final Item COMPACTED_SNOW_BRICK_SLAB = register("compacted_snow_brick_slab", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_SLAB, new FabricItemSettings().group(ITEM_GROUP)));
+    public static final Item COMPACTED_SNOW_FOUNDATION = register("compacted_snow_foundation", new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_FOUNDATION, new FabricItemSettings().group(ITEM_GROUP)));
+
+    public static final Item HOOF_ARMOR = register("hoof_armor", new HoofArmorItem(new FabricItemSettings().maxCount(1).group(ITEM_GROUP)));
 
     private static Item register(String id, Item item) {
-        return Registry.register(Registry.ITEM, new Identifier(SnowedOver.MOD_ID, id), item);
+        return Registry.register(Registry.ITEM, new Identifier(MOD_ID, id), item);
     }
 
     static {
