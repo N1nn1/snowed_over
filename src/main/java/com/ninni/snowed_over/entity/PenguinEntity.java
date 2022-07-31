@@ -55,7 +55,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
-import net.minecraft.world.BlockRenderView;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -63,6 +62,8 @@ import net.minecraft.world.WorldAccess;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
+
+import static net.minecraft.tag.BlockTags.*;
 
 @SuppressWarnings("unused")
 public class PenguinEntity extends AnimalEntity {
@@ -124,12 +125,10 @@ public class PenguinEntity extends AnimalEntity {
     @Override
     public boolean isPushedByFluids() { return false; }
 
-    public static boolean isValidNaturalSpawn(EntityType<? extends AnimalEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) { return world.getBlockState(pos.down()).isIn(BlockTags.ANIMALS_SPAWNABLE_ON) && AnimalEntity.isLightLevelValidForNaturalSpawn(world, pos); }
-    protected static boolean isLightLevelValidForNaturalSpawn(BlockRenderView world, BlockPos pos) { return world.getBaseLightLevel(pos, 0) > 8; }
+    public static boolean isValidNaturalSpawn(EntityType<? extends AnimalEntity> type, WorldAccess world, SpawnReason spawnReason, BlockPos pos, Random random) { return world.getBlockState(pos.down()).isIn(ANIMALS_SPAWNABLE_ON); }
 
     public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
-        if (world.getBiome(pos).isIn(SnowedOverTags.PENGUIN_SPAWNS_ALTERNATE)) return PenguinEntity.isLightLevelValidForNaturalSpawn(world, pos) && world.getBlockState(pos.down()).isIn(SnowedOverTags.PENGUIN_SPAWNABLE_ON);
-        return PenguinEntity.isValidNaturalSpawn(entity, world, reason, pos, random);
+        return world.getBlockState(pos.down()).isIn(SnowedOverTags.PENGUIN_SPAWNABLE_ON);
     }
 
     @Override

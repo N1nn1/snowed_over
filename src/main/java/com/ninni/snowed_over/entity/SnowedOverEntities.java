@@ -44,8 +44,8 @@ public class SnowedOverEntities {
     );
 
     static {
-        BiomeModifications.addSpawn(BiomeSelectors.tag(SnowedOverTags.PENGUIN_SPAWNS_IN), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 10, 4, 7);
-        BiomeModifications.addSpawn(BiomeSelectors.tag(ConventionalBiomeTags.CLIMATE_COLD), SpawnGroup.CREATURE, SnowedOverEntities.REINDEER, 8, 1, 4);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(SnowedOverTags.PENGUIN_SPAWNS_IN), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 5, 3, 8);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(ConventionalBiomeTags.CLIMATE_COLD), SpawnGroup.CREATURE, SnowedOverEntities.REINDEER, 5, 1, 2);
     }
 
 
