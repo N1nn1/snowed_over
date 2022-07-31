@@ -32,7 +32,7 @@ public class LeavesBlockMixin extends Block {
 
 
     @Inject(at = @At("TAIL"), method = "<init>")
-    public void constructor(CallbackInfo info) {this.setDefaultState(this.stateManager.getDefaultState().with(SNOWY, false).with(LeavesBlock.DISTANCE, 7).with(LeavesBlock.PERSISTENT, false));}
+    public void constructor(CallbackInfo info) {this.setDefaultState(this.stateManager.getDefaultState().with(SNOWY, false).with(LeavesBlock.DISTANCE, 7).with(LeavesBlock.WATERLOGGED, false).with(LeavesBlock.PERSISTENT, false));}
 
     @SuppressWarnings("deprecation")
     @Inject(at = @At("RETURN"), method = "getStateForNeighborUpdate", cancellable = true)
