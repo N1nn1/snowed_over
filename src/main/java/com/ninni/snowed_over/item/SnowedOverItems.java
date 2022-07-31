@@ -8,12 +8,15 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
 @SuppressWarnings("unused")
 public class SnowedOverItems {
+    public static final Item SNOWED_OVER = register("snowed_over", new Item(new FabricItemSettings().fireproof().rarity(Rarity.EPIC).maxCount(1)));
+
     public static final Item PINECONE = register("pinecone", new PineconeItem(new FabricItemSettings().group(ITEM_GROUP).food(new FoodComponent.Builder().hunger(2).saturationModifier(0.0F).build())));
 
     public static final Item COMPACTED_SNOW_BRICK = register("compacted_snow_brick", new Item(new FabricItemSettings().group(ITEM_GROUP)));

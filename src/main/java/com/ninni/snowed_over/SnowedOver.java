@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 
 public class SnowedOver implements ModInitializer {
 	public static final String MOD_ID = "snowed_over";
-	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID, "item_group"), () -> new ItemStack(SnowedOverItems.PINECONE));
+	public static final ItemGroup ITEM_GROUP = FabricItemGroupBuilder.build(new Identifier(MOD_ID, "item_group"), () -> new ItemStack(SnowedOverItems.SNOWED_OVER));
 
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
