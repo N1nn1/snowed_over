@@ -54,13 +54,13 @@ import net.minecraft.tag.ItemTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class PenguinEntity extends AnimalEntity {
     private static final TrackedData<Integer> MOOD = DataTracker.registerData(PenguinEntity.class, TrackedDataHandlerRegistry.INTEGER);
@@ -297,7 +297,7 @@ public class PenguinEntity extends AnimalEntity {
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) { return SnowedOverEntities.PENGUIN.create(world); }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){
+    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
         BlockState state = world.getBlockState(pos.down());
         return state.isIn(SnowedOverBlockTags.PENGUIN_SPAWNABLE_ON) && world.getBaseLightLevel(pos, 0) > 8;
     }

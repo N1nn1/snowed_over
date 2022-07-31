@@ -5,7 +5,6 @@ import com.ninni.snowed_over.block.SnowedOverBlocks;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
 import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import com.ninni.snowed_over.world.gen.structures.SnowedOverStructures;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.minecraft.item.ItemGroup;
@@ -19,7 +18,6 @@ public class SnowedOver implements ModInitializer {
 	@SuppressWarnings("UnstableApiUsage")
 	@Override
 	public void onInitialize() {
-		SnowedOverStructures.init();
 		Reflection.initialize(
 			SnowedOverItems.class,
 			SnowedOverBlocks.class,

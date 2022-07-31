@@ -1,6 +1,5 @@
 package com.ninni.snowed_over.mixin;
 
-
 import com.ninni.snowed_over.entity.ReindeerEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -12,11 +11,10 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-
-import java.util.Random;
 
 @SuppressWarnings("deprecation")
 @Mixin(PowderSnowBlock.class)

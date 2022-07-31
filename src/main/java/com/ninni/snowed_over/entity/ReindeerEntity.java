@@ -47,12 +47,12 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
 import java.util.UUID;
 
 public class ReindeerEntity extends AbstractHorseEntity {
@@ -353,7 +353,7 @@ public class ReindeerEntity extends AbstractHorseEntity {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random){
+    public static boolean canSpawn(EntityType <ReindeerEntity> entity, ServerWorldAccess world, SpawnReason reason, BlockPos pos, Random random) {
         BlockState state = world.getBlockState(pos.down());
         return state.isOf(Blocks.GRASS_BLOCK) && world.getBaseLightLevel(pos, 0) > 8;
     }

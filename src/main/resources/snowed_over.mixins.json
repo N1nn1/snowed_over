@@ -9,7 +9,6 @@
     "LocateCommandMixin",
     "PowderSnowMixin",
     "ServerPlayerEntityMixin",
-    "StructureFeatureAccessor",
     "WolfEntityMixin"
   ],
   "client": [

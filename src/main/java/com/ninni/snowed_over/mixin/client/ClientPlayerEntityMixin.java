@@ -21,7 +21,7 @@ public class ClientPlayerEntityMixin {
 
     @Shadow public Input input;
 
-    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(Z)V", shift = At.Shift.AFTER), method = "tickMovement", locals = LocalCapture.CAPTURE_FAILSOFT)
+    @Inject(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/Input;tick(ZF)V", shift = At.Shift.AFTER), method = "tickMovement", locals = LocalCapture.CAPTURE_FAILSOFT)
     private void SO$TickMovement(CallbackInfo info, boolean flag) {
         ClientPlayerEntity $this = (ClientPlayerEntity)(Object)this;
         Entity ridingEntity = $this.getVehicle();

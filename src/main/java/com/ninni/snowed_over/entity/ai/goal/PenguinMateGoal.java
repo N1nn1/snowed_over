@@ -6,9 +6,8 @@ import net.minecraft.entity.ExperienceOrbEntity;
 import net.minecraft.entity.ai.goal.AnimalMateGoal;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.GameRules;
-
-import java.util.Random;
 
  public class PenguinMateGoal extends AnimalMateGoal {
     private final PenguinEntity penguin;
