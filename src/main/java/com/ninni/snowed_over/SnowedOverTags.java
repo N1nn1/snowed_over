@@ -9,6 +9,7 @@ import net.minecraft.world.biome.Biome;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
+@SuppressWarnings("unused")
 public interface SnowedOverTags {
 
     //Item tags
@@ -19,4 +20,5 @@ public interface SnowedOverTags {
 
     //Biome tags
     TagKey<Biome> PENGUIN_SPAWNS = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "penguin_spawns"));
+    TagKey<Biome> REVAMPED_IGLOO_GENERATES = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "revamped_igloo_generates"));
 }
