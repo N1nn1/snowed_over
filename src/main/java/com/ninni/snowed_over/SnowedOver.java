@@ -23,6 +23,7 @@ public class SnowedOver implements ModInitializer {
 		Reflection.initialize(
 			SnowedOverItems.class,
 			SnowedOverBlocks.class,
+			SnowedOverLootTableAdditions.class,
 			SnowedOverSoundEvents.class,
 			SnowedOverEnchantments.class
 		);
