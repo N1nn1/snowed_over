@@ -36,8 +36,12 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
 
     @Override
     public Identifier getTexture(ReindeerEntity entity) {
-        if (festivity) { return TEXTURE_FESTIVE;}
-        return TEXTURE;
+        if (entity.hasCustomName()) {
+            String string = Formatting.strip(entity.getName().getString());
+            if ("reindeer".equalsIgnoreCase(string)) return TEXTURE_FESTIVE;
+        }
+
+        return this.festivity ? TEXTURE_FESTIVE : TEXTURE;
     }
 }
 
