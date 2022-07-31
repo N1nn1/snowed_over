@@ -24,8 +24,7 @@ public class RevampedIglooFeature extends StructureFeature<StructurePoolFeatureC
         BlockPos midPos = context.chunkPos().getCenterAtY(0);
         int i = context.chunkGenerator().getHeightOnGround(midPos.getX(), midPos.getZ(), Heightmap.Type.WORLD_SURFACE_WG, context.world());
         BlockPos blockPos = new BlockPos(chunkPos.getStartX(), i, chunkPos.getStartZ());
-        Optional<StructurePiecesGenerator<StructurePoolFeatureConfig>> structurePiecesGenerator = StructurePoolBasedGenerator.generate(context, PoolStructurePiece::new, blockPos, false, false);
-        return structurePiecesGenerator;
+        return StructurePoolBasedGenerator.generate(context, PoolStructurePiece::new, blockPos, false, false);
     }
 
 }

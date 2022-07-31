@@ -26,8 +26,5 @@ public class SnowedOver implements ModInitializer {
 			SnowedOverSoundEvents.class,
 			SnowedOverEnchantments.class
 		);
-
-		BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SNOWY_PLAINS), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 10, 4, 4);
-
 	}
 }

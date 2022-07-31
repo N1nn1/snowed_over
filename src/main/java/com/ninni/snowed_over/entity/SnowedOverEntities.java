@@ -1,5 +1,7 @@
 package com.ninni.snowed_over.entity;
 
+import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityDimensions;
@@ -13,6 +15,7 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
+import net.minecraft.world.biome.BiomeKeys;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
@@ -24,7 +27,7 @@ public class SnowedOverEntities {
                                .defaultAttributes(ReindeerEntity::createReindeerAttributes)
                                .spawnGroup(SpawnGroup.CREATURE)
                                .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.WORLD_SURFACE_WG, ReindeerEntity::canSpawn)
-                               .dimensions(EntityDimensions.changing(1.0F, 1.6F))
+                               .dimensions(EntityDimensions.changing(1.0F, 1.2F))
                                .trackRangeBlocks(8),
         new int[]{ 0x5c392d, 0xdacabc }
     );
@@ -39,6 +42,10 @@ public class SnowedOverEntities {
                                .trackRangeBlocks(8),
         new int[]{ 0x292929, 0xfff089 }
     );
+
+    static {
+        BiomeModifications.addSpawn(BiomeSelectors.includeByKey(BiomeKeys.SNOWY_PLAINS, BiomeKeys.FROZEN_OCEAN, BiomeKeys.SNOWY_BEACH), SpawnGroup.CREATURE, SnowedOverEntities.PENGUIN, 15, 4, 7);
+    }
 
 
     @SuppressWarnings("unchecked")

@@ -1,12 +1,15 @@
 package com.ninni.snowed_over.client.renderer.entity.feature;
 
 import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
+import com.ninni.snowed_over.client.renderer.ReindeerEntityRenderer;
 import com.ninni.snowed_over.entity.ReindeerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.EyesFeatureRenderer;
 import net.minecraft.client.render.entity.feature.FeatureRendererContext;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
 import static com.ninni.snowed_over.SnowedOver.*;
@@ -16,6 +19,11 @@ public class ReindeerFestiveOverlayFeatureRenderer extends EyesFeatureRenderer<R
     private static final RenderLayer OVERLAY = RenderLayer.getEyes(new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_festive_overlay.png"));
 
     public ReindeerFestiveOverlayFeatureRenderer(FeatureRendererContext<ReindeerEntity, ReindeerEntityModel<ReindeerEntity>> context) { super(context); }
+
+    @Override
+    public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ReindeerEntity entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
+        if (ReindeerEntityRenderer.isFestive(entity)) super.render(matrices, vertexConsumers, light, entity, limbAngle, limbDistance, tickDelta, animationProgress, headYaw, headPitch);
+    }
 
     @Override
     public RenderLayer getEyesTexture() {
