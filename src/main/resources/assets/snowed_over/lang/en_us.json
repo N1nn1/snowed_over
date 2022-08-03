@@ -4,7 +4,7 @@
   "advancements.snowed_over.cloud_jumper_boost.title": "Dashing through the... Sky?",
   "advancements.snowed_over.cloud_jumper_boost.description": "Fly in the air with a reindeer",
 
-  "snowed_over.commands.locate.revamped_igloo": "Use /locate snowed_over:revamped_igloo",
+  "snowed_over.commands.locate.revamped_igloo": "Use /locate structure snowed_over:revamped_igloo",
 
   "entity.snowed_over.reindeer": "Reindeer",
   "entity.snowed_over.penguin": "Penguin",

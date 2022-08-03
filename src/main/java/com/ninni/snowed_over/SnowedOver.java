@@ -7,6 +7,7 @@ import com.ninni.snowed_over.init.SnowedOverBlocks;
 import com.ninni.snowed_over.init.SnowedOverEnchantments;
 import com.ninni.snowed_over.init.SnowedOverEntityTypes;
 import com.ninni.snowed_over.init.SnowedOverItems;
+import com.ninni.snowed_over.init.SnowedOverLootModifiers;
 import com.ninni.snowed_over.init.SnowedOverSoundEvents;
 import com.ninni.snowed_over.network.SnowedOverNetworkHandler;
 import com.ninni.snowed_over.util.SnowedOverCreativeModeTab;
@@ -33,6 +34,7 @@ public class SnowedOver {
 		SnowedOverEntityTypes.ENTITY_TYPES.register(modEventBus);
 		SnowedOverEnchantments.ENCHANTMENTS.register(modEventBus);
 		SnowedOverItems.ITEMS.register(modEventBus);
+		SnowedOverLootModifiers.LOOT_MODIFIERS.register(modEventBus);
 		SnowedOverSoundEvents.SOUNDS.register(modEventBus);
 
 		eventBus.register(this);

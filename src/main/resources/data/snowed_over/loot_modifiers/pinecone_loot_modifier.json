@@ -1,0 +1,9 @@
+{
+  "type": "snowed_over:pinecone_loot_modifier",
+  "conditions": [
+    {
+      "condition": "block_state_property",
+      "block":"minecraft:spruce_leaves"
+    }
+  ]
+}
