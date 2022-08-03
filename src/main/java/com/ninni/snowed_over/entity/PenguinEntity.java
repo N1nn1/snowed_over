@@ -10,6 +10,7 @@ import com.ninni.snowed_over.entity.ai.goal.PenguinSwimAroundGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinSwimGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinTemptGoal;
 import com.ninni.snowed_over.entity.ai.goal.PenguinWanderAroundFarGoal;
+import com.ninni.snowed_over.init.SnowedOverBlockTags;
 import com.ninni.snowed_over.init.SnowedOverEntityTypes;
 import com.ninni.snowed_over.init.SnowedOverSoundEvents;
 import net.minecraft.core.BlockPos;
@@ -24,6 +25,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityDimensions;
@@ -31,6 +34,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -50,8 +54,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.AmphibiousNodeEvaluator;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.PathFinder;
@@ -59,7 +61,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.Random;
 
 public class PenguinEntity extends Animal {
     private static final EntityDataAccessor<Integer> MOOD = SynchedEntityData.defineId(PenguinEntity.class, EntityDataSerializers.INT);
@@ -96,6 +97,13 @@ public class PenguinEntity extends Animal {
         this.goalSelector.addGoal(12, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(13, new PenguinLookAtEntityGoal(this, Player.class, 6.0F));
         this.goalSelector.addGoal(14, new PenguinLookAtEntityGoal(this, PenguinEntity.class, 6.0F));
+    }
+
+    @Override
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, @Nullable SpawnGroupData data, @Nullable CompoundTag entityNbt) {
+        AgeableMobGroupData passiveData = (AgeableMobGroupData)data;
+        if (passiveData != null && passiveData.getGroupSize() > 0 && this.random.nextFloat() <= passiveData.getBabySpawnChance()) this.setHasEgg(true);
+        return super.finalizeSpawn(world, difficulty, spawnReason, data, entityNbt);
     }
 
     public static AttributeSupplier.Builder createPenguinAttributes() {
@@ -315,9 +323,8 @@ public class PenguinEntity extends Animal {
     }
 
     @SuppressWarnings("unused")
-    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, Random random){
-        BlockState state = world.getBlockState(pos.below());
-        return state.is(Blocks.GRASS_BLOCK) && world.getRawBrightness(pos, 0) > 8;
+    public static boolean canSpawn(EntityType <PenguinEntity> entity, ServerLevelAccessor world, MobSpawnType reason, BlockPos pos, RandomSource random){
+        return world.getBlockState(pos.below()).is(SnowedOverBlockTags.PENGUIN_SPAWNABLE_ON);
     }
 
 }

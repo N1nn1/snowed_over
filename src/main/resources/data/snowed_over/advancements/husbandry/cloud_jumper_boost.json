@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:husbandry/root",
+  "parent": "minecraft:husbandry/tame_an_animal",
   "display": {
     "icon": {
       "item": "snowed_over:hoof_armor"
@@ -10,19 +10,19 @@
     "description": {
       "translate": "advancements.snowed_over.cloud_jumper_boost.description"
     },
-    "frame": "challenge",
+    "frame": "goal",
     "show_toast": true,
     "announce_to_chat": true,
     "hidden": false
   },
   "criteria": {
-    "do_trade": {
+    "cloud_jump": {
       "trigger": "snowed_over:cloud_jumper_boost"
     }
   },
   "requirements": [
     [
-      "do_trade"
+      "cloud_jump"
     ]
   ]
 }

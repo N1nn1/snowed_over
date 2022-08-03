@@ -26,13 +26,13 @@ public class LeavesBlockMixin extends Block {
     @Final @Shadow public static BooleanProperty PERSISTENT;
     @Final @Shadow public static IntegerProperty DISTANCE;
 
-    private static final BooleanProperty SNOWY= BlockStateProperties.SNOWY;
+    private static final BooleanProperty SNOWY = BlockStateProperties.SNOWY;
 
-    public LeavesBlockMixin(Properties settings) {super(settings);}
+    public LeavesBlockMixin(Properties settings) { super(settings); }
 
 
     @Inject(at = @At("TAIL"), method = "<init>")
-    public void constructor(CallbackInfo info) {this.registerDefaultState(this.stateDefinition.any().setValue(SNOWY, false).setValue(LeavesBlock.DISTANCE, 7).setValue(LeavesBlock.PERSISTENT, false));}
+    public void constructor(CallbackInfo info) { this.registerDefaultState(this.stateDefinition.any().setValue(SNOWY, false).setValue(LeavesBlock.DISTANCE, 7).setValue(LeavesBlock.WATERLOGGED, false).setValue(LeavesBlock.PERSISTENT, false)); }
 
     @Inject(at = @At("RETURN"), method = "updateShape", cancellable = true)
     public void updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {

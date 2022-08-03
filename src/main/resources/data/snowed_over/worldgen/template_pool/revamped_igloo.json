@@ -8,16 +8,16 @@
         "element_type": "minecraft:single_pool_element",
         "location": "snowed_over:revamped_igloo_without_basement",
         "projection": "rigid",
-        "processors": "snowed_over:revamped_igloo_processors"
+        "processors": "minecraft:empty"
       }
     },
     {
-      "weight": 10,
+      "weight": 1,
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "snowed_over:revamped_igloo",
         "projection": "rigid",
-        "processors": "snowed_over:revamped_igloo_processors"
+        "processors": "minecraft:empty"
       }
     }
   ]

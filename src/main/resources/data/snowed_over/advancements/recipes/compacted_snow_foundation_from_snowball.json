@@ -6,12 +6,14 @@
     ]
   },
   "criteria": {
-    "has_compacted_snow_brick": {
+    "has_snowball": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "snowed_over:compacted_snow_brick"
+            "items": [
+              "minecraft:snowball"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "snowed_over:compacted_snow_foundation"
+        "recipe": "snowed_over:compacted_snow_foundation_from_snowball"
       }
     }
   },
   "requirements": [
     [
-      "has_compacted_snow_brick",
+      "has_snowball",
       "has_the_recipe"
     ]
   ]

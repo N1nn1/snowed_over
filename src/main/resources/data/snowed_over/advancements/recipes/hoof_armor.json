@@ -2,16 +2,18 @@
   "parent": "minecraft:recipes/root",
   "rewards": {
     "recipes": [
-      "snowed_over:compacted_snow_foundation"
+      "snowed_over:hoof_armor"
     ]
   },
   "criteria": {
-    "has_snowball": {
+    "has_copper_ingot": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "item": "minecraft:snowball"
+            "items": [
+              "minecraft:copper_ingot"
+            ]
           }
         ]
       }
@@ -19,13 +21,13 @@
     "has_the_recipe": {
       "trigger": "minecraft:recipe_unlocked",
       "conditions": {
-        "recipe": "snowed_over:compacted_snow_foundation"
+        "recipe": "snowed_over:hoof_armor"
       }
     }
   },
   "requirements": [
     [
-      "has_snowball",
+      "has_copper_ingot",
       "has_the_recipe"
     ]
   ]
