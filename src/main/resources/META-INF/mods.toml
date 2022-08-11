@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All rights reserved"
 [[mods]]
 modId="snowed_over"
-version="1.19-1.0.0"
+version="1.19.1-1.0.0"
 displayName="Snowed Over"
 logoFile="snowed_over.png"
 credits="Orcinus"
