@@ -300,7 +300,7 @@ public class ReindeerEntity extends AbstractHorseEntity {
         if (this.hasPassenger(passenger)) {
             float f = MathHelper.cos(this.bodyYaw * 0.0175F);
             float g = MathHelper.sin(this.bodyYaw * 0.0175F);
-            passenger.setPosition(this.getX() + (double)(0.3F * g), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset(), this.getZ() - (double)(0.3F * f));
+            passenger.setPosition(this.getX() + (double)(0.3F * g), this.getY() + this.getMountedHeightOffset() + passenger.getHeightOffset() + 0.25F, this.getZ() - (double)(0.3F * f));
         }
     }
 
