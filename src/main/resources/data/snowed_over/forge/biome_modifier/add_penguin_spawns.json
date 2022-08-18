@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "#snowed_over:penguin_spawns_in",
+  "spawners": [
+    {
+      "type": "snowed_over:penguin",
+      "weight": 5,
+      "minCount": 3,
+      "maxCount": 8
+    }
+  ]
+}

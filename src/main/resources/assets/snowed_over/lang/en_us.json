@@ -26,6 +26,8 @@
   "block.snowed_over.compacted_snow_brick_stairs": "Compacted Snow Brick Stairs",
   "block.snowed_over.compacted_snow_foundation": "Compacted Snow Foundation",
 
+  "block.snowed_over.compacted_snow_brick_vertical_slab": "Compacted Snow Brick Vertical Slab",
+
   "subtitles.entity.snowed_over.reindeer.gallop": "Reindeer tendons click",
   "subtitles.entity.snowed_over.reindeer.breathe": "Reindeer exhales",
   "subtitles.entity.snowed_over.reindeer.idle": "Reindeer grunts",

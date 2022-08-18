@@ -2,7 +2,6 @@ package com.ninni.snowed_over;
 
 import com.ninni.snowed_over.events.MiscEvents;
 import com.ninni.snowed_over.events.MobEvents;
-import com.ninni.snowed_over.init.SnowedOverBiomeModifiers;
 import com.ninni.snowed_over.init.SnowedOverBlocks;
 import com.ninni.snowed_over.init.SnowedOverEnchantments;
 import com.ninni.snowed_over.init.SnowedOverEntityTypes;
@@ -30,7 +29,6 @@ public class SnowedOver {
 		modEventBus.addListener(this::commonSetup);
 
 		SnowedOverBlocks.BLOCKS.register(modEventBus);
-		SnowedOverBiomeModifiers.BIOME_MODIFIERS.register(modEventBus);
 		SnowedOverEntityTypes.ENTITY_TYPES.register(modEventBus);
 		SnowedOverEnchantments.ENCHANTMENTS.register(modEventBus);
 		SnowedOverItems.ITEMS.register(modEventBus);

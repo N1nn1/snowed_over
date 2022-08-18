@@ -1,5 +1,6 @@
 package com.ninni.snowed_over.init;
 
+import com.ninni.snowed_over.block.VerticalSlabBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
@@ -21,6 +22,7 @@ public class SnowedOverBlocks {
     public static final RegistryObject<Block> COMPACTED_SNOW_BRICKS = BLOCKS.register("compacted_snow_bricks", () -> new Block(BlockBehaviour.Properties.of(Material.SNOW).requiresCorrectToolForDrops().strength(0.4F).sound(SnowedOverSoundEvents.COMPACTED_SNOW)));
     public static final RegistryObject<Block> COMPACTED_SNOW_BRICK_STAIRS = BLOCKS.register("compacted_snow_brick_stairs", () -> new StairBlock(COMPACTED_SNOW_BRICKS.get().defaultBlockState(), Properties.copy(COMPACTED_SNOW_BRICKS.get())));
     public static final RegistryObject<Block> COMPACTED_SNOW_BRICK_SLAB = BLOCKS.register("compacted_snow_brick_slab", () -> new SlabBlock(Properties.copy(COMPACTED_SNOW_BRICKS.get())));
+    public static final RegistryObject<Block> COMPACTED_SNOW_BRICK_VERTICAL_SLAB = BLOCKS.register("compacted_snow_brick_vertical_slab", () -> new VerticalSlabBlock(Properties.copy(COMPACTED_SNOW_BRICKS.get())));
     public static final RegistryObject<Block> COMPACTED_SNOW_FOUNDATION = BLOCKS.register("compacted_snow_foundation", () -> new Block(Properties.copy(COMPACTED_SNOW_BRICKS.get())));
 
 }

@@ -8,6 +8,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -29,6 +30,7 @@ public class SnowedOverItems {
     public static final RegistryObject<Item> COMPACTED_SNOW_BRICKS = ITEMS.register("compacted_snow_bricks", () -> new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICKS.get(), new Item.Properties().tab(SnowedOver.TAB)));
     public static final RegistryObject<Item> COMPACTED_SNOW_BRICK_STAIRS = ITEMS.register("compacted_snow_brick_stairs", () -> new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_STAIRS.get(), new Item.Properties().tab(SnowedOver.TAB)));
     public static final RegistryObject<Item> COMPACTED_SNOW_BRICK_SLAB = ITEMS.register("compacted_snow_brick_slab", () -> new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_SLAB.get(), new Item.Properties().tab(SnowedOver.TAB)));
+    public static final RegistryObject<Item> COMPACTED_SNOW_BRICK_VERTICAL_SLAB = ITEMS.register("compacted_snow_brick_vertical_slab", () -> new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_BRICK_VERTICAL_SLAB.get(), new Item.Properties().tab(ModList.get().isLoaded("quark") ? SnowedOver.TAB : null)));
     public static final RegistryObject<Item> COMPACTED_SNOW_FOUNDATION = ITEMS.register("compacted_snow_foundation", () -> new BlockItem(SnowedOverBlocks.COMPACTED_SNOW_FOUNDATION.get(), new Item.Properties().tab(SnowedOver.TAB)));
 
     public static final RegistryObject<Item> HOOF_ARMOR = ITEMS.register("hoof_armor", () -> new HoofArmorItem(new Item.Properties().stacksTo(1).tab(SnowedOver.TAB)));
