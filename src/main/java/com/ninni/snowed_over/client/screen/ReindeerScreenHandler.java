@@ -1,8 +1,6 @@
 package com.ninni.snowed_over.client.screen;
 
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -11,7 +9,6 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-@Environment(EnvType.CLIENT)
 public class ReindeerScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final ReindeerEntity entity;
