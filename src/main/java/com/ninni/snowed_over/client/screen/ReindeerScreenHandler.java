@@ -11,7 +11,6 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
-@Environment(EnvType.CLIENT)
 public class ReindeerScreenHandler extends ScreenHandler {
     private final Inventory inventory;
     private final ReindeerEntity entity;
