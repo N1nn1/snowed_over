@@ -1,8 +1,6 @@
 package com.ninni.snowed_over.client.screen;
 
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
