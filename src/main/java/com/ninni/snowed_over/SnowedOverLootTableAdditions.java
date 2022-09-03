@@ -39,7 +39,8 @@ public class SnowedOverLootTableAdditions {
             if (id.equals(LootTables.IGLOO_CHEST_CHEST)) {
                 tableBuilder.pool(LootPool.builder()
                                           .with(ItemEntry.builder(Items.BOOK)
-                                                         .apply(EnchantRandomlyLootFunction.create().add(SnowedOverEnchantments.CLOUD_JUMPER).add(SnowedOverEnchantments.HASTY_HOOVES).add(Enchantments.FROST_WALKER)))
+                                                         .weight(10)
+                                                         .apply(EnchantRandomlyLootFunction.create().add(SnowedOverEnchantments.CLOUD_JUMPER).add(SnowedOverEnchantments.HASTY_HOOVES)))
                                           .with(ItemEntry.builder(SnowedOverItems.COMPACTED_SNOW_BRICK)
                                                          .weight(3)
                                                          .apply(SetCountLootFunction.builder(UniformLootNumberProvider.create(2, 16))))
