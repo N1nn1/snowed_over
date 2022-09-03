@@ -27,7 +27,7 @@ public class SnowedOverEntities {
                                .defaultAttributes(ReindeerEntity::createReindeerAttributes)
                                .spawnGroup(SpawnGroup.CREATURE)
                                .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.WORLD_SURFACE_WG, ReindeerEntity::canSpawn)
-                               .dimensions(EntityDimensions.changing(1.0F, 1.2F))
+                               .dimensions(EntityDimensions.changing(1.3F, 1.6F))
                                .trackRangeBlocks(8),
         new int[]{ 0x5c392d, 0xdacabc }
     );

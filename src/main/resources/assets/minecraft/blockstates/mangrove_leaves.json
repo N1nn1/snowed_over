@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "snowy=false": {
+      "model": "minecraft:block/mangrove_leaves"
+    },
+    "snowy=true": {
+      "model": "minecraft:block/mangrove_leaves_snow"
+    }
+  }
+}

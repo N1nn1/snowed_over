@@ -12,177 +12,168 @@ import net.minecraft.client.model.TexturedModelData;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.util.math.MathHelper;
 
+import static net.minecraft.client.render.entity.model.EntityModelPartNames.*;
+
 @SuppressWarnings("FieldCanBeLocal, unused")
 public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<ReindeerEntity> {
+    private static final String LEFT_SADDLE_LINE = "left_saddle_line";
+    private static final String RIGHT_SADDLE_LINE = "right_saddle_line";
     private final ModelPart root;
-
+    private final ModelPart neck;
     private final ModelPart head;
-    private final ModelPart leftRein;
-    private final ModelPart rightRein;
     private final ModelPart leftAntler;
     private final ModelPart rightAntler;
-    private final ModelPart leftEar;
+    private final ModelPart rightRein;
+    private final ModelPart leftRein;
     private final ModelPart rightEar;
+    private final ModelPart leftEar;
     private final ModelPart body;
-    private final ModelPart tail;
     private final ModelPart rightLeg;
     private final ModelPart leftLeg;
     private final ModelPart rightArm;
     private final ModelPart leftArm;
 
+
     public ReindeerEntityModel(ModelPart root) {
         this.root = root;
 
-        this.body         = root.getChild("body");
-        this.rightLeg     = root.getChild("rightLeg");
-        this.leftLeg      = root.getChild("leftLeg");
-        this.leftArm      = root.getChild("leftArm");
-        this.rightArm     = root.getChild("rightArm");
-        this.head         = root.getChild("head");
+        this.body         = root.getChild(BODY);
+        this.rightLeg     = root.getChild(RIGHT_LEG);
+        this.leftLeg      = root.getChild(LEFT_LEG);
+        this.leftArm      = root.getChild(LEFT_ARM);
+        this.rightArm     = root.getChild(RIGHT_ARM);
+        this.neck         = root.getChild(NECK);
 
-        this.tail         = body.getChild("tail");
+        this.head         = neck.getChild(HEAD);
 
-        this.rightAntler  = head.getChild("rightAntler");
-        this.leftAntler   = head.getChild("leftAntler");
-        this.leftRein     = head.getChild("leftRein");
-        this.rightRein    = head.getChild("rightRein");
-        this.leftEar      = head.getChild("leftEar");
-        this.rightEar     = head.getChild("rightEar");
+        this.rightAntler  = head.getChild(RIGHT_HORN);
+        this.leftAntler   = head.getChild(LEFT_HORN);
+        this.leftRein     = head.getChild(LEFT_SADDLE_LINE);
+        this.rightRein    = head.getChild(RIGHT_SADDLE_LINE);
+        this.leftEar      = head.getChild(LEFT_EAR);
+        this.rightEar     = head.getChild(RIGHT_EAR);
 
     }
 
     public static TexturedModelData getTexturedModelData() {
-
         ModelData data = new ModelData();
         ModelPartData root = data.getRoot();
 
-        ModelPartData head = root.addChild(
-            "head",
+        ModelPartData neck = root.addChild(
+            NECK,
             ModelPartBuilder.create()
                             .uv(0, 28)
-                            .mirrored(false)
-                            .cuboid(-3.5F, -16.0F, -5.0F, 7.0F, 19.0F, 6.0F, new Dilation(0.0F))
-                            .uv(44, 28)
-                            .mirrored(false)
-                            .cuboid(-3.5F, -16.0F, -5.0F, 7.0F, 19.0F, 6.0F, new Dilation(0.25F))
+                            .cuboid(-2.5F, -7.0F, -5.0F, 5.0F, 10.0F, 6.0F),
+            ModelTransform.of(0.0F, 6.0F, -6.0F, 0.0F, 0.0F, 0.0F)
+        );
+
+        ModelPartData head = neck.addChild(
+            HEAD,
+            ModelPartBuilder.create()
+                            .uv(0, 46)
+                            .cuboid(-3.5F, -6.0F, -4.0F, 7.0F, 6.0F, 7.0F)
+                            .uv(49, 21)
+                            .cuboid(-3.5F, -6.0F, -4.0F, 7.0F, 6.0F, 7.0F, new Dilation(0.25F))
                             .uv(0, 0)
-                            .mirrored(false)
-                            .cuboid(-2.5F, -14.0F, -9.0F, 5.0F, 4.0F, 4.0F, new Dilation(0.0F))
-                            .uv(0, 53)
-                            .mirrored(false)
-                            .cuboid(-2.5F, -14.0F, -9.0F, 5.0F, 4.0F, 4.0F, new Dilation(0.25F)),
-            ModelTransform.of(0.0F, 7.0F, -6.0F, 0.0F, 0.0F, 0.0F)
-        );
-
-        ModelPartData leftRein = head.addChild(
-            "leftRein",
-            ModelPartBuilder.create()
-                            .uv(0, 72)
-                            .mirrored(false)
-                            .cuboid(0.0F, -0.5F, 0.0F, 0.0F, 2.0F, 6.0F, new Dilation(0.0F)),
-            ModelTransform.of(3.5F, -12.5F, 1.0F, -0.3927F, 0.0F, 0.0F)
-        );
-
-        ModelPartData rightRein = head.addChild(
-            "rightRein",
-            ModelPartBuilder.create()
-                            .uv(0, 72)
-                            .mirrored(true)
-                            .cuboid(0.0F, -0.5F, 0.0F, 0.0F, 2.0F, 6.0F, new Dilation(0.0F)),
-            ModelTransform.of(-3.5F, -12.5F, 1.0F, -0.3927F, 0.0F, 0.0F)
+                            .cuboid(-2.5F, -4.0F, -8.0F, 5.0F, 4.0F, 4.0F)
+                            .uv(0, 60)
+                            .cuboid(-2.5F, -4.0F, -8.0F, 5.0F, 4.0F, 4.0F, new Dilation(0.25F)),
+            ModelTransform.of(0.0F, -7.0F, -2.0F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData leftAntler = head.addChild(
-            "leftAntler",
+            LEFT_HORN,
             ModelPartBuilder.create()
-                            .uv(0, 8)
-                            .mirrored(false)
-                            .cuboid(-1.0F, -10.0F, 0.0F, 6.0F, 10.0F, 0.0F, new Dilation(0.0F)),
-            ModelTransform.of(2.5F, -16.0F, -2.0F, 0.0F, -0.3927F, 0.0F)
+                            .uv(38, -5)
+                            .cuboid(0.0F, -9.0F, -6.0F, 0.0F, 9.0F, 14.0F),
+            ModelTransform.of(2.0F, -6.0F, -1.0F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData rightAntler = head.addChild(
-            "rightAntler",
+            RIGHT_HORN,
             ModelPartBuilder.create()
-                            .uv(0, 8)
+                            .uv(38, -5)
                             .mirrored(true)
-                            .cuboid(-5.0F, -10.0F, 0.0F, 6.0F, 10.0F, 0.0F, new Dilation(0.0F)),
-            ModelTransform.of(-2.5F, -16.0F, -2.0F, 0.0F, 0.3927F, 0.0F)
+                            .cuboid(0.0F, -9.0F, -6.0F, 0.0F, 9.0F, 14.0F),
+            ModelTransform.of(-2.0F, -6.0F, -1.0F, 0.0F, 0.0F, 0.0F)
         );
 
-        ModelPartData leftEar = head.addChild(
-            "leftEar",
+        ModelPartData rightRein = head.addChild(
+            RIGHT_SADDLE_LINE,
             ModelPartBuilder.create()
-                            .uv(38, 7)
-                            .mirrored(false)
-                            .cuboid(0.0F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new Dilation(0.0F)),
-            ModelTransform.of(3.5F, -14.5F, -1.5F, 0.0F, 0.0F, 0.0F)
+                            .uv(0, 72)
+                            .mirrored(true)
+                            .cuboid(0.0F, -0.5F, 0.0F, 0.0F, 2.0F, 6.0F),
+            ModelTransform.of(-3.5F, -1.5F, 3.0F, 0.3927F, 0.0F, 0.0F)
+        );
+
+        ModelPartData leftRein = head.addChild(
+            LEFT_SADDLE_LINE,
+            ModelPartBuilder.create()
+                            .uv(0, 72)
+                            .cuboid(0.0F, -0.5F, 0.0F, 0.0F, 2.0F, 6.0F),
+            ModelTransform.of(3.5F, -1.5F, 3.0F, 0.3927F, 0.0F, 0.0F)
         );
 
         ModelPartData rightEar = head.addChild(
-            "rightEar",
+            RIGHT_EAR,
             ModelPartBuilder.create()
-                            .uv(38, 7)
+                            .uv(38, 0)
                             .mirrored(true)
-                            .cuboid(-3.0F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F, new Dilation(0.0F)),
-            ModelTransform.of(-3.5F, -14.5F, -1.5F, 0.0F, 0.0F, 0.0F)
+                            .cuboid(-3.0F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F),
+            ModelTransform.of(-3.5F, -4.5F, 1.45F, 0.0F, 0.7854F, 0.0F)
+        );
+
+        ModelPartData leftEar = head.addChild(
+            LEFT_EAR,
+            ModelPartBuilder.create()
+                            .uv(38, 0)
+                            .cuboid(0.0F, -0.5F, -0.5F, 3.0F, 2.0F, 1.0F),
+            ModelTransform.of(3.5F, -4.5F, 1.45F, 0.0F, -0.7854F, 0.0F)
         );
 
         ModelPartData body = root.addChild(
-            "body",
+            BODY,
             ModelPartBuilder.create()
                             .uv(0, 0)
-                            .mirrored(false)
-                            .cuboid(-5.0F, -3.0F, -10.0F, 10.0F, 10.0F, 18.0F, new Dilation(0.0F))
+                            .cuboid(-5.0F, -3.0F, -10.0F, 10.0F, 10.0F, 18.0F)
                             .uv(24, 52)
-                            .mirrored(false)
                             .cuboid(-5.0F, -3.0F, -10.0F, 10.0F, 10.0F, 18.0F, new Dilation(0.5F)),
             ModelTransform.of(0.0F, 5.0F, 2.0F, 0.0F, 0.0F, 0.0F)
         );
 
-        ModelPartData tail = body.addChild(
-            "tail",
-            ModelPartBuilder.create()
-                            .uv(38, 10)
-                            .mirrored(false)
-                            .cuboid(-2.0F, -1.0F, 0.0F, 4.0F, 5.0F, 2.0F, new Dilation(0.0F)),
-            ModelTransform.of(0.0F, -1.0F, 8.0F, 0.0F, 0.0F, 0.0F)
-        );
-
         ModelPartData rightLeg = root.addChild(
-            "rightLeg",
+            RIGHT_LEG,
             ModelPartBuilder.create()
                             .uv(26, 28)
                             .mirrored(true)
-                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F, new Dilation(0.0F)),
-            ModelTransform.of(-3.0F, 12.0F, 5.5F, 0.0F, 0.0F, 0.0F)
+                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F),
+            ModelTransform.of(-3.0F, 12.0F, 8.5F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData leftLeg = root.addChild(
-            "leftLeg",
+            LEFT_LEG,
             ModelPartBuilder.create()
                             .uv(26, 28)
-                            .mirrored(false)
-                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F, new Dilation(0.0F)),
-            ModelTransform.of(3.0F, 12.0F, 5.5F, 0.0F, 0.0F, 0.0F)
+                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F),
+            ModelTransform.of(3.0F, 12.0F, 8.5F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData rightArm = root.addChild(
-            "rightArm",
+            RIGHT_ARM,
             ModelPartBuilder.create()
                             .uv(26, 28)
                             .mirrored(true)
-                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F, new Dilation(0.0F)),
-            ModelTransform.of(-3.0F, 12.0F, -4.5F, 0.0F, 0.0F, 0.0F)
+                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F),
+            ModelTransform.of(-3.0F, 12.0F, -5.5F, 0.0F, 0.0F, 0.0F)
         );
 
         ModelPartData leftArm = root.addChild(
-            "leftArm",
+            LEFT_ARM,
             ModelPartBuilder.create()
                             .uv(26, 28)
-                            .mirrored(false)
-                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F, new Dilation(0.0F)),
-            ModelTransform.of(2.5F, 12.0F, -4.5F, 0.0F, 0.0F, 0.0F)
+                            .cuboid(-2.0F, 0.0F, -2.5F, 4.0F, 12.0F, 5.0F),
+            ModelTransform.of(3.0F, 12.0F, -5.5F, 0.0F, 0.0F, 0.0F)
         );
 
         return TexturedModelData.of(data, 80, 80);
@@ -193,27 +184,29 @@ public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<R
         super.animateModel(entity, limbAngle, limbDistance, tickDelta);
         float angryAnim = entity.getAngryAnimationProgress(tickDelta);
 
-        this.head.pivotY = 7.0F;
-        this.head.pivotZ = -6.0F;
-        this.head.pitch = 0.0F;
+        this.neck.pivotY = 7.0F;
+        this.neck.pivotZ = -6.0F;
+        this.neck.pitch = 0.0F;
         this.body.pitch = 0.0F;
+        this.body.pivotZ = 2.0F;
         this.leftArm.pivotY = 12.0F;
         this.rightArm.pivotY = 12.0F;
         this.leftArm.pivotZ = -4.5F;
         this.rightArm.pivotZ = -4.5F;
-        if (!entity.canCloudJump()) this.head.pitch = angryAnim + (1.0F - angryAnim) * this.head.pitch;
-        else this.head.pitch = angryAnim * 0.5F + (1.0F - angryAnim) * this.head.pitch;
+        if (!entity.canCloudJump()) this.neck.pitch = angryAnim + (1.0F - angryAnim) * this.neck.pitch;
+        else this.neck.pitch = angryAnim * 0.5F + (1.0F - angryAnim) * this.neck.pitch;
         this.body.pitch = angryAnim * -0.8F + (1.0F - angryAnim) * this.body.pitch;
-        this.head.pivotY = angryAnim * -1.0F + (1.0F - angryAnim) * this.head.pivotY;
-        this.head.pivotZ = angryAnim * -3F + (1.0F - angryAnim) * this.head.pivotZ;
+        this.body.pivotZ += angryAnim * 4F + (1.0F - angryAnim) * this.body.pitch;
+        this.neck.pivotY = angryAnim * -1.0F + (1.0F - angryAnim) * this.neck.pivotY;
+        this.neck.pivotZ = angryAnim * -3F + (1.0F - angryAnim) * this.neck.pivotZ;
         this.leftArm.pivotY = angryAnim * 4F + (1.0F - angryAnim) * this.leftArm.pivotY;
         this.rightArm.pivotY = angryAnim * 4F + (1.0F - angryAnim) * this.rightArm.pivotY;
-        this.leftArm.pivotZ = angryAnim * -8F + (1.0F - angryAnim) * this.leftArm.pivotZ;
-        this.rightArm.pivotZ = angryAnim * -8F + (1.0F - angryAnim) * this.rightArm.pivotZ;
+        this.leftArm.pivotZ = angryAnim * -4F + (1.0F - angryAnim) * this.leftArm.pivotZ;
+        this.rightArm.pivotZ = angryAnim * -4F + (1.0F - angryAnim) * this.rightArm.pivotZ;
         if (entity.tailWagTicks != 0 && !entity.hasPassengers()) {
-            this.head.roll = MathHelper.cos((float)entity.age + tickDelta * 0.8F) * 0.2F;
+            this.neck.roll = MathHelper.cos((float)entity.age + tickDelta * 0.8F) * 0.2F;
         } else {
-            this.head.roll = 0.0F;
+            this.neck.roll = 0.0F;
         }
     }
 
@@ -225,7 +218,7 @@ public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<R
 
         leftRein.visible = false;
         rightRein.visible = false;
-        head.pitch += headPitch * ((float) Math.PI / 180f);
+        head.pitch = headPitch * ((float) Math.PI / 180f);
         head.yaw = headYaw * ((float) Math.PI / 180f);
         rightLeg.pitch = MathHelper.cos(limbAngle * speed * 0.6F) * 1.4F * limbDistance;
         leftLeg.pitch = MathHelper.cos(limbAngle * speed * 0.6F + (float)Math.PI) * 1.4F * limbDistance;
@@ -237,20 +230,20 @@ public class ReindeerEntityModel<T extends ReindeerEntity> extends AnimalModel<R
             leftLeg.pitch = MathHelper.sin(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.75F;
             rightArm.pitch = MathHelper.sin(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.5F;
             leftArm.pitch = MathHelper.cos(limbAngle * speed * 0.3F) * 0.35F * limbDistance + 0.5F;
-            if (entity.hasPassengers()) head.pitch += MathHelper.cos(limbAngle * speed * 0.2F) * 0.1 * limbDistance + 0.5F;
+            if (entity.hasPassengers()) neck.pitch += MathHelper.cos(limbAngle * speed * 0.2F) * 0.1 * limbDistance + 0.5F;
         }
 
         if (entity.hasPassengers()) {
             leftRein.visible = true;
             rightRein.visible = true;
-            head.pitch += MathHelper.cos(limbAngle * speed * 0.2F) * 0.1 * limbDistance;
+            neck.pitch += MathHelper.cos(limbAngle * speed * 0.2F) * 0.1 * limbDistance;
         }
     }
 
 
     @Override
     protected Iterable<ModelPart> getHeadParts() {
-        return ImmutableList.of(this.head);
+        return ImmutableList.of(this.neck);
     }
 
     @Override

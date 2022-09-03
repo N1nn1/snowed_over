@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "snowy=false": {
+      "model": "ecologics:block/coconut_leaves"
+    },
+    "snowy=true": {
+      "model": "ecologics:block/coconut_leaves_snow"
+    }
+  }
+}}

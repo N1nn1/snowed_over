@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "snowy=false": {
+            "model": "charm:block/ebony_leaves"
+        },
+        "snowy=true": {
+            "model": "charm:block/ebony_leaves_snow"
+        }
+    }
+}
