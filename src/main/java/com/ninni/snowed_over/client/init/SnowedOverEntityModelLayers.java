@@ -5,25 +5,25 @@ import com.ninni.snowed_over.client.model.entity.ReindeerEntityModel;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.minecraft.client.render.entity.model.EntityModelLayer;
-import net.minecraft.util.Identifier;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
 @Environment(EnvType.CLIENT)
 public interface SnowedOverEntityModelLayers {
 
-    EntityModelLayer REINDEER = main("reindeer", ReindeerEntityModel::getTexturedModelData);
-    EntityModelLayer REINDEER_ARMOR = register("reindeer", "armor", ReindeerEntityModel::getTexturedModelData);
-    EntityModelLayer PENGUIN  = main("penguin", PenguinEntityModel::getTexturedModelData);
+    ModelLayerLocation REINDEER = main("reindeer", ReindeerEntityModel::getTexturedModelData);
+    ModelLayerLocation REINDEER_ARMOR = register("reindeer", "armor", ReindeerEntityModel::getTexturedModelData);
+    ModelLayerLocation PENGUIN  = main("penguin", PenguinEntityModel::getTexturedModelData);
 
-    private static EntityModelLayer register(String id, String name, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
-        EntityModelLayer layer = new EntityModelLayer(new Identifier(MOD_ID, id), name);
+    private static ModelLayerLocation register(String id, String name, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
+        ModelLayerLocation layer = new ModelLayerLocation(new ResourceLocation(MOD_ID, id), name);
         EntityModelLayerRegistry.registerModelLayer(layer, provider);
         return layer;
     }
 
-    private static EntityModelLayer main(String id, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
+    private static ModelLayerLocation main(String id, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
         return register(id, "main", provider);
     }
 }

@@ -1,11 +1,11 @@
 package com.ninni.snowed_over.enchantments;
 
-import net.minecraft.enchantment.EnchantmentTarget;
-import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class HastyHoovesEnchantment extends SWEnchantment {
 
-    public HastyHoovesEnchantment(Rarity weight, EnchantmentTarget type, EquipmentSlot[] slotTypes) {
+    public HastyHoovesEnchantment(Rarity weight, EnchantmentCategory type, EquipmentSlot[] slotTypes) {
         super(weight, type, slotTypes);
     }
 
@@ -15,13 +15,13 @@ public class HastyHoovesEnchantment extends SWEnchantment {
     }
 
     @Override
-    public int getMinPower(int level) {
+    public int getMinCost(int level) {
         return 5 + (level - 1) * 8;
     }
 
     @Override
-    public int getMaxPower(int level) {
-        return super.getMaxPower(level) + 50;
+    public int getMaxCost(int level) {
+        return super.getMaxCost(level) + 50;
     }
 
 }

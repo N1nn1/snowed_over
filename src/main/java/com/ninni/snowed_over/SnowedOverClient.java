@@ -12,11 +12,14 @@ import com.ninni.snowed_over.network.SnowedOverPacketIdentifiers;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.world.World;
-
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import java.util.Optional;
 
 public class SnowedOverClient implements ClientModInitializer {
@@ -30,19 +33,23 @@ public class SnowedOverClient implements ClientModInitializer {
 
         ClientPlayNetworking.registerGlobalReceiver(SnowedOverPacketIdentifiers.OPEN_REINDEER_SCREEN, (client, handler, buf, responseSender) -> {
             int id = buf.readInt();
-            World level = client.world;
+            Level level = client.level;
             Optional.ofNullable(level).ifPresent(world -> {
-                Entity entity = world.getEntityById(id);
+                Entity entity = world.getEntity(id);
                 if (entity instanceof ReindeerEntity reindeer) {
                     int slotCount = buf.readInt();
                     int syncId = buf.readInt();
-                    ClientPlayerEntity clientPlayerEntity = client.player;
-                    SimpleInventory simpleInventory = new SimpleInventory(slotCount);
+                    LocalPlayer clientPlayerEntity = client.player;
+                    SimpleContainer simpleInventory = new SimpleContainer(slotCount);
                     ReindeerScreenHandler reindeerScreenHandler = new ReindeerScreenHandler(syncId, clientPlayerEntity.getInventory(), simpleInventory, reindeer);
-                    clientPlayerEntity.currentScreenHandler = reindeerScreenHandler;
+                    clientPlayerEntity.containerMenu = reindeerScreenHandler;
                     client.execute(() -> client.setScreen(new ReindeerScreen(reindeerScreenHandler, clientPlayerEntity.getInventory(), reindeer)));
                 }
             });
+        });
+
+        FabricLoader.getInstance().getModContainer("snowed_over").ifPresent(modContainer -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(new ResourceLocation("snowed_over:modcompat"), modContainer, ResourcePackActivationType.ALWAYS_ENABLED);
         });
     }
 }

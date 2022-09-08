@@ -1,58 +1,58 @@
 package com.ninni.snowed_over.item;
 
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
-import net.minecraft.advancement.criterion.Criteria;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsage;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.stat.Stats;
-import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.UseAction;
-import net.minecraft.world.World;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
+import net.minecraft.world.item.UseAnim;
+import net.minecraft.world.level.Level;
 
 public class PineconeItem extends Item {
-    public PineconeItem(Settings settings) {super(settings);}
+    public PineconeItem(Properties settings) {super(settings);}
 
     @Override
-    public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {
-        super.finishUsing(stack, world, user);
-        if (user instanceof ServerPlayerEntity serverPlayerEntity) {
-            Criteria.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
-            serverPlayerEntity.incrementStat(Stats.USED.getOrCreateStat(this));
+    public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
+        super.finishUsingItem(stack, world, user);
+        if (user instanceof ServerPlayer serverPlayerEntity) {
+            CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, stack);
+            serverPlayerEntity.awardStat(Stats.ITEM_USED.get(this));
         }
-        if (!world.isClient) {
-            user.damage(DamageSource.GENERIC, 3);
-            user.removeStatusEffect(StatusEffects.POISON);
-            user.removeStatusEffect(StatusEffects.WEAKNESS);
-            user.removeStatusEffect(StatusEffects.WITHER);
+        if (!world.isClientSide) {
+            user.hurt(DamageSource.GENERIC, 3);
+            user.removeEffect(MobEffects.POISON);
+            user.removeEffect(MobEffects.WEAKNESS);
+            user.removeEffect(MobEffects.WITHER);
         }
             return stack;
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack) {
+    public int getUseDuration(ItemStack stack) {
         return 40;
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack) {
-        return UseAction.EAT;
+    public UseAnim getUseAnimation(ItemStack stack) {
+        return UseAnim.EAT;
     }
 
     @Override
-    public SoundEvent getEatSound() {
+    public SoundEvent getEatingSound() {
         return SnowedOverSoundEvents.ITEM_PINECONE_EAT;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        return ItemUsage.consumeHeldItem(world, user, hand);
+    public InteractionResultHolder<ItemStack> use(Level world, Player user, InteractionHand hand) {
+        return ItemUtils.startUsingInstantly(world, user, hand);
     }
 }

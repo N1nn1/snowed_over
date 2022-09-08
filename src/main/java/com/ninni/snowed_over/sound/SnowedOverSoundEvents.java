@@ -1,9 +1,9 @@
 package com.ninni.snowed_over.sound;
 
 import com.ninni.snowed_over.SnowedOver;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
 
 public interface SnowedOverSoundEvents {
 
@@ -46,7 +46,7 @@ public interface SnowedOverSoundEvents {
     }
 
     private static SoundEvent register(String id) {
-        Identifier identifier = new Identifier(SnowedOver.MOD_ID, id);
+        ResourceLocation identifier = new ResourceLocation(SnowedOver.MOD_ID, id);
         return Registry.register(Registry.SOUND_EVENT, identifier, new SoundEvent(identifier));
     }
 

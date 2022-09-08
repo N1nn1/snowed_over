@@ -1,49 +1,49 @@
 package com.ninni.snowed_over.mixin;
 
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.PowderSnowBlock;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PowderSnowBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 
 @SuppressWarnings("deprecation")
 @Mixin(PowderSnowBlock.class)
 public class PowderSnowMixin extends Block {
-    public PowderSnowMixin(Settings settings) {
+    public PowderSnowMixin(Properties settings) {
         super(settings);
     }
 
     @Override
-    public void onEntityCollision(BlockState state, World world, BlockPos pos, Entity entity) {
+    public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
         if (!(entity instanceof ReindeerEntity)) {
-            if (!(entity instanceof LivingEntity) || entity.getBlockStateAtPos().isOf(this)) {
-                entity.slowMovement(state, new Vec3d(0.8999999761581421, 1.5, 0.8999999761581421));
-                if (world.isClient) {
-                    Random random = world.getRandom();
-                    boolean bl = entity.lastRenderX != entity.getX() || entity.lastRenderZ != entity.getZ();
+            if (!(entity instanceof LivingEntity) || entity.getFeetBlockState().is(this)) {
+                entity.makeStuckInBlock(state, new Vec3(0.8999999761581421, 1.5, 0.8999999761581421));
+                if (world.isClientSide) {
+                    RandomSource random = world.getRandom();
+                    boolean bl = entity.xOld != entity.getX() || entity.zOld != entity.getZ();
                     if (bl && random.nextBoolean()) {
-                        world.addParticle(ParticleTypes.SNOWFLAKE, entity.getX(), (pos.getY() + 1), entity.getZ(), (MathHelper.nextBetween(random, -1.0F, 1.0F) * 0.083333336F), 0.05000000074505806, (MathHelper.nextBetween(random, -1.0F, 1.0F) * 0.083333336F));
+                        world.addParticle(ParticleTypes.SNOWFLAKE, entity.getX(), (pos.getY() + 1), entity.getZ(), (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F), 0.05000000074505806, (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F));
                     }
                 }
             }
         }
-        entity.setInPowderSnow(true);
-        if (!world.isClient) {
-            if (entity.isOnFire() && (world.getGameRules().getBoolean(GameRules.DO_MOB_GRIEFING) || entity instanceof PlayerEntity) && entity.canModifyAt(world, pos)) {
-                world.breakBlock(pos, false);
+        entity.setIsInPowderSnow(true);
+        if (!world.isClientSide) {
+            if (entity.isOnFire() && (world.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING) || entity instanceof Player) && entity.mayInteract(world, pos)) {
+                world.destroyBlock(pos, false);
             }
 
-            entity.setOnFire(false);
+            entity.setSharedFlagOnFire(false);
         }
 
     }

@@ -2,37 +2,37 @@ package com.ninni.snowed_over.criterion;
 
 import com.google.gson.JsonObject;
 import com.ninni.snowed_over.SnowedOver;
-import net.minecraft.advancement.criterion.AbstractCriterion;
-import net.minecraft.advancement.criterion.AbstractCriterionConditions;
-import net.minecraft.predicate.entity.AdvancementEntityPredicateDeserializer;
-import net.minecraft.predicate.entity.EntityPredicate;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.util.Identifier;
+import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
+import net.minecraft.advancements.critereon.DeserializationContext;
+import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 
-public class SWCriterion extends AbstractCriterion<SWCriterion.TriggerInstance> {
-    private final Identifier ID;
+public class SWCriterion extends SimpleCriterionTrigger<SWCriterion.TriggerInstance> {
+    private final ResourceLocation ID;
 
     public SWCriterion(String name) {
-        ID = new Identifier(SnowedOver.MOD_ID, name);
+        ID = new ResourceLocation(SnowedOver.MOD_ID, name);
     }
 
     @Override
-    protected TriggerInstance conditionsFromJson(JsonObject obj, EntityPredicate.Extended playerPredicate, AdvancementEntityPredicateDeserializer predicateDeserializer) {
+    protected TriggerInstance createInstance(JsonObject obj, EntityPredicate.Composite playerPredicate, DeserializationContext predicateDeserializer) {
         return new SWCriterion.TriggerInstance(ID, playerPredicate);
     }
 
     @Override
-    public Identifier getId() {
+    public ResourceLocation getId() {
         return ID;
     }
 
-    public void trigger(ServerPlayerEntity player) {
+    public void trigger(ServerPlayer player) {
         this.trigger(player, conditions -> true);
     }
 
-    public static class TriggerInstance extends AbstractCriterionConditions {
+    public static class TriggerInstance extends AbstractCriterionTriggerInstance {
 
-        public TriggerInstance(Identifier id, EntityPredicate.Extended playerPredicate) {
+        public TriggerInstance(ResourceLocation id, EntityPredicate.Composite playerPredicate) {
             super(id, playerPredicate);
         }
 
