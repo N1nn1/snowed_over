@@ -11,8 +11,7 @@
     "LocateCommandMixin",
     "PowderSnowMixin",
     "ServerPlayerEntityMixin",
-    "WolfEntityMixin",
-    "dev.MinecraftServerMixin"
+    "WolfEntityMixin"
   ],
   "client": [
     "client.ClientPlayerEntityMixin"
