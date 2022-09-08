@@ -2,9 +2,10 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.ninni.snowed_over.mixin",
+  "plugin": "com.ninni.snowed_over.mixin.compat.MixinCompatPlugin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CoconutLeavesBlockMixin",
+    "compat.ecologics.CoconutLeavesBlockMixin",
     "FrostWalkerEnchantmentMixin",
     "LeavesBlockMixin",
     "LocateCommandMixin",
