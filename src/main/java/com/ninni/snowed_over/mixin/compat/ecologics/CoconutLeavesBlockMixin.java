@@ -20,25 +20,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.include.com.google.common.base.Optional;
 import samebutdifferent.ecologics.block.CoconutLeavesBlock;
-
-
 
 @Mixin(CoconutLeavesBlock.class)
 public abstract class CoconutLeavesBlockMixin extends LeavesBlock {
 
     @Shadow @Final public static IntegerProperty DISTANCE_9;
 
-
     private static final BooleanProperty SNOWY= BlockStateProperties.SNOWY;
+
     public CoconutLeavesBlockMixin(Properties settings) {super(settings);}
 
-
     @Inject(at = @At("TAIL"), method = "<init>")
-    public void constructor(CallbackInfo info) {registerDefaultState(stateDefinition.any().setValue(SNOWY, false).setValue(DISTANCE_9, 9).setValue(PERSISTENT, false).setValue(DISTANCE, 7).setValue(WATERLOGGED, false));}
+    public void constructor(CallbackInfo info) { registerDefaultState(stateDefinition.any().setValue(SNOWY, false).setValue(DISTANCE_9, 9).setValue(PERSISTENT, false).setValue(DISTANCE, 7).setValue(WATERLOGGED, false)); }
 
-    @SuppressWarnings("deprecation")
     @Inject(at = @At("RETURN"), method = "updateShape", cancellable = true)
     public void updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor world, BlockPos pos, BlockPos neighborPos, CallbackInfoReturnable<BlockState> cir) {
         int i = getDistanceFromLog(neighborState) + 1;
@@ -57,7 +52,6 @@ public abstract class CoconutLeavesBlockMixin extends LeavesBlock {
     }
 
     private static boolean isSnow(BlockState state) {return state.is(BlockTags.SNOW);}
-
 
     private static int getDistanceFromLog(BlockState state) {
         if (state.is(BlockTags.LOGS)) {

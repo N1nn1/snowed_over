@@ -18,18 +18,19 @@ public class SWEnchantment extends Enchantment {
     }
 
     @Override
-    public boolean isTreasure() {
+    public boolean isTreasureOnly() {
         return true;
     }
 
     @Override
-    public boolean isAvailableForEnchantedBookOffer() {
+    public boolean isDiscoverable() {
         return false;
     }
 
     @Override
-    public boolean isAvailableForRandomSelection() {
+    public boolean isTradeable() {
         return false;
     }
+
 
 }

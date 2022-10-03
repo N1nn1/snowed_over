@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MixinCompatPlugin implements IMixinConfigPlugin {
+
     @Override
     public void onLoad(String mixinPackage) {
 
@@ -49,4 +50,5 @@ public class MixinCompatPlugin implements IMixinConfigPlugin {
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 
     }
+
 }
