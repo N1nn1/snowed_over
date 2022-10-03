@@ -1,17 +1,17 @@
 package com.ninni.snowed_over.entity.ai.goal;
 
 import com.ninni.snowed_over.entity.PenguinEntity;
-import net.minecraft.entity.ai.goal.SwimAroundGoal;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
 
-public class PenguinSwimAroundGoal extends SwimAroundGoal {
-    public PenguinSwimAroundGoal(PathAwareEntity penguin, double d, int i) {
+public class PenguinSwimAroundGoal extends RandomSwimmingGoal {
+    public PenguinSwimAroundGoal(PathfinderMob penguin, double d, int i) {
         super(penguin, d, i);
     }
 
     @Override
-    public boolean canStart() {
-        if (this.mob instanceof PenguinEntity penguin) if (penguin.hasEgg() || penguin.isNavigating()) return false;
-        return super.canStart();
+    public boolean canUse() {
+        if (this.mob instanceof PenguinEntity penguin) if (penguin.hasEgg() || penguin.isPathFinding()) return false;
+        return super.canUse();
     }
 }

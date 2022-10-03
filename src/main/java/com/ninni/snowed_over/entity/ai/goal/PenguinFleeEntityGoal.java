@@ -2,19 +2,19 @@ package com.ninni.snowed_over.entity.ai.goal;
 
 import com.ninni.snowed_over.entity.PenguinEntity;
 import com.ninni.snowed_over.entity.PenguinMood;
-import net.minecraft.entity.ai.goal.FleeEntityGoal;
-import net.minecraft.entity.mob.PathAwareEntity;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 
-public class PenguinFleeEntityGoal extends FleeEntityGoal {
+public class PenguinFleeEntityGoal extends AvoidEntityGoal {
 
-    public PenguinFleeEntityGoal(PathAwareEntity penguin, Class fleeFromType, float distance, double slowSpeed, double fastSpeed) {
+    public PenguinFleeEntityGoal(PathfinderMob penguin, Class fleeFromType, float distance, double slowSpeed, double fastSpeed) {
         super(penguin, fleeFromType, distance, slowSpeed, fastSpeed);
     }
 
     @Override
-    public boolean canStart() {
+    public boolean canUse() {
         if (this.mob instanceof PenguinEntity penguin && penguin.hasEgg()) return false;
-        return super.canStart();
+        return super.canUse();
     }
 
     @Override

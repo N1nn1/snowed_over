@@ -1,53 +1,53 @@
 package com.ninni.snowed_over.client.screen;
 
 import com.ninni.snowed_over.entity.ReindeerEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.slot.Slot;
+import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 
-public class ReindeerScreenHandler extends ScreenHandler {
-    private final Inventory inventory;
+public class ReindeerScreenHandler extends AbstractContainerMenu {
+    private final Container inventory;
     private final ReindeerEntity entity;
 
-    public ReindeerScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory, final ReindeerEntity entity) {
+    public ReindeerScreenHandler(int syncId, Inventory playerInventory, Container inventory, final ReindeerEntity entity) {
         super(null, syncId);
         int l;
         int k;
         this.inventory = inventory;
         this.entity = entity;
         int i = 3;
-        inventory.onOpen(playerInventory.player);
+        inventory.startOpen(playerInventory.player);
         int j = -18;
         this.addSlot(new Slot(inventory, 0, 8, 18){
 
             @Override
-            public boolean canInsert(ItemStack stack) {
-                return stack.isOf(Items.SADDLE) && !this.hasStack() && entity.canBeSaddled();
+            public boolean mayPlace(ItemStack stack) {
+                return stack.is(Items.SADDLE) && !this.hasItem() && entity.isSaddleable();
             }
 
             @Override
-            public boolean isEnabled() {
-                return entity.canBeSaddled();
+            public boolean isActive() {
+                return entity.isSaddleable();
             }
         });
         this.addSlot(new Slot(inventory, 1, 8, 36){
 
             @Override
-            public boolean canInsert(ItemStack stack) {
-                return entity.isHorseArmor(stack);
+            public boolean mayPlace(ItemStack stack) {
+                return entity.isArmor(stack);
             }
 
             @Override
-            public boolean isEnabled() {
-                return entity.hasArmorSlot();
+            public boolean isActive() {
+                return entity.canWearArmor();
             }
 
             @Override
-            public int getMaxItemCount() {
+            public int getMaxStackSize() {
                 return 1;
             }
         });
@@ -62,51 +62,51 @@ public class ReindeerScreenHandler extends ScreenHandler {
     }
 
     @Override
-    public boolean canUse(PlayerEntity player) {
-        return !this.entity.areInventoriesDifferent(this.inventory) && this.inventory.canPlayerUse(player) && this.entity.isAlive() && this.entity.distanceTo(player) < 8.0f;
+    public boolean stillValid(Player player) {
+        return !this.entity.hasInventoryChanged(this.inventory) && this.inventory.stillValid(player) && this.entity.isAlive() && this.entity.distanceTo(player) < 8.0f;
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public ItemStack quickMoveStack(Player player, int index) {
         ItemStack itemStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
-        if (slot.hasStack()) {
-            ItemStack itemStack2 = slot.getStack();
+        if (slot.hasItem()) {
+            ItemStack itemStack2 = slot.getItem();
             itemStack = itemStack2.copy();
-            int i = this.inventory.size();
+            int i = this.inventory.getContainerSize();
             if (index < i) {
-                if (!this.insertItem(itemStack2, i, this.slots.size(), true)) {
+                if (!this.moveItemStackTo(itemStack2, i, this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.getSlot(1).canInsert(itemStack2) && !this.getSlot(1).hasStack()) {
-                if (!this.insertItem(itemStack2, 1, 2, false)) {
+            } else if (this.getSlot(1).mayPlace(itemStack2) && !this.getSlot(1).hasItem()) {
+                if (!this.moveItemStackTo(itemStack2, 1, 2, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (this.getSlot(0).canInsert(itemStack2)) {
-                if (!this.insertItem(itemStack2, 0, 1, false)) {
+            } else if (this.getSlot(0).mayPlace(itemStack2)) {
+                if (!this.moveItemStackTo(itemStack2, 0, 1, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (i <= 2 || !this.insertItem(itemStack2, 2, i, false)) {
+            } else if (i <= 2 || !this.moveItemStackTo(itemStack2, 2, i, false)) {
                 int k;
                 int l = k = i + 27;
                 int m = l + 9;
-                if (index >= l && index < m ? !this.insertItem(itemStack2, i, k, false) : index < k ? !this.insertItem(itemStack2, l, m, false) : !this.insertItem(itemStack2, l, k, false)) {
+                if (index >= l && index < m ? !this.moveItemStackTo(itemStack2, i, k, false) : index < k ? !this.moveItemStackTo(itemStack2, l, m, false) : !this.moveItemStackTo(itemStack2, l, k, false)) {
                     return ItemStack.EMPTY;
                 }
                 return ItemStack.EMPTY;
             }
             if (itemStack2.isEmpty()) {
-                slot.setStack(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
-                slot.markDirty();
+                slot.setChanged();
             }
         }
         return itemStack;
     }
 
     @Override
-    public void close(PlayerEntity player) {
-        super.close(player);
-        this.inventory.onClose(player);
+    public void removed(Player player) {
+        super.removed(player);
+        this.inventory.stopOpen(player);
     }
 }

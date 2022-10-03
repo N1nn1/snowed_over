@@ -1,4 +1,5 @@
 {
+  "replace": true,
   "variants": {
     "snowy=false": {
       "model": "ecologics:block/walnut_leaves"
@@ -7,4 +8,4 @@
       "model": "ecologics:block/walnut_leaves_snow"
     }
   }
-}}
+}

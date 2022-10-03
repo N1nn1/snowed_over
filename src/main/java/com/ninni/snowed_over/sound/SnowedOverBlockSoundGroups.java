@@ -1,10 +1,10 @@
 package com.ninni.snowed_over.sound;
 
-import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.world.level.block.SoundType;
 
 public class SnowedOverBlockSoundGroups {
 
-    public static final BlockSoundGroup COMPACTED_SNOW = new BlockSoundGroup(
+    public static final SoundType COMPACTED_SNOW = new SoundType(
         0.3F, 1.0F,
 
         SnowedOverSoundEvents.BLOCK_COMPACTED_SNOW_BREAK,

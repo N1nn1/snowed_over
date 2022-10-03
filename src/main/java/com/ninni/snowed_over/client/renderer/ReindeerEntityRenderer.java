@@ -7,22 +7,21 @@ import com.ninni.snowed_over.client.renderer.entity.feature.ReindeerFestiveOverl
 import com.ninni.snowed_over.entity.ReindeerEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.feature.SaddleFeatureRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Util;
-
+import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.entity.layers.SaddleLayer;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
 import java.util.Calendar;
 
 import static com.ninni.snowed_over.SnowedOver.*;
 
 @Environment(EnvType.CLIENT)
-public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRenderer<ReindeerEntity, ReindeerEntityModel<ReindeerEntity>> {
-    public static final Identifier TEXTURE = new Identifier(MOD_ID, "textures/entity/reindeer/reindeer.png");
-    public static final Identifier TEXTURE_FESTIVE = new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_festive.png");
+public class ReindeerEntityRenderer<T extends LivingEntity> extends MobRenderer<ReindeerEntity, ReindeerEntityModel<ReindeerEntity>> {
+    public static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer.png");
+    public static final ResourceLocation TEXTURE_FESTIVE = new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_festive.png");
     public static final boolean FESTIVE = Util.make(() -> {
         //checks if it's Christmas or if it's the world reindeer day to apply a custom skin
         Calendar calendar = Calendar.getInstance();
@@ -30,16 +29,16 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
             || (calendar.get(Calendar.MONTH) + 1 == 8 && calendar.get(Calendar.DATE) == 2);
     });
 
-    public ReindeerEntityRenderer(EntityRendererFactory.Context ctx) {
-        super(ctx, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER)), 0.6F);
-        this.addFeature(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
-        this.addFeature(new SaddleFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.getPart(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new Identifier(MOD_ID, "textures/entity/reindeer/reindeer_saddle.png")));
-        this.addFeature(new ReindeerFestiveOverlayFeatureRenderer(this));
+    public ReindeerEntityRenderer(EntityRendererProvider.Context ctx) {
+        super(ctx, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER)), 0.6F);
+        this.addLayer(new ReindeerArmorFeatureRenderer<>(this, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_armor.png")));
+        this.addLayer(new SaddleLayer<>(this, new ReindeerEntityModel<>(ctx.bakeLayer(SnowedOverEntityModelLayers.REINDEER_ARMOR)), new ResourceLocation(MOD_ID, "textures/entity/reindeer/reindeer_saddle.png")));
+        this.addLayer(new ReindeerFestiveOverlayFeatureRenderer(this));
     }
 
     public static boolean isFestive(ReindeerEntity entity) {
         if (entity.hasCustomName()) {
-            String string = Formatting.strip(entity.getName().getString());
+            String string = ChatFormatting.stripFormatting(entity.getName().getString());
             if ("rudolph".equalsIgnoreCase(string)) return true;
         }
 
@@ -47,7 +46,7 @@ public class ReindeerEntityRenderer<T extends LivingEntity> extends MobEntityRen
     }
 
     @Override
-    public Identifier getTexture(ReindeerEntity entity) {
+    public ResourceLocation getTextureLocation(ReindeerEntity entity) {
         return isFestive(entity) ? TEXTURE_FESTIVE : TEXTURE;
     }
 }
