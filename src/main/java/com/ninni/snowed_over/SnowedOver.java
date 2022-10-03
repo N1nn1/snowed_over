@@ -4,6 +4,7 @@ import com.google.common.reflect.Reflection;
 import com.ninni.snowed_over.block.SnowedOverBlocks;
 import com.ninni.snowed_over.criterion.SnowedOverCriteria;
 import com.ninni.snowed_over.enchantments.SnowedOverEnchantments;
+import com.ninni.snowed_over.entity.SnowedOverEntities;
 import com.ninni.snowed_over.item.SnowedOverItems;
 import com.ninni.snowed_over.sound.SnowedOverSoundEvents;
 import net.fabricmc.api.ModInitializer;
@@ -25,7 +26,8 @@ public class SnowedOver implements ModInitializer {
 			SnowedOverBlocks.class,
 			SnowedOverLootTableAdditions.class,
 			SnowedOverSoundEvents.class,
-			SnowedOverEnchantments.class
+			SnowedOverEnchantments.class,
+			SnowedOverEntities.class
 		);
 	}
 }
